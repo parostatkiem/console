@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useQuery } from 'react-apollo';
 import PropTypes from 'prop-types';
 import './s.scss';
-import { waitForElementToBeRemoved } from '@testing-library/react';
 
 const InfiniteList = ({
   query,
@@ -66,12 +65,14 @@ const InfiniteList = ({
         className="panel"
         onMouseMove={ev => {
           const mousePos = ev.clientX;
-          const panel = document.querySelector('.panel');
-          const panelPos = panel.getBoundingClientRect();
-          const panelWidth = panelPos.right - panelPos.left;
-          const horizontalPos = (mousePos - panelPos.left) / panelWidth;
+          setImmediate(() => {
+            const panel = document.querySelector('.panel');
+            const panelPos = panel.getBoundingClientRect();
+            const panelWidth = panelPos.right - panelPos.left;
+            const horizontalPos = (mousePos - panelPos.left) / panelWidth;
 
-          panel.style.backgroundPositionX = 40 + horizontalPos * 40 + '%';
+            panel.style.backgroundPositionX = 0 + horizontalPos * 40 + '%';
+          });
         }}
       >
         <h4>The Hasselhoff control panel</h4>
