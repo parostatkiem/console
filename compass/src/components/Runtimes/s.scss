@@ -1,0 +1,19 @@
+.panel {
+  color: white;
+  background-size: cover;
+  background-position-y: 41%;
+  padding: 1em;
+  background-image: url(https://media.gettyimages.com/photos/season-3-pictured-david-hasselhoff-as-michael-knight-photo-by-gary-picture-id141271020?s=612x612);
+  text-shadow: 1px 1px black;
+  font-size: 1.5em;
+  button {
+    color: #b00;
+    padding: 0.35em;
+    font-size: 0.8em;
+    margin-right: 0.5em;
+    cursor: pointer;
+  }
+  div {
+    display: inline-block;
+  }
+}
