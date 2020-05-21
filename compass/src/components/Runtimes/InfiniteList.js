@@ -62,7 +62,18 @@ const InfiniteList = ({
 
   return (
     <>
-      <p className="panel">
+      <p
+        className="panel"
+        onMouseMove={ev => {
+          const mousePos = ev.clientX;
+          const panel = document.querySelector('.panel');
+          const panelPos = panel.getBoundingClientRect();
+          const panelWidth = panelPos.right - panelPos.left;
+          const horizontalPos = (mousePos - panelPos.left) / panelWidth;
+
+          panel.style.backgroundPositionX = 40 + horizontalPos * 40 + '%';
+        }}
+      >
         <h4>The Hasselhoff control panel</h4>
         <div>
           <button
