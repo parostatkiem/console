@@ -6,7 +6,7 @@ import { LAMBDA_DETAILS } from 'components/Lambdas/constants';
 
 import EditLambdaLabelsModal from '../EditLambdaLabelsModal';
 
-jest.mock('@kyma-project/luigi-client', () => {
+jest.mock('@luigi-project/client', () => {
   return {
     uxManager: () => ({
       addBackdrop: () => {},

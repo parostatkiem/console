@@ -2,7 +2,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { ModalWithForm } from '../ModalWithForm';
 
-jest.mock('@kyma-project/luigi-client', () => ({
+jest.mock('@luigi-project/client', () => ({
   uxManager: () => ({
     addBackdrop: jest.fn(),
     removeBackdrop: jest.fn(),
