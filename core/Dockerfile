@@ -11,7 +11,7 @@ COPY . /app
 RUN cd /app/${app_name} && \
   make resolve && \
   make verify && \
-  make pull-licenses && \
+  make pull-licenses 
 RUN cd /app/${app_name} && \
   make build
 
