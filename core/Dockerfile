@@ -16,7 +16,7 @@ RUN cd /app/${app_name} && \
   make build
 
 ### Main image ###
-FROM alpine:3.11
+FROM alpine:3.12
 
 RUN mkdir -p /run/nginx
 RUN apk update
