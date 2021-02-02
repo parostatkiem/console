@@ -75,13 +75,10 @@ export let navigation = {
 
 export function getNavigationData(token) {
   return new Promise(function(resolve, reject) {
-    let kymaVersion;
 
     fetchConsoleInitData(token)
       .then(
         res => {
-          kymaVersion = res.versionInfo && `Kyma version: ${res.versionInfo}`;
-  
           const cmfs = res.clusterMicroFrontends;
           setInitValues(
             res.backendModules,
@@ -167,7 +164,7 @@ export function getNavigationData(token) {
           },
         ];
 
-        resolve([nodes, kymaVersion]);
+        resolve(nodes);
       })
       .catch(err => {
         console.error('Config Init Error', err);

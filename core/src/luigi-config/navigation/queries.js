@@ -1,5 +1,3 @@
-import { extractKymaVersion } from './util';
-
 function createHeaders(token) {
   return { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' };
 }
@@ -24,11 +22,6 @@ export function fetchConsoleInitData(token) {
     selector: data => ({ clusterMicroFrontends: data.items.map(cMF => ({ ...cMF.spec, ...cMF.metadata })) }),
   }
 
-  const kymaVersion = {
-    path: '/apis/apps/v1/namespaces/kyma-installer/deployments/kyma-installer',
-    selector: data => ({ versionInfo: extractKymaVersion(data) }),
-  }
-
   const ssrr = {
     typeMeta: {
       kind: "SelfSubjectRulesReview",
@@ -47,7 +40,6 @@ export function fetchConsoleInitData(token) {
   const promises = [
     backendModules,
     clusterMicroFrontends,
-    kymaVersion,
   ].map(({ path, selector }) => fetch(`http://localhost:3001${path}`, {
     headers: createHeaders(token),
   }).then(res => res.json()).then(selector));
