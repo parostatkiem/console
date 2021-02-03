@@ -3,8 +3,6 @@ let domain, localDomain, localDevDomainBindings;
 export default function processNodeForLocalDevelopment(node, spec, config) {
   ({ domain, localDomain } = config);
   localDevDomainBindings = [
-    { startsWith: 'brokers', replaceWith: config.serviceBrokersModuleUrl },
-    { startsWith: 'instances', replaceWith: config.serviceInstancesModuleUrl },
     { startsWith: 'catalog', replaceWith: config.serviceCatalogModuleUrl },
     { startsWith: 'addons', replaceWith: config.addOnsModuleUrl },
     { startsWith: 'log-ui', replaceWith: config.logsModuleUrl },
@@ -62,6 +60,6 @@ function adjustMicroFrontendUrlForLocalDevelopment(url) {
 function adjustClusterMicroFrontendUrlForLocalDevelopment(url, domainBinding) {
   return url.replace(
     `https://${domainBinding.startsWith}.${domain}`,
-    domainBinding.replaceWith
+    `http://console-dev.${domain}:${domainBinding.replaceWith}`
   );
 }
