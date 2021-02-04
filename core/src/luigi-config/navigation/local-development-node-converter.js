@@ -60,6 +60,6 @@ function adjustMicroFrontendUrlForLocalDevelopment(url) {
 function adjustClusterMicroFrontendUrlForLocalDevelopment(url, domainBinding) {
   return url.replace(
     `https://${domainBinding.startsWith}.${domain}`,
-    `http://console-dev.${domain}:${domainBinding.replaceWith}`
+    domainBinding.replaceWith
   );
 }
