@@ -1,6 +1,5 @@
 import { getApiUrl } from './auth/auth-params'
 
-var clusterConfig = window['clusterConfig'] || INJECTED_CLUSTER_CONFIG;
 const k8sDomain = getApiUrl() || 'kyma.local';
 const localDomain = 'console-dev.' + k8sDomain;
 const isLocalDev = window.location.href.startsWith(
