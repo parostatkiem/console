@@ -27,7 +27,7 @@ const config = {
   subscriptionsApiUrl: environment.localApi ? gqlSubsLocalUrl : gqlSubsUrl,
 
   headerTitle: '',
-  headerLogoUrl: '',
+  headerLogoUrl: 'assets/logo.svg',
   faviconUrl: 'favicon.ico',
   kubeconfigGeneratorUrl: `https://configurations-generator.${domain}/kube-config`,
   idpLogoutUrl: null,
