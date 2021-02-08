@@ -1,5 +1,3 @@
-// import { getApiUrl } from './auth/auth-params' - for the future
-
 const clusterConfig = window['clusterConfig'] || INJECTED_CLUSTER_CONFIG;
 const domain = clusterConfig?.domain || 'kyma.local';
 const localDomain = 'console-dev.' + domain;

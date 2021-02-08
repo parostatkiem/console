@@ -1,4 +1,5 @@
 import React, { createContext, useContext } from 'react';
+import { getClusterConfig } from '../utils/getClusterConfig';
 
 export const ConfigContext = createContext({});
 
@@ -24,7 +25,8 @@ export const ConfigProvider = ({
   children,
   prefix = DEFAULT_PREFIX,
 }) => {
-  const config = configFromEnvVariables(env, window.clusterConfig, prefix);
+  const clusterConfig = getClusterConfig();
+  const config = configFromEnvVariables(env, clusterConfig, prefix);
   return (
     <ConfigContext.Provider value={{ fromConfig: fromConfig(config) }}>
       {children}

@@ -1,3 +1,5 @@
+import { getClusterConfig } from './getClusterConfig';
+
 interface StringMap {
   [s: string]: string;
 }
@@ -23,8 +25,9 @@ export function getApiUrl(endpoint: string): string {
     process.env as StringMap,
     defaultPrefix,
   );
+  const windowClusterConfig = getClusterConfig();
 
   return clusterConfig && clusterConfig[endpoint]
     ? clusterConfig[endpoint]
-    : (window as any).clusterConfig[endpoint];
+    : windowClusterConfig[endpoint];
 }
