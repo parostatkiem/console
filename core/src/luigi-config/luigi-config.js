@@ -1,4 +1,4 @@
-import { saveCurrentLocation, getToken } from './navigation/navigation-helpers';
+import { saveCurrentLocation, getToken, getPreviousLocation } from './navigation/navigation-helpers';
 import { communication } from './communication';
 import { settings } from './settings';
 import { createAuth, saveAuthParamsIfPresent } from './auth/index.js';
@@ -13,7 +13,7 @@ import { onQuotaExceed } from './luigi-event-handlers';
 export const NODE_PARAM_PREFIX = `~`;
 
 (async () => {
-  saveAuthParamsIfPresent(location);
+  await saveAuthParamsIfPresent(location);
   const luigiConfig = {
     auth: await createAuth(),
     communication,
@@ -39,6 +39,11 @@ export const NODE_PARAM_PREFIX = `~`;
           getNavigationData(token).then(response => {
             resolveNavigationNodes(response);
             Luigi.ux().hideAppLoadingIndicator();
+
+            const prevLocation = getPreviousLocation();
+            if (prevLocation) {
+              Luigi.navigation().navigate(prevLocation);
+            }
           });
         } else {
           saveCurrentLocation();

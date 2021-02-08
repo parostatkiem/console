@@ -1,5 +1,7 @@
+import createEncoder from 'json-url';
+
 const PARAMS_KEY = 'console.auth-params';
-const API_KEY = 'console.api-url';
+const encoder = createEncoder('lzstring');
 
 function getResponseParams(usePKCE = true) {
     if (usePKCE) {
@@ -12,25 +14,16 @@ function getResponseParams(usePKCE = true) {
     }
 }
 
-export function saveAuthParamsIfPresent(location) {
-    const apiUrl = new URL(location).searchParams.get('api');
+export async function saveAuthParamsIfPresent(location) {
     const params = new URL(location).searchParams.get('auth');
     if (params) {
-        const parsed = JSON.parse(params);
+        const decoded = await encoder.decompress(params);
+        const parsed = JSON.parse(decoded);
         const responseParams = getResponseParams(parsed.usePKCE);
         localStorage.setItem(PARAMS_KEY, JSON.stringify({...parsed, ...responseParams}));
-    }
-    if (apiUrl && apiUrl !== sessionStorage.getItem(API_KEY)) {
-        console.log(apiUrl)
-        sessionStorage.removeItem(API_KEY);
-        sessionStorage.setItem(API_KEY, apiUrl);
     }
 }
 
 export function getAuthParams() {
     return JSON.parse(localStorage.getItem(PARAMS_KEY) || "null");
-}
-
-export function getApiUrl() {
-    return sessionStorage.getItem(API_KEY);
 }
