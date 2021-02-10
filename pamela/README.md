@@ -11,7 +11,7 @@ This is a REST proxy for the Console
 
 ## Installation
 
-To install Pamela together with the Console, run the `npm run bootstrap` in the root directory.
+To install Pamela together with the Console, run the `npm run bootstrap` command in the root directory.
 
 ## Usage
 
