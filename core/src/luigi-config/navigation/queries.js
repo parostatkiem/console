@@ -1,7 +1,12 @@
 import { config } from './../config';
+import { getInitParams } from './../init-params';
 
 function createHeaders(token) {
-  return { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' };
+  return {
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json',
+    'X-Api-Url': getInitParams().kubernetesApiUrl,
+  };
 }
 
 function mapMicrofrontends(microFrontendList) {

@@ -1,5 +1,6 @@
 import OpenIdConnect from '@luigi-project/plugin-auth-oidc';
-import { getAuthParams } from './auth-params';
+import { getInitParams } from './init-params';
+import createEncoder from 'json-url';
 
 export let groups;
 
@@ -15,10 +16,18 @@ async function fetchOidcProviderMetadata(issuerUrl) {
 }
 
 export const createAuth = async () => {
-  const params = getAuthParams();
+  const params = getInitParams();
   if (!params) {
     alert("No auth params provided! In future you'll get to login with your service account.");
-    console.log('for now just use query param: ?auth=EQbwOsCWDO0K4FMBOBVJAbCAuCALALvgA7RYD0ZA1gJ4C2AhgHQJyP1z64AMjAxgPa0yEADQRe6SAgB2-AJIATbBACsAdQAcATgBuAIQASAd2kAmWnADs0gCpc4ALx38AcgBYAHgGF-AMy64bgBW-C4QAL7AQAAA')
+    
+    const encoder = createEncoder('lzstring');
+    const data = {
+      issuerUrl:"https://kyma.eu.auth0.com/",
+      clientId:"5W89vBHwn2mu7nT0uzvoN4xCof0h4jtN",
+      kubernetesApiUrl: "api.biggie.hasselhoff.shoot.canary.k8s-hana.ondemand.com",
+    }
+    const encoded = await encoder.compress(data);
+    console.log(`for now just use query param: ?auth=${encoded}`)
     return {};
   }
 
@@ -66,5 +75,3 @@ export const createAuth = async () => {
     storage: 'none',
   };
 }
-
-export * from './auth-params';

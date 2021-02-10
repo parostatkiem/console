@@ -22,7 +22,8 @@ import {
   clearToken,
   getToken
 } from './navigation-helpers';
-import { groups } from './../auth';
+import { groups } from '../auth';
+import { getInitParams } from '../init-params';
 
 let clusterMicrofrontendNodes = [];
 let clusterMicrofrontendNodesForNamespace = [];
@@ -146,7 +147,8 @@ export function getNavigationData(token) {
               backendModules,
               systemNamespaces,
               showSystemNamespaces:
-                localStorage.getItem('console.showSystemNamespaces') === 'true'
+                localStorage.getItem('console.showSystemNamespaces') === 'true',
+              k8sApiUrl: getInitParams().kubernetesApiUrl,
             },
             children: function() {
               const staticNodes = getStaticRootNodes(

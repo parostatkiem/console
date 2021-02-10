@@ -1,6 +1,6 @@
 import createEncoder from 'json-url';
 
-const PARAMS_KEY = 'console.auth-params';
+const PARAMS_KEY = 'console.init-params';
 const encoder = createEncoder('lzstring');
 
 function getResponseParams(usePKCE = true) {
@@ -14,16 +14,15 @@ function getResponseParams(usePKCE = true) {
     }
 }
 
-export async function saveAuthParamsIfPresent(location) {
+export async function saveInitParamsIfPresent(location) {
     const params = new URL(location).searchParams.get('auth');
     if (params) {
         const decoded = await encoder.decompress(params);
-        const parsed = JSON.parse(decoded);
-        const responseParams = getResponseParams(parsed.usePKCE);
-        localStorage.setItem(PARAMS_KEY, JSON.stringify({...parsed, ...responseParams}));
+        const responseParams = getResponseParams(decoded.usePKCE);
+        localStorage.setItem(PARAMS_KEY, JSON.stringify({...decoded, ...responseParams}));
     }
 }
 
-export function getAuthParams() {
+export function getInitParams() {
     return JSON.parse(localStorage.getItem(PARAMS_KEY) || "null");
 }
