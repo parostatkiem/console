@@ -20,4 +20,4 @@ Run the `npm run watch` or `npm start` command to use Pamela locally. To do so, 
 ## Development
 
 Use `npm run watch` command to run Pamela in the unsafe mode (no TLS certificate) and with the _watch_ mode on.
-`KUBECONFIG` environment variable **must be provided**.
+To do so, the KUBECONFIG environment variable **must be provided**.
