@@ -25,15 +25,20 @@ import { FUNCTIONS_WINDOW_TITLE } from 'components/Lambdas/constants';
 import {
   API_RULES_TITLE,
   NAMESPACE_DETAILS_TITLE,
-  SECRETS_TITLE,
+  PREFERENCES_TITLE,
 } from 'shared/constants';
 
 import * as PredefinedRenderers from 'components/Predefined';
+import Preferences from 'components/Preferences/Preferences';
 
 export default function App() {
   return (
     <Switch>
       <Route path="/preload" component={() => null} />
+      <Route
+        path="/preferences"
+        render={withTitle(PREFERENCES_TITLE, Preferences)}
+      />
       <Route
         path="/namespaces/:namespace/details"
         render={withTitle(NAMESPACE_DETAILS_TITLE, RoutedNamespaceDetails)}

@@ -9,6 +9,7 @@ export const PODS_TITLE = 'Pods';
 export const DEPLOYMENTS_TITLE = 'Deployments';
 export const SERVICES_TITLE = 'Services';
 export const SECRETS_TITLE = 'Secrets';
+export const PREFERENCES_TITLE = 'Preferences';
 
 export const ERRORS = {
   SERVER: 'Server error. Contact your cluster admin.',

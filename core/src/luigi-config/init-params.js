@@ -19,8 +19,12 @@ export async function saveInitParamsIfPresent(location) {
     if (params) {
         const decoded = await encoder.decompress(params);
         const responseParams = getResponseParams(decoded.usePKCE);
-        localStorage.setItem(PARAMS_KEY, JSON.stringify({...decoded, ...responseParams}));
+        saveInitParams({...decoded, ...responseParams});
     }
+}
+
+export function saveInitParams(params) {
+    localStorage.setItem(PARAMS_KEY, JSON.stringify(params));
 }
 
 export function getInitParams() {

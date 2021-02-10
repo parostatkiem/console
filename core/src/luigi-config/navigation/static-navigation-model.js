@@ -355,8 +355,8 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver) {
     {
       pathSegment: 'preferences',
       navigationContext: 'settings',
-      viewUrl: '/consoleapp.html#/home/settings/preferences',
-      viewGroup: consoleViewGroupName,
+      viewUrl: config.coreModuleUrl + "/preferences",
+      viewGroup: coreUIViewGroupName,
       hideFromNav: true
     },
     {

@@ -1,6 +1,7 @@
 import { relogin, getToken } from './navigation/navigation-helpers';
 import { NODE_PARAM_PREFIX } from './luigi-config';
 import { config } from './config';
+import { saveInitParams, getInitParams } from './init-params';
 
 export const communication = {
   customMessagesListeners: {
@@ -14,6 +15,18 @@ export const communication = {
       } else {
         Luigi.featureToggles().unsetFeatureToggle('showSystemNamespaces');
       }
+    },
+    'console.showExperimentalViews': ({ showExperimentalViews }) => {
+      localStorage.setItem(
+        'console.showExperimentalViews',
+        showExperimentalViews
+      );
+    },
+    'console.updateK8sApiUrl': ({ k8sApiUrl} ) => {
+      const params = getInitParams();
+      params.kubernetesApiUrl = k8sApiUrl;
+      saveInitParams(params);
+      location.reload();
     },
     'console.refreshNavigation': () => {
       const token = getToken();
