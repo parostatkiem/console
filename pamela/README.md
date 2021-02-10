@@ -6,7 +6,7 @@ This is a REST proxy for the Console
 
 ## Prerequisites
 
-- Node.js 12
+- Node.js v12
 - NPM or Yarn
 
 ## Installation
