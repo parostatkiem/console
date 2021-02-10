@@ -1,4 +1,4 @@
-# PAMELA
+# Pamela
 
 ## Overview
 
