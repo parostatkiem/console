@@ -7,11 +7,11 @@ This is a REST proxy for the Console
 ## Prerequisites
 
 - Node.js v12
-- NPM or Yarn
+- npm or Yarn
 
 ## Installation
 
-`npm install`
+To install Pamela together with the Console, run the `npm run bootstrap` in the root directory.
 
 ## Usage
 
