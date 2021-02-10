@@ -15,11 +15,7 @@ To install Pamela together with the Console, run the `npm run bootstrap` in the 
 
 ## Usage
 
-One of:
-
-- `npm run watch` (described below; KUBECONFIG env variable must be provided)
-- `npm start` ( KUBECONFIG env variable must be provided)
-- `docker build` and use it as an image of a Kubernetes pod
+Run the `npm run watch` or `npm start` command to use Pamela locally. To do so, you must provide the KUBECONFIG environment variable. You can also use the `docker build` command to use Pamela as an image of a Kubernetes Pod.
 
 ## Development
 
