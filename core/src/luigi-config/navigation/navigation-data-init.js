@@ -45,12 +45,6 @@ export let navigation = {
     parentNodePath: '/home/namespaces', // absolute path
     lazyloadOptions: true, // load options on click instead on page load
     options: getNamespaces,
-    actions: [
-      {
-        label: '+ New Namespace',
-        link: '/home/workspace?~showModal=true'
-      }
-    ]
   },
   profile: {
     logout: {
