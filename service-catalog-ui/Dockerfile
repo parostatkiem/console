@@ -43,6 +43,6 @@ COPY --from=builder /app/${app_name}/licenses/ /app/licenses/
 RUN touch /var/run/nginx.pid && \
   chown -R nginx:nginx /var/run/nginx.pid
 
-EXPOSE 8080
+EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
