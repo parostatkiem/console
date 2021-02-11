@@ -105,11 +105,11 @@ gulp.task('watch:libraries', () => {
 // APPS
 const apps = [
   'add-ons',
-  'compass',
   'core',
   'core-ui',
   'logging',
   'service-catalog-ui',
+  'pamela',
 ];
 
 // Installing apps

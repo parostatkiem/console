@@ -19,7 +19,7 @@ export const config = {
   namespaceAdminGroupName: 'runtimeNamespaceAdmin',
   runtimeAdminGroupName: 'runtimeAdmin',
   systemNamespaces:
-    'compass-system istio-system knative-eventing knative-serving kube-public kube-system kyma-backup kyma-installer kyma-integration kyma-system natss kube-node-lease kubernetes-dashboard serverless-system',
+    'istio-system knative-eventing knative-serving kube-public kube-system kyma-backup kyma-installer kyma-integration kyma-system natss kube-node-lease kubernetes-dashboard serverless-system',
   headerLogoUrl: 'assets/logo.svg',
   headerTitle: '',
   faviconUrl: 'favicon.ico',

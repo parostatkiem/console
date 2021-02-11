@@ -4,11 +4,11 @@
   "npmClient": "npm",
   "packages": [
     "core",
-    "compass",
     "service-catalog-ui",
     "add-ons",
     "logging",
     "core-ui",
-    "shared"
+    "shared",
+    "pamela"
   ]
 }
