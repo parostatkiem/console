@@ -1,6 +1,5 @@
 import { config } from './../config';
 import { getInitParams } from './../init-params';
-import { extractKymaVersion } from './util';
 
 function createHeaders(token) {
   return {
@@ -35,11 +34,6 @@ export function fetchConsoleInitData(token) {
     })
   };
 
-  const kymaVersion = {
-    path: '/apis/apps/v1/namespaces/kyma-installer/deployments/kyma-installer',
-    selector: data => ({ versionInfo: extractKymaVersion(data) })
-  };
-
   const ssrr = {
     typeMeta: {
       kind: 'SelfSubjectRulesReview',
@@ -58,7 +52,6 @@ export function fetchConsoleInitData(token) {
   const promises = [
     backendModules,
     clusterMicroFrontends,
-    // kymaVersion,
   ].map(({ path, selector }) => fetch(`${config.pamelaApiUrl}${path}`, {
     headers: createHeaders(token),
   }).then(res => res.json()).then(selector));
