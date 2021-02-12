@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: console-config
+  labels:
+    app: console
+data:
+  config.js: |
+    window.clusterConfig = {
+      domain: '%DOMAIN%',
+      pamelaApiUrl: 'https://pamela.%DOMAIN%',
+      headerLogoUrl: 'assets/logo.svg',
+      headerTitle: '',
+      faviconUrl: 'favicon.ico',
+      disabledNavigationNodes: '',
+      systemNamespaces: 'compass-system istio-system knative-eventing knative-serving kube-public kube-system kyma-backup kyma-installer kyma-integration kyma-system natss kube-node-lease kubernetes-dashboard serverless-system',
+      defaultIdpJwksUri: 'http://dex-service.kyma-system.svc.cluster.local:5556/keys',
+      defaultIdpIssuer: 'https://dex.kyma.local',
+      namespaceAdminGroupName: 'runtimeNamespaceAdmin',
+      runtimeAdminGroupName: 'runtimeAdmin',
+      bebEnabled: false,
+      serverless: {
+        functionUsageKind: "serverless-function",
+        restrictedVariables: [
+          'FUNC_RUNTIME',
+          'FUNC_HANDLER',
+          'FUNC_PORT',
+          'MOD_NAME',
+          'NODE_PATH',
+          'PYTHONPATH'
+        ],
+        resources: {
+          min: {
+            memory: '16Mi',
+            cpu: '10m',
+          },
+        },
+      },
+    };

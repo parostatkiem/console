@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: console-web
+  labels:
+    app: console
+    kyma-project.io/component: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: console
+  template:
+    metadata:
+      labels:
+        app: console
+    spec:
+      containers:
+        - name: console
+          image: ddagaa/console-core-standalone:1
+          imagePullPolicy: Always
+          resources: {}
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 6080
+            initialDelaySeconds: 10
+          ports:
+            - containerPort: 6080
+            - containerPort: 8080
+          volumeMounts:
+            - name: config
+              mountPath: /usr/share/nginx/html/assets/config
+        - name: core-ui
+          image: ddagaa/console-core-ui-standalone:1
+          imagePullPolicy: Always
+          resources: {}
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 6081
+            initialDelaySeconds: 10
+          ports:
+            - containerPort: 6081
+            - containerPort: 80
+          volumeMounts:
+            - name: config
+              mountPath: /var/public/config
+      volumes:
+        - name: config
+          configMap:
+            name: console-config
+            items:
+              - key: config.js
+                path: config.js

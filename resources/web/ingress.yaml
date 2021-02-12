@@ -1,0 +1,36 @@
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: ingress-core
+spec:
+  rules:
+    - host: core.%DOMAIN%
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: console-core
+                port:
+                  number: 8080
+    - host: core-ui.%DOMAIN%
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: console-core-ui
+                port:
+                  number: 8080
+    - host: catalog.%DOMAIN%
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: service-catalog
+                port:
+                  number: 8080
