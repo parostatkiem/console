@@ -9,11 +9,11 @@ function createHeaders(token) {
   };
 }
 
-function mapMicrofrontends(microFrontendList) {
+function mapMicrofrontends(microFrontendList, config) {
   return microFrontendList.items.map(({ metadata, spec }) => ({
     name: metadata.name,
     category: spec.category,
-    viewBaseUrl: spec.viewBaseUrl,
+    viewBaseUrl: spec.viewBaseUrl || `https://${metadata.name}.${config.domain}`,
     navigationNodes: spec.navigationNodes
   }));
 }
@@ -69,7 +69,7 @@ export function fetchMicrofrontends(namespaceName, token) {
     }
   )
     .then(res => res.json())
-    .then(mapMicrofrontends);
+    .then(res => mapMicrofrontends(res, config));
 }
 
 export function fetchNamespaces(token) {

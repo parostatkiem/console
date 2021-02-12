@@ -4,7 +4,6 @@ metadata:
   name: console-web
   labels:
     app: console
-    kyma-project.io/component: frontend
 spec:
   replicas: 1
   selector:

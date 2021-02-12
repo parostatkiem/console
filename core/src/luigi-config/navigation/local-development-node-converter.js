@@ -13,7 +13,7 @@ export default function processNodeForLocalDevelopment(node, spec, config) {
     `https://console.${domain}`
   );
   let isNodeClusterMicroFrontend = false;
-  const hasNodePreloadUrl = spec.preloadUrl;
+  const nodePreloadUrl = spec.preloadUrl || `https://${name}.${config.domain}/preload`;
 
   const clusterMicroFrontendDomainBinding = localDevDomainBindings.find(
     domainBinding => {
@@ -31,9 +31,9 @@ export default function processNodeForLocalDevelopment(node, spec, config) {
   if (isNodeMicroFrontend) {
     node.viewUrl = adjustMicroFrontendUrlForLocalDevelopment(node.viewUrl);
   }
-  if (isNodeMicroFrontend && hasNodePreloadUrl) {
+  if (isNodeMicroFrontend && nodePreloadUrl) {
     node.localPreloadUrl = adjustMicroFrontendUrlForLocalDevelopment(
-      spec.preloadUrl
+      nodePreloadUrl
     );
   }
 
@@ -43,9 +43,9 @@ export default function processNodeForLocalDevelopment(node, spec, config) {
       clusterMicroFrontendDomainBinding
     );
   }
-  if (isNodeClusterMicroFrontend && hasNodePreloadUrl) {
+  if (isNodeClusterMicroFrontend && nodePreloadUrl) {
     node.localPreloadUrl = adjustClusterMicroFrontendUrlForLocalDevelopment(
-      spec.preloadUrl,
+      nodePreloadUrl,
       clusterMicroFrontendDomainBinding
     );
   }

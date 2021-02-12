@@ -4,7 +4,7 @@ metadata:
   name: ingress-core
 spec:
   rules:
-    - host: core.%DOMAIN%
+    - host: console.%DOMAIN%
       http:
         paths:
           - path: /
