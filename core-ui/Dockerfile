@@ -27,9 +27,9 @@ ENV CI true
 RUN cd /app/${app_name} && make build
 
 ### Main image ###
-FROM alpine:3.12
+FROM alpine:3.13.1
 ### Install nginx package and remove cache ###
-RUN apk add --update nginx && rm -rf /var/cache/apk/*
+RUN apk add --update nginx=1.18.0-r13 && rm -rf /var/cache/apk/*
 
 LABEL source git@github.com:kyma-project/console.git
 ARG app_name=core-ui
@@ -43,4 +43,4 @@ RUN touch /var/run/nginx.pid && \
 
 EXPOSE 80
 
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["nginx", "-g", "daemon off;"]

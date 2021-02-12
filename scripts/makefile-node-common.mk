@@ -107,3 +107,12 @@ exec:
 	@docker run $(DOCKER_INTERACTIVE) \
     		-v $(COMPONENT_DIR):$(WORKSPACE_COMPONENT_DIR):delegated \
     		$(DOCKER_CREATE_OPTS) bash
+
+install-root:
+	cd .. && npm ci
+
+install-app:
+	npm ci
+
+build-shared:
+	cd ../shared && npm ci && npm run build
