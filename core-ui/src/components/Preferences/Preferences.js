@@ -9,7 +9,7 @@ import { PageHeader } from 'react-shared';
 
 export default function Preferences() {
   return (
-    <main class="preferences">
+    <main className="preferences">
       <PageHeader title="Preferences" />
       <NamespaceSettings />
       <ExperimentalFunctionalities />
