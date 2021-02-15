@@ -17,9 +17,6 @@ export const getClusterConfig = () => ({
   subscriptionsApiUrl,
   subscriptionsApiUrlLocal,
   pamelaApiUrl: 'https://pamela.' + domain,
-  defaultIdpJwksUri:
-    'http://dex-service.kyma-system.svc.cluster.local:5556/keys',
-  defaultIdpIssuer: 'https://dex.' + domain,
   bebEnabled: false,
   ...configToRead,
 });

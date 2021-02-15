@@ -17,8 +17,6 @@ export const config = {
   apiserverUrl: 'https://apiserver.' + domain,
   namespaceAdminGroupName: 'runtimeNamespaceAdmin',
   runtimeAdminGroupName: 'runtimeAdmin',
-  defaultIdpJwksUri: 'http://dex-service.kyma-system.svc.cluster.local:5556/keys',
-  defaultIdpIssuer: 'https://dex.' + domain,
   bebEnabled: false,
   ...clusterConfig
 };

@@ -9,8 +9,6 @@ data:
     window.clusterConfig = {
       domain: '%DOMAIN%',
       pamelaApiUrl: 'https://pamela.%DOMAIN%',
-      defaultIdpJwksUri: 'http://dex-service.kyma-system.svc.cluster.local:5556/keys',
-      defaultIdpIssuer: 'https://dex.kyma.local',
       namespaceAdminGroupName: 'runtimeNamespaceAdmin',
       runtimeAdminGroupName: 'runtimeAdmin',
       bebEnabled: false,
