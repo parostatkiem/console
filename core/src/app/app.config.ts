@@ -26,9 +26,6 @@ const config = {
   graphqlApiUrl: environment.localApi ? gqlLocalUrl : gqlUrl,
   subscriptionsApiUrl: environment.localApi ? gqlSubsLocalUrl : gqlSubsUrl,
 
-  headerTitle: '',
-  headerLogoUrl: 'assets/logo.svg',
-  faviconUrl: 'favicon.ico',
   kubeconfigGeneratorUrl: `https://configurations-generator.${domain}/kube-config`,
   idpLogoutUrl: null,
   runtimeAdminGroupName: 'runtimeAdmin',
