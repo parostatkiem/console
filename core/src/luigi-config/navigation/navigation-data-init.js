@@ -27,7 +27,6 @@ import { getInitParams } from '../init-params';
 
 let clusterMicrofrontendNodes = [];
 let clusterMicrofrontendNodesForNamespace = [];
-const systemNamespaces = getSystemNamespaces(config.systemNamespaces);
 
 export let resolveNavigationNodes;
 export let navigation = {
@@ -131,6 +130,7 @@ export function getNavigationData(token) {
       )
       // 'Finally' not supported by IE and FIREFOX (if 'finally' is needed, update your .babelrc)
       .then(() => {
+        const { kubernetesApiUrl, systemNamespaces, disabledNavigationNodes } = getInitParams();
         const nodes = [
           {
             pathSegment: 'home',
@@ -142,7 +142,7 @@ export function getNavigationData(token) {
               systemNamespaces,
               showSystemNamespaces:
                 localStorage.getItem('console.showSystemNamespaces') === 'true',
-              k8sApiUrl: getInitParams().kubernetesApiUrl,
+              k8sApiUrl: kubernetesApiUrl,
             },
             children: function() {
               const staticNodes = getStaticRootNodes(
@@ -151,7 +151,7 @@ export function getNavigationData(token) {
               const fetchedNodes = [].concat(...clusterMicrofrontendNodes);
               const nodeTree = [...staticNodes, ...fetchedNodes];
               hideDisabledNodes(
-                config.disabledNavigationNodes,
+                disabledNavigationNodes,
                 nodeTree,
                 false
               );
@@ -192,12 +192,13 @@ function getChildrenNodesForNamespace(context) {
     Promise.resolve(clusterMicrofrontendNodesForNamespace)
   ])
     .then(function(values) {
+      const { disabledNavigationNodes } = getInitParams();
       var nodeTree = [...staticNodes];
       values.forEach(function(val) {
         nodeTree = [].concat.apply(nodeTree, val);
       });
 
-      hideDisabledNodes(config.disabledNavigationNodes, nodeTree, true);
+      hideDisabledNodes(disabledNavigationNodes, nodeTree, true);
       return nodeTree;
     })
     .catch(err => {

@@ -14,12 +14,17 @@ function getResponseParams(usePKCE = true) {
     }
 }
 
+function createSystemNamespacesList(namespaces) {
+    return namespaces ? namespaces.split(' ') : [];
+};
+
 export async function saveInitParamsIfPresent(location) {
-    const params = new URL(location).searchParams.get('auth');
+    const params = new URL(location).searchParams.get('init');
     if (params) {
         const decoded = await encoder.decompress(params);
         const responseParams = getResponseParams(decoded.usePKCE);
-        saveInitParams({...decoded, ...responseParams});
+        const systemNamespaces = createSystemNamespacesList(decoded.systemNamespaces);
+        saveInitParams({...decoded, ...responseParams, systemNamespaces});
     }
 }
 
