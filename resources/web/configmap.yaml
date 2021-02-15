@@ -9,21 +9,4 @@ data:
     window.clusterConfig = {
       domain: '%DOMAIN%',
       pamelaApiUrl: 'https://pamela.%DOMAIN%',
-      serverless: {
-        functionUsageKind: "serverless-function",
-        restrictedVariables: [
-          'FUNC_RUNTIME',
-          'FUNC_HANDLER',
-          'FUNC_PORT',
-          'MOD_NAME',
-          'NODE_PATH',
-          'PYTHONPATH'
-        ],
-        resources: {
-          min: {
-            memory: '16Mi',
-            cpu: '10m',
-          },
-        },
-      },
     };
