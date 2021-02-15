@@ -15,7 +15,5 @@ export const config = {
   pamelaApiUrl: 'https://pamela.' + domain,
   graphqlApiUrl: 'https://console-backend.' + domain + '/graphql',
   apiserverUrl: 'https://apiserver.' + domain,
-  namespaceAdminGroupName: 'runtimeNamespaceAdmin',
-  runtimeAdminGroupName: 'runtimeAdmin',
   ...clusterConfig
 };

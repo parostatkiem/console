@@ -28,7 +28,6 @@ const config = {
 
   kubeconfigGeneratorUrl: `https://configurations-generator.${domain}/kube-config`,
   idpLogoutUrl: null,
-  runtimeAdminGroupName: 'runtimeAdmin',
   ...configToRead
 };
 

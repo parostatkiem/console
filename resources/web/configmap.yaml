@@ -9,8 +9,6 @@ data:
     window.clusterConfig = {
       domain: '%DOMAIN%',
       pamelaApiUrl: 'https://pamela.%DOMAIN%',
-      namespaceAdminGroupName: 'runtimeNamespaceAdmin',
-      runtimeAdminGroupName: 'runtimeAdmin',
       serverless: {
         functionUsageKind: "serverless-function",
         restrictedVariables: [
