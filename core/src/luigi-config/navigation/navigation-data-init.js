@@ -130,7 +130,7 @@ export function getNavigationData(token) {
       )
       // 'Finally' not supported by IE and FIREFOX (if 'finally' is needed, update your .babelrc)
       .then(() => {
-        const { kubernetesApiUrl, systemNamespaces, disabledNavigationNodes } = getInitParams();
+        const { k8sApiUrl, bebEnabled, systemNamespaces, disabledNavigationNodes } = getInitParams();
         const nodes = [
           {
             pathSegment: 'home',
@@ -139,10 +139,11 @@ export function getNavigationData(token) {
               idToken: token,
               groups,
               backendModules,
+              bebEnabled,
               systemNamespaces,
               showSystemNamespaces:
                 localStorage.getItem('console.showSystemNamespaces') === 'true',
-              k8sApiUrl: kubernetesApiUrl,
+              k8sApiUrl,
             },
             children: function() {
               const staticNodes = getStaticRootNodes(

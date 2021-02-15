@@ -17,6 +17,5 @@ export const getClusterConfig = () => ({
   subscriptionsApiUrl,
   subscriptionsApiUrlLocal,
   pamelaApiUrl: 'https://pamela.' + domain,
-  bebEnabled: false,
   ...configToRead,
 });

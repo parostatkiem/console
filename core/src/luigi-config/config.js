@@ -17,6 +17,5 @@ export const config = {
   apiserverUrl: 'https://apiserver.' + domain,
   namespaceAdminGroupName: 'runtimeNamespaceAdmin',
   runtimeAdminGroupName: 'runtimeAdmin',
-  bebEnabled: false,
   ...clusterConfig
 };

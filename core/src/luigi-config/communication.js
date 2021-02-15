@@ -22,10 +22,9 @@ export const communication = {
         showExperimentalViews
       );
     },
-    'console.updateK8sApiUrl': ({ k8sApiUrl} ) => {
+    'console.updateInitParams': (modifiedParams) => {
       const params = getInitParams();
-      params.kubernetesApiUrl = k8sApiUrl;
-      saveInitParams(params);
+      saveInitParams({...params, ...modifiedParams });
       location.reload();
     },
     'console.refreshNavigation': () => {

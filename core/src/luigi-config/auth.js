@@ -1,6 +1,5 @@
 import OpenIdConnect from '@luigi-project/plugin-auth-oidc';
 import { getInitParams } from './init-params';
-import createEncoder from 'json-url';
 
 export let groups;
 
@@ -19,15 +18,6 @@ export const createAuth = async () => {
   const params = getInitParams();
   if (!params) {
     alert("No auth params provided! In future you'll get to login with your service account.");
-    
-    const encoder = createEncoder('lzstring');
-    const data = {
-      issuerUrl:"https://kyma.eu.auth0.com/",
-      clientId:"5W89vBHwn2mu7nT0uzvoN4xCof0h4jtN",
-      kubernetesApiUrl: "api.biggie.hasselhoff.shoot.canary.k8s-hana.ondemand.com",
-    }
-    const encoded = await encoder.compress(data);
-    console.log(`for now just use query param: ?auth=${encoded}`)
     return {};
   }
 

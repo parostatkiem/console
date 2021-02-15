@@ -4,6 +4,7 @@ import './Preferences.scss';
 import NamespaceSettings from './NamespaceSettings';
 import ExperimentalFunctionalities from './ExperimentalFunctionalities';
 import KubernetesApiUrl from './KubernetesApiUrl';
+import AdditionalSettings from './AdditionalSettings';
 
 import { PageHeader } from 'react-shared';
 
@@ -14,6 +15,7 @@ export default function Preferences() {
       <NamespaceSettings />
       <ExperimentalFunctionalities />
       <KubernetesApiUrl />
+      <AdditionalSettings />
     </main>
   );
 }

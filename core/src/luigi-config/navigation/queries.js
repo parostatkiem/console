@@ -5,7 +5,7 @@ function createHeaders(token) {
   return {
     Authorization: `Bearer ${token}`,
     'Content-Type': 'application/json',
-    'X-Api-Url': getInitParams().kubernetesApiUrl,
+    'X-Api-Url': getInitParams().k8sApiUrl,
   };
 }
 

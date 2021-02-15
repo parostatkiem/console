@@ -11,7 +11,6 @@ data:
       pamelaApiUrl: 'https://pamela.%DOMAIN%',
       namespaceAdminGroupName: 'runtimeNamespaceAdmin',
       runtimeAdminGroupName: 'runtimeAdmin',
-      bebEnabled: false,
       serverless: {
         functionUsageKind: "serverless-function",
         restrictedVariables: [
