@@ -17,7 +17,6 @@ import navigationPermissionChecker, {
 
 import {
   hideDisabledNodes,
-  getSystemNamespaces,
   createNamespacesList,
   clearToken,
   getToken
@@ -35,7 +34,7 @@ export let navigation = {
       preloadUrl: '/consoleapp.html#/home/preload'
     },
     _core_ui_: {
-      preloadUrl: config.coreModuleUrl + '/preload'
+      preloadUrl: config.coreUIModuleUrl + '/preload'
     }
   },
   nodeAccessibilityResolver: navigationPermissionChecker,
@@ -171,6 +170,7 @@ export function getNavigationData(token) {
 }
 
 async function getNamespaces() {
+  const { systemNamespaces } = getInitParams();
   let namespaces;
   try {
     namespaces = await fetchNamespaces(getToken());

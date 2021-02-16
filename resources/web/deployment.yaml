@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: console
-          image: wawrzyn321/console-05-02
+          image: wawrzyn321/console-16-02
           imagePullPolicy: Always
           resources: {}
           livenessProbe:

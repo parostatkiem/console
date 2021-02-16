@@ -65,7 +65,8 @@ export function fetchMicrofrontends(namespaceName, token) {
     }
   )
     .then(res => res.json())
-    .then(res => mapMicrofrontends(res, config));
+    .then(res => mapMicrofrontends(res, config))
+    .catch(() => []);
 }
 
 export function fetchNamespaces(token) {

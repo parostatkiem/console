@@ -42,7 +42,7 @@ const handleRequest = httpsAgent => async (req, res) => {
 
   const options = {
     hostname: targetApiServer || k8sUrl.hostname,
-    path: req.originalUrl.replace(/^\/backend\//, '/'),
+    path: req.originalUrl,
     headers: req.headers,
     body: req.body,
     agent: httpsAgent,

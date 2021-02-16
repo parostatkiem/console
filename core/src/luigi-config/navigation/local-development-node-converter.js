@@ -6,7 +6,7 @@ export default function processNodeForLocalDevelopment(node, spec, config) {
     { startsWith: 'catalog', replaceWith: config.serviceCatalogModuleUrl },
     { startsWith: 'addons', replaceWith: config.addOnsModuleUrl },
     { startsWith: 'log-ui', replaceWith: config.logsModuleUrl },
-    { startsWith: 'core-ui', replaceWith: config.coreModuleUrl },
+    { startsWith: 'core-ui', replaceWith: config.coreUIModuleUrl },
   ];
 
   const isNodeMicroFrontend = node.viewUrl.startsWith(

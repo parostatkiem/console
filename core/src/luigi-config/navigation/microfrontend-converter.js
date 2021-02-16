@@ -29,9 +29,7 @@ function buildNode(name, node, spec, config, groups) {
     };
   }
 
-  const isLocalDev = window.location.href.startsWith(
-    `http://${config.localDomain}:4200`
-  );
+  const isLocalDev = location.hostname.startsWith('console-dev');
 
   if (isLocalDev && n.viewUrl) {
     n = processNodeForLocalDevelopment(n, spec, config);

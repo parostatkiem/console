@@ -1,21 +1,11 @@
-const windowClusterConfig = window.clusterConfig;
-const configToRead = Object.keys(windowClusterConfig || {}).length
-  ? windowClusterConfig
-  : { domain: 'kyma.local' };
-
-const domain = configToRead.domain;
-const graphqlApiUrl = `https://console-backend.${domain}/graphql`;
-const graphqlApiUrlLocal = `http://console-dev.${domain}:3000/graphql`;
-const subscriptionsApiUrl = `wss://console-backend.${domain}/graphql`;
-const subscriptionsApiUrlLocal = `ws://console-dev.${domain}:3000/graphql`;
+const domain = location.hostname.replace(/^console(-dev)?\./, '');
+const isLocalDev = location.hostname.startsWith('console-dev');
 
 export const getClusterConfig = () => ({
   domain,
-  apiserverUrl: 'https://apiserver.' + domain,
-  graphqlApiUrl,
-  graphqlApiUrlLocal,
-  subscriptionsApiUrl,
-  subscriptionsApiUrlLocal,
-  pamelaApiUrl: 'https://pamela.' + domain,
-  ...configToRead,
+  graphqlApiUrl: `https://console-backend.${domain}/graphql`,
+  subscriptionsApiUrl: `wss://console-backend.${domain}/graphql`,
+  pamelaApiUrl: isLocalDev
+    ? 'http://localhost:3001'
+    : 'https://' + domain + '/backend',
 });
