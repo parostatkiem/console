@@ -19,20 +19,18 @@ function mapMicrofrontends(microFrontendList, config) {
 }
 
 export function fetchConsoleInitData(token) {
-  const backendModules = {
-    path: '/apis/ui.kyma-project.io/v1alpha1/backendmodules',
-    selector: data => ({ backendModules: data.items.map(bM => bM.metadata) })
-  };
+  const backendModulesQuery = fetch(`${config.pamelaApiUrl}/apis/ui.kyma-project.io/v1alpha1/backendmodules`, {
+    headers: createHeaders(token),
+  }).then(res => res.json()).then(data => ({ backendModules: data.items.map(bM => bM.metadata) }));
 
-  const clusterMicroFrontends = {
-    path: '/apis/ui.kyma-project.io/v1alpha1/clustermicrofrontends',
-    selector: data => ({
-      clusterMicroFrontends: data.items.map(cMF => ({
-        ...cMF.spec,
-        ...cMF.metadata
-      }))
-    })
-  };
+  const cmfQuery = fetch(`${config.pamelaApiUrl}/apis/ui.kyma-project.io/v1alpha1/clustermicrofrontends`, {
+    headers: createHeaders(token),
+  }).then(res => res.json()).then(data => ({
+    clusterMicroFrontends: data.items.map(cMF => ({
+      ...cMF.spec,
+      ...cMF.metadata
+    }))
+  })).catch(() => ({ clusterMicroFrontends: [] }));
 
   const ssrr = {
     typeMeta: {
@@ -41,8 +39,7 @@ export function fetchConsoleInitData(token) {
     },
     spec: { namespace: '*' }
   };
-  // we are doing SSRR query separately as it's requires a request body
-  // vide components/console-backend-service/internal/domain/k8s/selfsubjectrules_resolver.go
+  
   const ssrrQuery = fetch(`${config.pamelaApiUrl}${'/apis/authorization.k8s.io/v1/selfsubjectrulesreviews'}`, {
     method: 'POST',
     body: JSON.stringify(ssrr),
@@ -50,13 +47,12 @@ export function fetchConsoleInitData(token) {
   }).then(res => res.json()).then(res => ({selfSubjectRules: res.status.resourceRules}));
 
   const promises = [
-    backendModules,
-    clusterMicroFrontends,
-  ].map(({ path, selector }) => fetch(`${config.pamelaApiUrl}${path}`, {
-    headers: createHeaders(token),
-  }).then(res => res.json()).then(selector));
-
-  return Promise.all([...promises, ssrrQuery]).then(res =>
+    backendModulesQuery,
+    cmfQuery,
+    ssrrQuery,
+  ];
+  
+  return Promise.all(promises).then(res =>
     Object.assign(...res)
   );
 }

@@ -21,7 +21,7 @@ spec:
       containers:
         - name: pamela
           image: wawrzyn321/pamela
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           securityContext:
             allowPrivilegeEscalation: false
             privileged: false
