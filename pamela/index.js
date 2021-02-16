@@ -8,7 +8,9 @@ import { requestLogger } from './utils/other';
 
 const app = express();
 app.use(express.raw({ type: '*/*' }));
-app.use(cors({ origin: '*', allowedHeaders: '*' })); //TODO
+if (process.env.NODE_ENV === 'development') {
+  app.use(cors({ origin: '*' }));
+}
 
 const server = http.createServer(app);
 const kubeconfig = initializeKubeconfig();
@@ -54,7 +56,6 @@ const handleRequest = httpsAgent => async (req, res) => {
       res.writeHead(k8sResponse.statusCode, {
         'Content-Type': k8sResponse.headers['Content-Type'] || 'text/json',
         'Content-Encoding': k8sResponse.headers['content-encoding'] || '',
-        'Access-Control-Allow-Headers': '*',
       });
 
       k8sResponse.pipe(res);
