@@ -5,5 +5,5 @@ SCRIPTS_DIR = $(realpath $(shell pwd)/..)/scripts
 
 include $(SCRIPTS_DIR)/makefile-node-common.mk
 
-install-dependencies: install-root build-shared install-app
+install-dependencies: install-root build-shared build-commons install-app
 
