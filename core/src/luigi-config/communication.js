@@ -24,6 +24,7 @@ export const communication = {
     },
     'console.updateInitParams': (modifiedParams) => {
       const params = getInitParams();
+      delete modifiedParams.id;
       saveInitParams({...params, ...modifiedParams });
       location.reload();
     },
