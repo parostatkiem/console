@@ -66,7 +66,7 @@ export function fetchMicrofrontends(namespaceName, token) {
   )
     .then(res => res.json())
     .then(res => mapMicrofrontends(res, config))
-    .catch(() => []);
+    .catch(() => []); // microfrontends may not exist on target cluster
 }
 
 export function fetchNamespaces(token) {
