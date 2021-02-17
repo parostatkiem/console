@@ -33,7 +33,6 @@ export default function AdditionalSettings() {
           BEB integration enabled
           <Toggle
             inputProps={{ 'aria-label': 'beb-enabled' }}
-            // className="fd-has-display-inline-block fd-has-margin-left-tiny"
             checked={bebEnabled}
             onChange={() => setBebEnabled(!bebEnabled)}
           />
