@@ -30,7 +30,7 @@ export const createAuth = async () => {
         idpProvider: OpenIdConnect,
         authority: issuerUrl,
         client_id: clientId,
-        scope: scope,
+        scope: scope || 'openid',
         response_type: responseType,
         response_mode: responseMode,
         automaticSilentRenew: true,

@@ -14,9 +14,6 @@ function getResponseParams(usePKCE = true) {
     }
 }
 
-function getScope(customScope) {
-  return customScope ? customScope : 'openid email profile'
-}
 
 function createSystemNamespacesList(namespaces) {
     return namespaces ? namespaces.split(' ') : [];
@@ -28,8 +25,7 @@ export async function saveInitParamsIfPresent(location) {
         const decoded = await encoder.decompress(params);
         const responseParams = getResponseParams(decoded.usePKCE);
         const systemNamespaces = createSystemNamespacesList(decoded.systemNamespaces);
-        const scope = getScope(decoded.scope);
-        saveInitParams({...decoded, ...responseParams, systemNamespaces, scope});
+        saveInitParams({...decoded, ...responseParams, systemNamespaces});
     }
 }
 
