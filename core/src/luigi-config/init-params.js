@@ -10,8 +10,12 @@ function getResponseParams(usePKCE = true) {
             responseMode: 'query',
         };
     } else {
-        return { responseType: 'token id_token' };
+        return { responseType: 'id_token' };
     }
+}
+
+function getScope(customScope) {
+  return customScope ? customScope : 'openid email profile'
 }
 
 function createSystemNamespacesList(namespaces) {
@@ -24,7 +28,8 @@ export async function saveInitParamsIfPresent(location) {
         const decoded = await encoder.decompress(params);
         const responseParams = getResponseParams(decoded.usePKCE);
         const systemNamespaces = createSystemNamespacesList(decoded.systemNamespaces);
-        saveInitParams({...decoded, ...responseParams, systemNamespaces});
+        const scope = getScope(decoded.scope);
+        saveInitParams({...decoded, ...responseParams, systemNamespaces, scope});
     }
 }
 
