@@ -10,9 +10,10 @@ function getResponseParams(usePKCE = true) {
             responseMode: 'query',
         };
     } else {
-        return { responseType: 'token id_token' };
+        return { responseType: 'id_token' };
     }
 }
+
 
 function createSystemNamespacesList(namespaces) {
     return namespaces ? namespaces.split(' ') : [];
