@@ -11,7 +11,13 @@ import { statusType } from 'components/Lambdas/helpers/lambdas';
 import { formatMessage } from 'components/Lambdas/helpers/misc';
 
 export function LambdaStatusBadge({ status }) {
-  const statusPhase = status.phase;
+  const latestStatus = status.conditions[0]; // TODO Translate status like in console backend components/console-backend-service/internal/domain/serverless/function_converter.go
+  const translatedStatus =
+    latestStatus.status === 'True' && latestStatus.type === 'Running'
+      ? { phase: 'RUNNING', reason: null, message: null }
+      : { phase: 'FAILED', reason: null, message: null };
+
+  const statusPhase = translatedStatus.phase;
 
   const texts = LAMBDA_PHASES[statusPhase];
   let badgeType = statusType(statusPhase);
@@ -23,7 +29,7 @@ export function LambdaStatusBadge({ status }) {
 
   if (LAMBDA_ERROR_PHASES.includes(statusPhase)) {
     const formattedError = formatMessage(LAMBDA_PHASES.ERROR_SUFFIX, {
-      error: status.message,
+      error: translatedStatus.message,
     });
     tooltipText = `${texts.MESSAGE} ${formattedError}`;
   }

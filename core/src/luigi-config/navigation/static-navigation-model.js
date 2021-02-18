@@ -159,6 +159,38 @@ export function getStaticChildrenNodesForNamespace() {
     },
 
     {
+      category: 'Workloads',
+      pathSegment: 'functions',
+
+      label: 'Functions',
+      keepSelectedForChildren: true,
+      viewUrl:
+        config.coreModuleUrl +
+        '/namespaces/:namespaceId/functions?' +
+        toSearchParamsString({
+          resourceApiPath: '/apis/serverless.kyma-project.io/v1alpha1',
+          hasDetailsView: true
+        }),
+      viewGroup: coreUIViewGroupName,
+      navigationContext: 'functions',
+      children: [
+        {
+          pathSegment: 'details',
+          children: [
+            {
+              pathSegment: ':functionName',
+              viewUrl:
+                config.coreModuleUrl +
+                '/namespaces/:namespaceId/functions/:functionName?' +
+                toSearchParamsString({
+                  resourceApiPath: '/apis/serverless.kyma-project.io/v1alpha1',
+                }),
+            }
+          ]
+        }
+      ]
+    },
+    {
       category: 'Discovery and Network',
       pathSegment: 'services',
       navigationContext: 'services',

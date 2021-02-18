@@ -1,10 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { withTitle } from 'react-shared';
 
-import LambdaDetails from '../Lambdas/LambdaDetails';
-
-import { FUNCTIONS_WINDOW_TITLE } from 'components/Lambdas/constants';
 import {
   getComponentForList,
   getComponentForDetails,
@@ -30,11 +26,6 @@ export default function App() {
         component={RoutedResourceDetails}
       />
       <Route exact path="/:resourceType" component={RoutedResourcesList} />
-
-      <Route
-        path="/lambda/:name"
-        render={withTitle(FUNCTIONS_WINDOW_TITLE, LambdaDetails)}
-      />
     </Switch>
   );
 }

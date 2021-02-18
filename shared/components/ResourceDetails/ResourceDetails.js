@@ -159,7 +159,7 @@ function Resource({
         ))}
       </PageHeader>
 
-      {customComponents.map(component => component(resource))}
+      {customComponents.map(component => component(resource, resourceUrl))}
 
       {children}
     </>

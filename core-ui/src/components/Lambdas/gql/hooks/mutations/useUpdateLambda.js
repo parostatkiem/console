@@ -1,5 +1,7 @@
 import { useMutation } from '@apollo/react-hooks';
-import { useNotification } from 'react-shared';
+import { useNotification, useUpdate } from 'react-shared';
+
+import { createPatch } from 'rfc6902';
 
 import { UPDATE_LAMBDA } from 'components/Lambdas/gql/mutations';
 import extractGraphQlErrors from 'shared/graphqlErrorExtractor';
@@ -17,10 +19,12 @@ export const UPDATE_TYPE = {
 
 export const useUpdateLambda = ({
   lambda,
+  lambdaUrl,
   type = UPDATE_TYPE.GENERAL_CONFIGURATION,
 }) => {
+  console.log('lambdaUrl', lambdaUrl);
   const notificationManager = useNotification();
-  const [updateLambdaMutation] = useMutation(UPDATE_LAMBDA);
+  const updateLambdaMutation = useUpdate(lambdaUrl);
 
   function handleError(error) {
     const errorToDisplay = extractGraphQlErrors(error);
@@ -41,18 +45,22 @@ export const useUpdateLambda = ({
 
   async function updateLambda(updatedData, userCallback = () => {}) {
     try {
-      const params = {
-        ...prepareUpdateLambdaInput(lambda),
+      const newLambda = {
+        ...lambda,
         ...updatedData,
       };
+      console.log(
+        'updatedData',
+        updatedData,
+        'lambda',
+        lambda,
+        'newLambda',
+        newLambda,
+      );
+      const diff = createPatch(lambda, newLambda);
+      console.log('diff', diff);
 
-      const response = await updateLambdaMutation({
-        variables: {
-          name: lambda.name,
-          namespace: lambda.namespace,
-          params,
-        },
-      });
+      const response = await updateLambdaMutation(lambdaUrl, diff);
 
       if (response.error) {
         handleError(response.error);

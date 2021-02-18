@@ -7,22 +7,22 @@ import LambdaVariables from './LambdaVariables/LambdaVariables';
 import { isGitSourceType } from 'components/Lambdas/helpers/lambdas';
 import { serializeVariables } from 'components/Lambdas/helpers/lambdaVariables';
 
-export default function CodeTab({ lambda, bindingUsages }) {
+export default function CodeTab({ lambda, lambdaUrl, bindingUsages }) {
   const {
     customVariables,
     customValueFromVariables,
     injectedVariables,
   } = serializeVariables({
-    lambdaVariables: lambda.env,
+    lambdaVariables: lambda?.spec?.env,
     bindingUsages,
   });
 
   return (
     <>
-      {isGitSourceType(lambda.sourceType) ? (
+      {isGitSourceType(lambda?.spec?.type) ? (
         <RepositoryConfig lambda={lambda} />
       ) : (
-        <CodeAndDependencies lambda={lambda} />
+        <CodeAndDependencies lambda={lambda} lambdaUrl={lambdaUrl} />
       )}
       <LambdaVariables
         lambda={lambda}
