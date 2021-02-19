@@ -21,7 +21,9 @@ function mapMicrofrontends(microFrontendList, config) {
 export function fetchConsoleInitData(token) {
   const backendModulesQuery = fetch(`${config.pamelaApiUrl}/apis/ui.kyma-project.io/v1alpha1/backendmodules`, {
     headers: createHeaders(token),
-  }).then(res => res.json()).then(data => ({ backendModules: data.items.map(bM => bM.metadata) }));
+  }).then(res => res.json())
+    .then(data => ({ backendModules: data.items.map(bM => bM.metadata) }))
+    .catch(() => ({ backendModules: [] }));
 
   const cmfQuery = fetch(`${config.pamelaApiUrl}/apis/ui.kyma-project.io/v1alpha1/clustermicrofrontends`, {
     headers: createHeaders(token),
