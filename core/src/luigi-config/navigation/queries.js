@@ -40,7 +40,7 @@ export function fetchConsoleInitData(token) {
     spec: { namespace: '*' }
   };
   
-  const ssrrQuery = fetch(`${config.pamelaApiUrl}${'/apis/authorization.k8s.io/v1/selfsubjectrulesreviews'}`, {
+  const ssrrQuery = fetch(`${config.pamelaApiUrl}/apis/authorization.k8s.io/v1/selfsubjectrulesreviews`, {
     method: 'POST',
     body: JSON.stringify(ssrr),
     headers: createHeaders(token), 
