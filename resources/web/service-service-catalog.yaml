@@ -9,6 +9,6 @@ spec:
     - port: 8080
       targetPort: 80
       protocol: TCP
-      name: http2
+      name: http
   selector:
     app: service-catalog

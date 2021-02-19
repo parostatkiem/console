@@ -17,11 +17,6 @@ JwtDetails.propTypes = {
 };
 
 export default function JwtDetails({ config, setConfig, handleFormChanged }) {
-  // const defaultIDPPreset = {
-  //   jwksUri: getURL('defaultIdpJwksUri'),
-  //   issuer: getURL('defaultIdpIssuer'),
-  // };
-  // TODO figure out what the presets values are after total dex removal
   const defaultIDPPreset = {
     jwksUri: '',
     issuer: '',
