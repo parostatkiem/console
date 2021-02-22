@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 
 import { Button, Alert } from 'fundamental-react';
-import { Spinner, Tooltip } from 'react-shared';
-
-import { useServiceInstancesQuery } from 'components/Lambdas/gql/hooks/queries';
+import { Spinner, Tooltip, useGetList } from 'react-shared';
 
 import ModalWithForm from 'components/ModalWithForm/ModalWithForm';
 import CreateServiceBindingForm from './CreateServiceBindingForm';
@@ -15,15 +13,29 @@ export default function CreateServiceBindingModal({
   serviceBindingUsages,
 }) {
   const [popupModalMessage, setPopupModalMessage] = useState('');
+  // const {
+  //   serviceInstances,
+  //   loading,
+  //   error,
+  //   refetchServiceInstances,
+  // } = useServiceInstancesQuery({
+  //   namespace: lambda.namespace,
+  //   serviceBindingUsages,
+  // });
+  // console.log(lambda);
   const {
-    serviceInstances,
-    loading,
+    loading = true,
     error,
-    refetchServiceInstances,
-  } = useServiceInstancesQuery({
-    namespace: lambda.namespace,
-    serviceBindingUsages,
-  });
+    data: serviceInstances,
+    // silentRefetch,
+  } = useGetList()(
+    `/apis/servicecatalog.k8s.io/v1beta1/namespaces/${lambda.metadata.namespace}/serviceinstances`,
+    {
+      pollingInterval: 3000,
+    },
+  );
+
+  const hasAnyInstances = !!serviceInstances?.length;
 
   let fallbackContent = null;
   if (error) {
@@ -38,11 +50,11 @@ export default function CreateServiceBindingModal({
   }
 
   const button = (
-    <Button glyph="add" option="light" disabled={!serviceInstances.length}>
+    <Button glyph="add" option="light" disabled={!hasAnyInstances}>
       {SERVICE_BINDINGS_PANEL.CREATE_MODAL.OPEN_BUTTON.TEXT}
     </Button>
   );
-  const modalOpeningComponent = serviceInstances.length ? (
+  const modalOpeningComponent = hasAnyInstances ? (
     button
   ) : (
     <Tooltip
@@ -68,7 +80,7 @@ export default function CreateServiceBindingModal({
           lambda={lambda}
           serviceInstances={serviceInstances}
           setPopupModalMessage={setPopupModalMessage}
-          refetchServiceInstances={refetchServiceInstances}
+          // refetchServiceInstances={refetchServiceInstances}
         />
       )}
     </div>

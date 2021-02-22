@@ -22,7 +22,6 @@ export const useUpdateLambda = ({
   lambdaUrl,
   type = UPDATE_TYPE.GENERAL_CONFIGURATION,
 }) => {
-  console.log('lambdaUrl', lambdaUrl);
   const notificationManager = useNotification();
   const updateLambdaMutation = useUpdate(lambdaUrl);
 

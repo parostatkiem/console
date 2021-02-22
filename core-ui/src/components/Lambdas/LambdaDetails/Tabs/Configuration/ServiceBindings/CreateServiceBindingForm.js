@@ -50,12 +50,13 @@ export default function CreateServiceBindingForm({
     }
 
     const instance = serviceInstances.find(
-      service => service.name === serviceInstanceName,
+      service => service.metadata.name === serviceInstanceName,
     );
 
-    if (instance) {
-      setSecrets(instance.serviceBindings.items);
-    }
+    // TODO: dunno what's going on
+    // if (instance) {
+    //   setSecrets(instance.serviceBindings.items);
+    // }
   }, [serviceInstanceName, serviceInstances]);
 
   useEffect(() => {
@@ -109,9 +110,9 @@ export default function CreateServiceBindingForm({
     await createServiceBindingUsage(parameters);
   }
 
-  const serviceInstancesNames = serviceInstances.map(service => (
-    <option value={service.name} key={service.name}>
-      {service.name}
+  const serviceInstancesNames = serviceInstances.map(({ metadata }) => (
+    <option value={metadata.name} key={metadata.name}>
+      {metadata.name}
     </option>
   ));
 

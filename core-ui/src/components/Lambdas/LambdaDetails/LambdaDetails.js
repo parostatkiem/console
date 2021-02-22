@@ -63,17 +63,17 @@ export default function LambdaDetails({
             bindingUsages={bindingUsages}
           />
         </Tab>
-        {/* {configTabShouldRender && (
+        {configTabShouldRender && (
           <Tab
             key="lambda-configuration"
             id="lambda-configuration"
             title={LAMBDA_DETAILS.TABS.CONFIGURATION.TITLE}
           >
-            {apiRules}
-            {eventTriggers}
+            {/* {apiRules} */}
+            {/* {eventTriggers} */}
             {serviceBindings}
           </Tab>
-        )}*/}
+        )}
         <Tab
           key="lambda-resources"
           id="lambda-resources"
