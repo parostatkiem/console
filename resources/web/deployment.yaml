@@ -18,7 +18,13 @@ spec:
         - name: console
           image: eu.gcr.io/kyma-project/console:PR-2131
           imagePullPolicy: Always
-          resources: {}
+          resources:
+            limits:
+              cpu: 50m
+              memory: 30Mi
+            requests:
+              cpu: 1m
+              memory: 6m
           livenessProbe:
             httpGet:
               path: /healthz
