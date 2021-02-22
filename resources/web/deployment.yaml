@@ -34,7 +34,7 @@ spec:
             - containerPort: 6080
             - containerPort: 8080
         - name: core-ui
-          image: eu.gcr.io/kyma-project/console:PR-2131
+          image: eu.gcr.io/kyma-project/core-ui:PR-2131
           imagePullPolicy: Always
           resources:
             limits:
