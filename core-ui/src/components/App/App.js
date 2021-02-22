@@ -1,6 +1,9 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
+import Preferences from 'components/Preferences/Preferences';
+
+import { PREFERENCES_TITLE } from '../../shared/constants';
 import {
   getComponentForList,
   getComponentForDetails,
@@ -10,6 +13,10 @@ export default function App() {
   return (
     <Switch>
       <Route path="/preload" component={() => null} />
+      <Route
+        path="/preferences"
+        render={withTitle(PREFERENCES_TITLE, Preferences)}
+      />
       <Route
         exact
         path="/namespaces/:namespaceId/:resourceType/:resourceName"
