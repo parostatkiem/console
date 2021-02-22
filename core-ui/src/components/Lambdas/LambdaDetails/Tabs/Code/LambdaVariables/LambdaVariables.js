@@ -121,6 +121,7 @@ function VariableValue({ variable }) {
 
 export default function LambdaEnvs({
   lambda,
+  lambdaUrl,
   customVariables,
   customValueFromVariables,
   injectedVariables,
@@ -136,6 +137,7 @@ export default function LambdaEnvs({
   const editEnvsModal = (
     <EditVariablesModal
       lambda={lambda}
+      lambdaUrl={lambdaUrl}
       customVariables={customVariables}
       customValueFromVariables={customValueFromVariables}
       injectedVariables={injectedVariables}

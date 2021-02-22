@@ -40,7 +40,12 @@ export const DropdownInput = ({
         onChange={onChange}
       >
         {options.map(option => (
-          <option aria-label="option" key={option.key} value={option.value}>
+          <option
+            aria-label="option"
+            key={option.key}
+            value={option.value}
+            selected={option.value === df}
+          >
             {option.key}
           </option>
         ))}

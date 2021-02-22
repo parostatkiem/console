@@ -2,10 +2,12 @@ import React from 'react';
 import LuigiClient from '@luigi-project/client';
 
 import LambdaDetails from './LambdaDetails';
+import { useConfigData } from 'components/Lambdas/helpers/misc/useConfigData';
 
 import './LambdaDetails.scss';
 
 export default function LambdaDetailsWrapper({ lambda, lambdaUrl }) {
+  useConfigData();
   let content = null;
 
   if (!lambda) {

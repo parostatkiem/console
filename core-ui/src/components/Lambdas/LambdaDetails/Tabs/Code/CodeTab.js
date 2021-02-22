@@ -26,6 +26,7 @@ export default function CodeTab({ lambda, lambdaUrl, bindingUsages }) {
       )}
       <LambdaVariables
         lambda={lambda}
+        lambdaUrl={lambdaUrl}
         customVariables={customVariables}
         customValueFromVariables={customValueFromVariables}
         injectedVariables={injectedVariables}

@@ -32,7 +32,7 @@ export const useUpdateLambda = ({
     const message = formatMessage(
       GQL_MUTATIONS.UPDATE_LAMBDA[type].ERROR_MESSAGE,
       {
-        lambdaName: lambda.name,
+        lambdaName: lambda.metadata.name,
         error: errorToDisplay,
       },
     );
@@ -70,7 +70,7 @@ export const useUpdateLambda = ({
       const message = formatMessage(
         GQL_MUTATIONS.UPDATE_LAMBDA[type].SUCCESS_MESSAGE,
         {
-          lambdaName: lambda.name,
+          lambdaName: lambda.metadata.name,
         },
       );
 
@@ -86,21 +86,3 @@ export const useUpdateLambda = ({
 
   return updateLambda;
 };
-
-export function prepareUpdateLambdaInput(lambda = {}) {
-  const preparedLambda = {
-    labels: lambda.labels || {},
-    source: lambda.source || '',
-    sourceType: lambda.sourceType || '',
-    dependencies: lambda.dependencies || '',
-    resources: lambda.resources || {},
-    buildResources: lambda.buildResources || {},
-    replicas: lambda.replicas || {},
-    env: lambda.env || [],
-    runtime: lambda.runtime || '',
-    reference: lambda.reference || null,
-    baseDir: lambda.baseDir || null,
-  };
-
-  return omitTypenames(preparedLambda);
-}

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useConfigMapQuery } from 'components/Lambdas/gql/hooks';
-
+import { useGet } from 'react-shared';
 import {
   WEBHOOK_DEFAULTS_CM_NAME,
   KYMA_SYSTEM_NAMESPACE,
@@ -11,10 +11,14 @@ import {
 import { updateResourcesValidationSchema } from 'components/Lambdas/LambdaDetails/Tabs/ResourceManagement/ResourceManagement/shared';
 
 export const useConfigData = () => {
-  const { cmData } = useConfigMapQuery({
-    name: WEBHOOK_DEFAULTS_CM_NAME,
-    namespace: KYMA_SYSTEM_NAMESPACE,
-  });
+  const {
+    data: resource,
+  } = useGet(
+    '/api/v1/namespaces/kyma-system/configmaps/serverless-webhook-envs',
+    { pollingInterval: 3000000 },
+  );
+
+  const cmData = resource?.data;
 
   function updateRestrictedVariables() {
     if (cmData[WEBHOOK_ENVS.RESERVED_ENVS]) {
@@ -117,8 +121,10 @@ export const useConfigData = () => {
   }
 
   useEffect(() => {
-    updateRestrictedVariables();
-    updateResources();
+    if (cmData) {
+      updateRestrictedVariables();
+      updateResources();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cmData]);
 

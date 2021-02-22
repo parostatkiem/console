@@ -34,48 +34,52 @@ const popupMessage =
   RESOURCES_MANAGEMENT_PANEL.EDIT_MODAL.CONFIRM_BUTTON.POPUP_MESSAGE;
 
 function getDefaultFormValues(lambda) {
-  return {
+  const def = {
     [inputNames.replicas.preset]: checkReplicasPreset(
-      lambda.replicas,
+      lambda.spec.minReplicas,
+      lambda.spec.maxReplicas,
       CONFIG.functionReplicasPresets,
     ),
     [inputNames.replicas.min]:
-      lambda.replicas.min || CONFIG.functionMinReplicas,
+      lambda.spec.minReplicas || CONFIG.functionMinReplicas,
     [inputNames.replicas.max]:
-      lambda.replicas.max || CONFIG.functionMinReplicas,
+      lambda.spec.maxReplicas || CONFIG.functionMinReplicas,
 
     [inputNames.function.preset]: checkResourcesPreset(
-      lambda.resources,
+      lambda.spec.resources,
       CONFIG.functionResourcesPresets,
     ),
     [inputNames.function.requests.cpu]: parseCpu(
-      lambda.resources.requests.cpu || '',
+      lambda.spec.resources.requests.cpu || '',
     ),
     [inputNames.function.limits.cpu]: parseCpu(
-      lambda.resources.limits.cpu || '',
+      lambda.spec.resources.limits.cpu || '',
     ),
     [inputNames.function.requests.memory]:
-      lambda.resources.requests.memory || '',
-    [inputNames.function.limits.memory]: lambda.resources.limits.memory || '',
+      lambda.spec.resources.requests.memory || '',
+    [inputNames.function.limits.memory]:
+      lambda.spec.resources.limits.memory || '',
 
     [inputNames.buildJob.preset]: checkResourcesPreset(
-      lambda.buildResources,
+      lambda.spec.buildResources,
       CONFIG.buildJobResourcesPresets,
     ),
     [inputNames.buildJob.requests.cpu]: parseCpu(
-      lambda.buildResources.requests.cpu || '',
+      lambda.spec.buildResources.requests.cpu || '',
     ),
     [inputNames.buildJob.limits.cpu]: parseCpu(
-      lambda.buildResources.limits.cpu || '',
+      lambda.spec.buildResources.limits.cpu || '',
     ),
     [inputNames.buildJob.requests.memory]:
-      lambda.buildResources.requests.memory || '',
+      lambda.spec.buildResources.requests.memory || '',
     [inputNames.buildJob.limits.memory]:
-      lambda.buildResources.limits.memory || '',
+      lambda.spec.buildResources.limits.memory || '',
   };
+
+  return def;
 }
 
-export default function ResourcesManagement({ lambda }) {
+export default function ResourcesManagement({ lambda, lambdaUrl }) {
   const defaultValues = getDefaultFormValues(lambda);
 
   const {
@@ -94,6 +98,7 @@ export default function ResourcesManagement({ lambda }) {
   const [isEditMode, setIsEditMode] = useState(false);
   const updateLambda = useUpdateLambda({
     lambda,
+    lambdaUrl,
     type: UPDATE_TYPE.RESOURCES_AND_REPLICAS,
   });
 
@@ -127,25 +132,30 @@ export default function ResourcesManagement({ lambda }) {
     if (!isEditMode) {
       updateLambda(
         {
-          replicas: { min: data.minReplicas, max: data.maxReplicas },
-          resources: {
-            requests: {
-              cpu: data.functionRequestsCpu,
-              memory: data.functionRequestsMemory,
+          ...lambda,
+          spec: {
+            ...lambda.spec,
+            minReplicas: data.minReplicas,
+            maxReplicas: data.maxReplicas,
+            resources: {
+              requests: {
+                cpu: data.functionRequestsCpu,
+                memory: data.functionRequestsMemory,
+              },
+              limits: {
+                cpu: data.functionLimitsCpu,
+                memory: data.functionLimitsMemory,
+              },
             },
-            limits: {
-              cpu: data.functionLimitsCpu,
-              memory: data.functionLimitsMemory,
-            },
-          },
-          buildResources: {
-            requests: {
-              cpu: data.buildRequestsCpu,
-              memory: data.buildRequestsMemory,
-            },
-            limits: {
-              cpu: data.buildLimitsCpu,
-              memory: data.buildLimitsMemory,
+            buildResources: {
+              requests: {
+                cpu: data.buildRequestsCpu,
+                memory: data.buildRequestsMemory,
+              },
+              limits: {
+                cpu: data.buildLimitsCpu,
+                memory: data.buildLimitsMemory,
+              },
             },
           },
         },
@@ -247,9 +257,6 @@ export default function ResourcesManagement({ lambda }) {
               retriggerValidation={retriggerValidation}
               setValue={setValue}
               type="function"
-              presetLabel={
-                lambda.labels[SERVERLESS_FUNCTION_RESOURCES_PRESET_LABEL]
-              }
               defaultPreset={defaultValues[inputNames.function.preset]}
             />
           </Panel.Body>
@@ -272,9 +279,6 @@ export default function ResourcesManagement({ lambda }) {
               retriggerValidation={retriggerValidation}
               setValue={setValue}
               type="buildJob"
-              presetLabel={
-                lambda.labels[SERVERLESS_BUILD_RESOURCES_PRESET_LABEL]
-              }
               defaultPreset={defaultValues[inputNames.buildJob.preset]}
             />
           </Panel.Body>

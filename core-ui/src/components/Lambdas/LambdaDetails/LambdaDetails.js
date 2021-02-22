@@ -73,14 +73,14 @@ export default function LambdaDetails({
             {eventTriggers}
             {serviceBindings}
           </Tab>
-        )}
+        )}*/}
         <Tab
           key="lambda-resources"
           id="lambda-resources"
           title={LAMBDA_DETAILS.TABS.RESOURCE_MANAGEMENT.TITLE}
         >
-          <ResourceManagementTab lambda={lambda} />
-        </Tab> */}
+          <ResourceManagementTab lambda={lambda} lambdaUrl={lambdaUrl} />
+        </Tab>
       </TabGroup>
     </>
   );

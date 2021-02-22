@@ -20,6 +20,7 @@ const textSearchProperties = ['name', 'value'];
 
 export default function EditVariablesForm({
   lambda,
+  lambdaUrl,
   customVariables = [],
   customValueFromVariables = [],
   injectedVariables = [],
@@ -30,6 +31,7 @@ export default function EditVariablesForm({
 }) {
   const updateLambdaVariables = useUpdateLambda({
     lambda,
+    lambdaUrl,
     type: UPDATE_TYPE.VARIABLES,
   });
   const [variables, setVariables] = useState(
@@ -96,7 +98,10 @@ export default function EditVariablesForm({
   function handleFormSubmit() {
     const preparedVariable = prepareVariablesMutationInput();
     updateLambdaVariables({
-      env: [...preparedVariable, ...customValueFromVariables],
+      spec: {
+        ...lambda.spec,
+        env: [...preparedVariable, ...customValueFromVariables],
+      },
     });
   }
 
