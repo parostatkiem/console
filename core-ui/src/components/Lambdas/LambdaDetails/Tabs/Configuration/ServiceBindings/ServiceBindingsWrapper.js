@@ -8,19 +8,9 @@ export default function ServiceBindingsWrapper({
   lambda,
   setBindingUsages = () => void 0,
 }) {
-  // const { bindingUsages = [], error, loading } = useServiceBindingUsagesQuery({
-  //   lambda,
-  // });
-
-  // useEffect(() => {
-  //   setBindingUsages(bindingUsages);
-  // }, [setBindingUsages, bindingUsages]);
   const isBindingUsageForThisFunction = bindingUsage =>
     bindingUsage.spec.usedBy.kind === 'serverless-function' && //TODO use constant for this
     bindingUsage.spec.usedBy.name === lambda.metadata.name;
-
-  const getBindingName = bindingUsage =>
-    bindingUsage.spec.serviceBindingRef.name;
 
   const { loading = true, error, data: serviceBindings } = useGetList()(
     `/apis/servicecatalog.k8s.io/v1beta1/namespaces/${lambda?.metadata.namespace}/servicebindings`,
@@ -38,13 +28,20 @@ export default function ServiceBindingsWrapper({
 
   if (!bindingUsages || !serviceBindings) return <Spinner />;
 
-  const serviceBindingsForThisFunction = bindingUsages
-    .filter(isBindingUsageForThisFunction)
-    .map(getBindingName);
+  const getBindingAndUsagePair = usage => ({
+    serviceBindingUsage: usage,
+    serviceBinding: serviceBindings.find(
+      b => b.metadata.name === usage.spec.serviceBindingRef.name,
+    ),
+  });
 
-  const serviceInstancesAlreadyUsed = serviceBindings
-    .filter(b => serviceBindingsForThisFunction.includes(b.metadata.name))
-    .map(b => b.spec.instanceRef.name);
+  const serviceBindingAndUsagePairs = bindingUsages
+    .filter(isBindingUsageForThisFunction)
+    .map(getBindingAndUsagePair);
+
+  const serviceInstancesAlreadyUsed = serviceBindingAndUsagePairs.map(
+    ({ serviceBinding }) => serviceBinding.spec.instanceRef.name,
+  );
 
   return (
     <ServiceBindings
@@ -52,6 +49,7 @@ export default function ServiceBindingsWrapper({
       serviceBindingUsages={bindingUsages || []}
       serviceBindings={serviceBindings || []}
       serviceInstancesAlreadyUsed={serviceInstancesAlreadyUsed}
+      serviceBindingAndUsagePairs={serviceBindingAndUsagePairs}
       // serverDataError={error || false}
       // serverDataLoading={loading || false}
     />

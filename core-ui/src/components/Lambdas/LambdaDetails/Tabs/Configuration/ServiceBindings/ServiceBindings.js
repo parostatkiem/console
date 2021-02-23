@@ -23,9 +23,8 @@ const textSearchProperties = [
 
 export default function ServiceBindings({
   lambda = {},
-  serviceBindingUsages = [],
+  serviceBindingAndUsagePairs,
   serviceInstancesAlreadyUsed,
-  serviceBindings,
   serverDataError,
   serverDataLoading,
 }) {
@@ -50,7 +49,7 @@ export default function ServiceBindings({
       },
     },
   ];
-  const rowRenderer = bindingUsage => [
+  const rowRenderer = ({ serviceBindingUsage, serviceBinding }) => [
     <Link
       className="link"
       data-test-id="service-instance-name"
@@ -58,14 +57,13 @@ export default function ServiceBindings({
         LuigiClient.linkManager()
           .fromContext('namespaces')
           .navigate(
-            `cmf-instances/details/${bindingUsage.spec.serviceBindingRef.name}`, //TODO
+            `cmf-instances/details/${serviceBinding.spec.instanceRef.name}`, //TODO
           )
       }
     >
-      {/* {bindingUsage.serviceBinding.serviceInstanceName} TODO */}
-      {bindingUsage.metadata.name}
+      {serviceBinding.spec.instanceRef.name}
     </Link>,
-    renderEnvs(bindingUsage),
+    renderEnvs(serviceBindingUsage),
   ];
 
   const createServiceBindingModal = (
@@ -75,10 +73,10 @@ export default function ServiceBindings({
     />
   );
 
-  const performedBindingUsages = serviceBindingUsages.map(usage => ({
-    ...usage,
-    envs: retrieveVariablesFromBindingUsage(usage),
-  }));
+  // const performedBindingUsages = serviceBindingUsages.map(usage => ({
+  //   ...usage,
+  //   envs: retrieveVariablesFromBindingUsage(usage),
+  // }));
 
   return (
     <GenericList
@@ -88,7 +86,7 @@ export default function ServiceBindings({
       showSearchSuggestion={false}
       extraHeaderContent={createServiceBindingModal}
       actions={actions}
-      entries={performedBindingUsages}
+      entries={serviceBindingAndUsagePairs}
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}
       serverDataError={serverDataError}
