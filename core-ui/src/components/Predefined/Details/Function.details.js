@@ -25,7 +25,6 @@ export const FunctionsDetails = DefaultRenderer => ({ ...otherParams }) => {
   ];
 
   const Functions = (resource, resourceUrl) => {
-    console.log(resource, resourceUrl);
     if (!resource) return '...'; //TODO
     return <LambdaDetailsWrapper lambda={resource} lambdaUrl={resourceUrl} />;
   };

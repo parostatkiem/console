@@ -1,7 +1,7 @@
 import React from 'react';
 import LuigiClient from '@luigi-project/client';
 
-import { GenericList } from 'react-shared';
+import { GenericList, useNotification, useDelete } from 'react-shared';
 import { Link } from 'fundamental-react';
 
 import { useDeleteServiceBindingUsage } from 'components/Lambdas/gql/hooks/mutations';
@@ -22,7 +22,9 @@ export default function ServiceBindings({
   serverDataError,
   serverDataLoading,
 }) {
-  const deleteServiceBindingUsage = useDeleteServiceBindingUsage({ lambda });
+  const notification = useNotification();
+
+  const deleteServiceBindingUsage = useDelete();
 
   const renderEnvs = secret => {
     return (
@@ -34,12 +36,25 @@ export default function ServiceBindings({
     );
   };
 
+  async function handleServiceBindingUsageDelete({ serviceBindingUsage: u }) {
+    const url = `/apis/servicecatalog.kyma-project.io/v1alpha1/namespaces/${lambda.metadata.namespace}/servicebindingusages/${u.metadata.name}`;
+    try {
+      await deleteServiceBindingUsage(url);
+      notification.notifySuccess({ title: 'Succesfully deleted Resource' });
+    } catch (e) {
+      console.error(e);
+      notification.notifyError({
+        title: 'Failed to delete the Resource',
+        content: e.message,
+      });
+      throw e;
+    }
+  }
+
   const actions = [
     {
       name: 'Delete',
-      handler: bindingUsage => {
-        deleteServiceBindingUsage(bindingUsage);
-      },
+      handler: handleServiceBindingUsageDelete,
     },
   ];
   const rowRenderer = ({ secret, serviceBinding }) => [
@@ -50,7 +65,7 @@ export default function ServiceBindings({
         LuigiClient.linkManager()
           .fromContext('namespaces')
           .navigate(
-            `cmf-instances/details/${serviceBinding.spec.instanceRef.name}`, //TODO
+            `cmf-instances/details/${serviceBinding.spec.instanceRef.name}`,
           )
       }
     >
