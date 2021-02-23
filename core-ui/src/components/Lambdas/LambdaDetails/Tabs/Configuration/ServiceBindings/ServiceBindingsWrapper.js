@@ -26,30 +26,37 @@ export default function ServiceBindingsWrapper({
     },
   );
 
-  if (!bindingUsages || !serviceBindings) return <Spinner />;
-
-  const getBindingAndUsagePair = usage => ({
-    serviceBindingUsage: usage,
-    serviceBinding: serviceBindings.find(
-      b => b.metadata.name === usage.spec.serviceBindingRef.name,
-    ),
-  });
-
-  const serviceBindingAndUsagePairs = bindingUsages
-    .filter(isBindingUsageForThisFunction)
-    .map(getBindingAndUsagePair);
-
-  const serviceInstancesAlreadyUsed = serviceBindingAndUsagePairs.map(
-    ({ serviceBinding }) => serviceBinding.spec.instanceRef.name,
+  const { /*loading = true, error,*/ data: secrets } = useGetList()(
+    `/api/v1/namespaces/${lambda?.metadata.namespace}/secrets`,
+    {
+      pollingInterval: 3000,
+    },
   );
 
+  if (!bindingUsages || !serviceBindings || !secrets) return <Spinner />; //TODO
+
+  const getBindingCombinedData = usage => {
+    const binding = serviceBindings.find(
+      b => b.metadata.name === usage.spec.serviceBindingRef.name,
+    );
+    return {
+      serviceBindingUsage: usage,
+      serviceBinding: binding,
+      secret: secrets.find(s => s.metadata.name === binding.spec.secretName),
+    };
+  };
+
+  const serviceBindingsCombined = bindingUsages
+    .filter(isBindingUsageForThisFunction)
+    .map(getBindingCombinedData);
+
+  console.log(serviceBindingsCombined);
   return (
     <ServiceBindings
       lambda={lambda}
       serviceBindingUsages={bindingUsages || []}
       serviceBindings={serviceBindings || []}
-      serviceInstancesAlreadyUsed={serviceInstancesAlreadyUsed}
-      serviceBindingAndUsagePairs={serviceBindingAndUsagePairs}
+      serviceBindingsCombined={serviceBindingsCombined}
       // serverDataError={error || false}
       // serverDataLoading={loading || false}
     />

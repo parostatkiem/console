@@ -14,28 +14,21 @@ import { SERVICE_BINDINGS_PANEL, ERRORS } from 'components/Lambdas/constants';
 import './ServiceBindings.scss';
 
 const headerRenderer = () => ['Instance', 'Environment Variable Names'];
-const textSearchProperties = [
-  'serviceBinding.serviceInstanceName',
-  'serviceBinding.secret.data',
-  'parameters.envPrefix.name',
-  'envs',
-];
+const textSearchProperties = ['serviceBinding.spec.instanceRef.name']; //TODO support searching by env name
 
 export default function ServiceBindings({
   lambda = {},
-  serviceBindingAndUsagePairs,
-  serviceInstancesAlreadyUsed,
+  serviceBindingsCombined,
   serverDataError,
   serverDataLoading,
 }) {
   const deleteServiceBindingUsage = useDeleteServiceBindingUsage({ lambda });
 
-  const renderEnvs = bindingUsage => {
-    return null; //TODO
+  const renderEnvs = secret => {
     return (
       <>
-        {bindingUsage.envs.map(env => (
-          <div key={env.key}>{env.key}</div>
+        {Object.keys(secret.data).map(k => (
+          <div key={k}>{k}</div>
         ))}
       </>
     );
@@ -49,7 +42,7 @@ export default function ServiceBindings({
       },
     },
   ];
-  const rowRenderer = ({ serviceBindingUsage, serviceBinding }) => [
+  const rowRenderer = ({ secret, serviceBinding }) => [
     <Link
       className="link"
       data-test-id="service-instance-name"
@@ -63,20 +56,15 @@ export default function ServiceBindings({
     >
       {serviceBinding.spec.instanceRef.name}
     </Link>,
-    renderEnvs(serviceBindingUsage),
+    renderEnvs(secret),
   ];
 
   const createServiceBindingModal = (
     <CreateServiceBindingModal
       lambda={lambda}
-      serviceInstancesAlreadyUsed={serviceInstancesAlreadyUsed}
+      serviceBindingsCombined={serviceBindingsCombined}
     />
   );
-
-  // const performedBindingUsages = serviceBindingUsages.map(usage => ({
-  //   ...usage,
-  //   envs: retrieveVariablesFromBindingUsage(usage),
-  // }));
 
   return (
     <GenericList
@@ -86,7 +74,7 @@ export default function ServiceBindings({
       showSearchSuggestion={false}
       extraHeaderContent={createServiceBindingModal}
       actions={actions}
-      entries={serviceBindingAndUsagePairs}
+      entries={serviceBindingsCombined}
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}
       serverDataError={serverDataError}

@@ -10,9 +10,13 @@ import { SERVICE_BINDINGS_PANEL } from 'components/Lambdas/constants';
 
 export default function CreateServiceBindingModal({
   lambda,
-  serviceInstancesAlreadyUsed,
+  serviceBindingsCombined,
 }) {
   const [popupModalMessage, setPopupModalMessage] = useState('');
+
+  const serviceInstancesAlreadyUsed = serviceBindingsCombined.map(
+    ({ serviceBinding }) => serviceBinding.spec.instanceRef.name,
+  );
 
   const isNotAlreadyUsed = serviceInstance =>
     !serviceInstancesAlreadyUsed.includes(serviceInstance.metadata.name);
