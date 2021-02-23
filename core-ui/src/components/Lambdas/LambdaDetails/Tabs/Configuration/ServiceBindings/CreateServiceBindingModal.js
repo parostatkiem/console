@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Button, Alert } from 'fundamental-react';
 import { Spinner, Tooltip, useGetList } from 'react-shared';
@@ -10,25 +10,16 @@ import { SERVICE_BINDINGS_PANEL } from 'components/Lambdas/constants';
 
 export default function CreateServiceBindingModal({
   lambda,
-  serviceBindingUsages,
+  serviceInstancesAlreadyUsed,
 }) {
   const [popupModalMessage, setPopupModalMessage] = useState('');
-  // const {
-  //   serviceInstances,
-  //   loading,
-  //   error,
-  //   refetchServiceInstances,
-  // } = useServiceInstancesQuery({
-  //   namespace: lambda.namespace,
-  //   serviceBindingUsages,
-  // });
-  // console.log(lambda);
-  const {
-    loading = true,
-    error,
-    data: serviceInstances,
-    // silentRefetch,
-  } = useGetList()(
+
+  const isNotAlreadyUsed = serviceInstance =>
+    !serviceInstancesAlreadyUsed.includes(serviceInstance.metadata.name);
+
+  const { loading = true, error, data: serviceInstances } = useGetList(
+    isNotAlreadyUsed,
+  )(
     `/apis/servicecatalog.k8s.io/v1beta1/namespaces/${lambda.metadata.namespace}/serviceinstances`,
     {
       pollingInterval: 3000,

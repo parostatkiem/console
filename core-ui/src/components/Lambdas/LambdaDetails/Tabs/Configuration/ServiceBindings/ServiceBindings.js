@@ -24,12 +24,15 @@ const textSearchProperties = [
 export default function ServiceBindings({
   lambda = {},
   serviceBindingUsages = [],
+  serviceInstancesAlreadyUsed,
+  serviceBindings,
   serverDataError,
   serverDataLoading,
 }) {
   const deleteServiceBindingUsage = useDeleteServiceBindingUsage({ lambda });
 
   const renderEnvs = bindingUsage => {
+    return null; //TODO
     return (
       <>
         {bindingUsage.envs.map(env => (
@@ -55,11 +58,12 @@ export default function ServiceBindings({
         LuigiClient.linkManager()
           .fromContext('namespaces')
           .navigate(
-            `cmf-instances/details/${bindingUsage.serviceBinding.serviceInstanceName}`,
+            `cmf-instances/details/${bindingUsage.spec.serviceBindingRef.name}`, //TODO
           )
       }
     >
-      {bindingUsage.serviceBinding.serviceInstanceName}
+      {/* {bindingUsage.serviceBinding.serviceInstanceName} TODO */}
+      {bindingUsage.metadata.name}
     </Link>,
     renderEnvs(bindingUsage),
   ];
@@ -67,7 +71,7 @@ export default function ServiceBindings({
   const createServiceBindingModal = (
     <CreateServiceBindingModal
       lambda={lambda}
-      serviceBindingUsages={serviceBindingUsages}
+      serviceInstancesAlreadyUsed={serviceInstancesAlreadyUsed}
     />
   );
 
