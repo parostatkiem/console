@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import LuigiClient from '@luigi-project/client';
 
+import { useGet } from 'react-shared';
 import { Spinner, useNotification } from 'react-shared';
 import { UPDATE_API_RULE } from '../../../gql/mutations';
 import { GET_API_RULE } from '../../../gql/queries';
@@ -22,13 +23,18 @@ export default function EditApiRule({ apiName }) {
   });
   const notificationManager = useNotification();
 
-  const { error, loading, data } = useQuery(GET_API_RULE, {
-    variables: {
-      namespace: LuigiClient.getEventData().environmentId,
-      name: apiName,
-    },
-    fetchPolicy: 'no-cache',
-  });
+  const {
+    data,
+    error,
+    loading,
+  } = useGet(
+    `/apis/gateway.kyma-project.io/v1alpha1/namespaces/${
+      LuigiClient.getEventData().environmentId
+    }/apirules/${apiName}`,
+    { pollingInterval: 3000000 },
+  );
+
+  console.log('Edit apiRules', data);
 
   if (loading) {
     return <Spinner />;
@@ -38,11 +44,11 @@ export default function EditApiRule({ apiName }) {
     return <h1>Couldn't fetch API rule data</h1>;
   }
 
-  if (!data.APIRule || !data.APIRule.spec) {
+  if (!data || !data.spec) {
     return <EntryNotFound entryType="API Rule" entryId={apiName} />;
   }
 
-  data.APIRule.spec.rules.forEach(rule => {
+  data.spec.rules.forEach(rule => {
     delete rule.__typename;
     rule.accessStrategies.forEach(as => {
       delete as.__typename;
@@ -100,7 +106,7 @@ export default function EditApiRule({ apiName }) {
 
   return (
     <ApiRuleForm
-      apiRule={data.APIRule}
+      apiRule={data}
       mutation={updateApiRuleMutation}
       saveButtonText="Save"
       headerTitle={`Edit ${apiName}`}

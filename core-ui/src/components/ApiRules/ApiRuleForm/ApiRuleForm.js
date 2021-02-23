@@ -32,7 +32,7 @@ const EMPTY_ACCESS_STRATEGY = {
   methods: [],
   accessStrategies: [
     {
-      name: 'allow',
+      handler: 'allow',
       config: {},
     },
   ],
@@ -183,9 +183,9 @@ export default function ApiRuleForm({
                         _ref={formValues.name}
                         id="apiRuleName"
                         kind="API Rule"
-                        showHelp={!apiRule.name}
-                        defaultValue={apiRule.name}
-                        disabled={!!apiRule.name}
+                        showHelp={!apiRule?.metadata?.name}
+                        defaultValue={apiRule?.metadata?.name}
+                        disabled={!!apiRule?.metadata?.name}
                       />
                     </FormItem>
                     <FormItem>

@@ -162,7 +162,7 @@ export function getStaticChildrenNodesForNamespace() {
       category: 'Workloads',
       pathSegment: 'functions',
 
-      label: 'Functions',
+      label: 'Functions New',
       keepSelectedForChildren: true,
       viewUrl:
         config.coreModuleUrl +
@@ -184,6 +184,39 @@ export function getStaticChildrenNodesForNamespace() {
                 '/namespaces/:namespaceId/functions/:functionName?' +
                 toSearchParamsString({
                   resourceApiPath: '/apis/serverless.kyma-project.io/v1alpha1',
+                }),
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      category: 'Workloads',
+      pathSegment: 'apirules',
+
+      label: 'APIRules New',
+      keepSelectedForChildren: true,
+      viewUrl:
+        config.coreModuleUrl +
+        '/namespaces/:namespaceId/apirules?' +
+        toSearchParamsString({
+          resourceApiPath: '/apis/gateway.kyma-project.io/v1alpha1',
+          hasDetailsView: true
+        }),
+      viewGroup: coreUIViewGroupName,
+      navigationContext: 'apirules',
+      children: [
+        {
+          pathSegment: 'details',
+          children: [
+            {
+              pathSegment: ':apiName',
+              viewUrl:
+                config.coreModuleUrl +
+                '/namespaces/:namespaceId/apirules/:apiName?' +
+                toSearchParamsString({
+                  resourceApiPath: '/apis/gateway.kyma-project.io/v1alpha1',
                 }),
             }
           ]

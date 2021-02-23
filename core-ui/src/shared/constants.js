@@ -1,6 +1,7 @@
 export const LOCAL_STORAGE_NAMESPACE_FILTERS = 'workspace/namespaceFilters';
 export const REFETCH_TIMEOUT = 600;
 
+export const API_RULES_TITLE = 'API Rules';
 export const ERRORS = {
   SERVER: 'Server error. Contact your cluster admin.',
   RESOURCES_NOT_FOUND: 'There are no related resources yet.',

@@ -18,8 +18,8 @@ export default function ApiRulesListWrapper({
   disableExposeButton = false,
 }) {
   const { apiRules = [], error, loading } = useApiRulesQuery({
-    namespace: namespace || service?.namespace,
-    serviceName: service?.name,
+    namespace: namespace || service?.metadata?.namespace,
+    serviceName: service?.metadata?.name,
   });
 
   return (

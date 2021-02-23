@@ -5,10 +5,9 @@ export function backendModulesExist(
   if (!existingBackendModules.length || !backendModules.length) {
     return false;
   }
-  const allBM = existingBackendModules.map(bm => bm.name);
 
   for (const backendModule of backendModules) {
-    if (!allBM.includes(backendModule)) {
+    if (!existingBackendModules.includes(backendModule)) {
       return false;
     }
   }

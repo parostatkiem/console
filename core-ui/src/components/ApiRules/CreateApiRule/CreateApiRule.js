@@ -12,7 +12,7 @@ const DEFAULT_ACCESS_STRATEGY = {
   methods: supportedMethodsList,
   accessStrategies: [
     {
-      name: 'allow',
+      handler: 'allow',
       config: {},
     },
   ],

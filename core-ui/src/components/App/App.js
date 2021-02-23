@@ -1,15 +1,28 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-
+import { withTitle } from 'react-shared';
+import CreateApiRule from '../ApiRules/CreateApiRule/CreateApiRule';
+import EditApiRule from 'components/ApiRules/EditApiRule/EditApiRule';
 import {
   getComponentForList,
   getComponentForDetails,
 } from 'shared/getComponents';
-
+import { API_RULES_TITLE } from 'shared/constants';
 export default function App() {
   return (
     <Switch>
       <Route path="/preload" component={() => null} />
+      <Route
+        exact
+        path="/apirules/create"
+        render={withTitle(API_RULES_TITLE, CreateApiRule)}
+      />
+
+      <Route
+        exact
+        path="/apirules/edit/:apiName"
+        render={withTitle(API_RULES_TITLE, RoutedEditApiRule)}
+      />
       <Route
         exact
         path="/namespaces/:namespaceId/:resourceType/:resourceName"
@@ -28,6 +41,10 @@ export default function App() {
       <Route exact path="/:resourceType" component={RoutedResourcesList} />
     </Switch>
   );
+}
+
+function RoutedEditApiRule({ match }) {
+  return <EditApiRule apiName={match.params.apiName} />;
 }
 
 function RoutedResourcesList({ match }) {

@@ -12,7 +12,7 @@ export const apiRuleMock = {
         methods: ['GET', 'POST'],
         accessStrategies: [
           {
-            name: 'nope',
+            handler: 'nope',
             config: {},
           },
         ],

@@ -22,7 +22,6 @@ export const useUpdateLambda = ({
   lambdaUrl,
   type = UPDATE_TYPE.GENERAL_CONFIGURATION,
 }) => {
-  console.log('lambdaUrl', lambdaUrl);
   const notificationManager = useNotification();
   const updateLambdaMutation = useUpdate(lambdaUrl);
 
@@ -49,16 +48,8 @@ export const useUpdateLambda = ({
         ...lambda,
         ...updatedData,
       };
-      console.log(
-        'updatedData',
-        updatedData,
-        'lambda',
-        lambda,
-        'newLambda',
-        newLambda,
-      );
+
       const diff = createPatch(lambda, newLambda);
-      console.log('diff', diff);
 
       const response = await updateLambdaMutation(lambdaUrl, diff);
 
