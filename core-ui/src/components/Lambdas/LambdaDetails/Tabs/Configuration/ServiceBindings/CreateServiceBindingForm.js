@@ -49,7 +49,6 @@ export default function CreateServiceBindingForm({
       setSecrets([]);
       return;
     }
-    console.log(serviceBindings);
     const bindingsForThisInstance = serviceBindings.filter(
       b => b.spec.instanceRef.name === selectedServiceInstance,
     );

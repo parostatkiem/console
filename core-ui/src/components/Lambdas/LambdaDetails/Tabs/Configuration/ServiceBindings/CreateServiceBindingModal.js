@@ -71,7 +71,7 @@ export default function CreateServiceBindingModal({
       {button}
     </Tooltip>
   );
-  console.log(serviceBindingsCombined);
+
   const renderForm = props => (
     <div className="create-service-binding-modal">
       {fallbackContent || (
