@@ -17,6 +17,7 @@ const checkBoxInputProps = {
 export default function CreateServiceBindingForm({
   lambda,
   serviceInstances = [],
+  serviceBindings,
   setPopupModalMessage = () => void 0,
   refetchServiceInstances = () => void 0,
   onChange,
@@ -47,16 +48,14 @@ export default function CreateServiceBindingForm({
     if (!selectedServiceInstance) {
       setEnvPrefix('');
       setCreateCredentials(true);
+      setSecrets([]);
+      return;
     }
 
-    const instance = serviceInstances.find(
-      service => service.metadata.name === selectedServiceInstance,
+    const bindingsForThisInstance = serviceBindings.filter(
+      b => b.spec.instanceRef.name === selectedServiceInstance,
     );
-
-    // TODO: dunno what's going on
-    // if (instance) {
-    //   setSecrets(instance.serviceBindings.items);
-    // }
+    setSecrets(bindingsForThisInstance.map(b => b.spec.secretName));
   }, [selectedServiceInstance, serviceInstances]);
 
   useEffect(() => {
@@ -178,9 +177,9 @@ export default function CreateServiceBindingForm({
                 required
               >
                 <option value=""></option>
-                {secrets.map(secret => (
-                  <option value={secret.name} key={secret.name}>
-                    {secret.name}
+                {secrets.map(s => (
+                  <option value={s} key={s}>
+                    {s}
                   </option>
                 ))}
               </select>

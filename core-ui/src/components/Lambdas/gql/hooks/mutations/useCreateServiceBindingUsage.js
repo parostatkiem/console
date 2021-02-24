@@ -141,11 +141,12 @@ export const useCreateServiceBindingUsage = ({ lambda }) => {
   }) {
     let serviceBindingName = existingCredentials || randomNameGenerator();
 
-    const createdBinding = await createServiceBinding(
-      serviceBindingName,
-      namespace,
-      serviceInstanceName,
-    );
+    if (!existingCredentials)
+      await createServiceBinding(
+        serviceBindingName,
+        namespace,
+        serviceInstanceName,
+      );
 
     const createdBindingUsage = await createServiceBindingUsage(
       randomNameGenerator(),

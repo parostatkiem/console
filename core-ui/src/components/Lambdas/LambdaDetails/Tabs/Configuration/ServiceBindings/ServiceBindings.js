@@ -25,6 +25,9 @@ export default function ServiceBindings({
   const notification = useNotification();
 
   const deleteServiceBindingUsage = useDelete();
+  const serviceBindingsWithUsages = serviceBindingsCombined.filter(
+    ({ serviceBindingUsage }) => serviceBindingUsage,
+  );
 
   const renderEnvs = secret => {
     return (
@@ -89,7 +92,7 @@ export default function ServiceBindings({
       showSearchSuggestion={false}
       extraHeaderContent={createServiceBindingModal}
       actions={actions}
-      entries={serviceBindingsCombined}
+      entries={serviceBindingsWithUsages}
       headerRenderer={headerRenderer}
       rowRenderer={rowRenderer}
       serverDataError={serverDataError}
