@@ -42,7 +42,9 @@ export default function ServiceBindingsWrapper({
 
   const getBindingCombinedData = binding => {
     const usage = bindingUsagesRequest.data.find(
-      u => binding.metadata.name === u.spec.serviceBindingRef.name,
+      u =>
+        binding.metadata.name === u.spec.serviceBindingRef.name &&
+        isBindingUsageForThisFunction(u),
     );
     return {
       serviceBinding: binding,
