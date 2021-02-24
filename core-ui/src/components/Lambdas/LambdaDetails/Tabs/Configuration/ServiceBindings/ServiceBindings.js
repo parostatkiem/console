@@ -40,17 +40,17 @@ export default function ServiceBindings({
   };
 
   async function handleServiceBindingUsageDelete({ serviceBindingUsage: u }) {
-    const url = `/apis/servicecatalog.kyma-project.io/v1alpha1/namespaces/${lambda.metadata.namespace}/servicebindingusages/${u.metadata.name}`;
     try {
-      await deleteServiceBindingUsage(url);
-      notification.notifySuccess({ title: 'Succesfully deleted Resource' });
+      await deleteServiceBindingUsage(u.metadata.selfLink);
+      notification.notifySuccess({
+        title: 'Succesfully deleted Service Binding Usage',
+      });
     } catch (e) {
       console.error(e);
       notification.notifyError({
-        title: 'Failed to delete the Resource',
+        title: 'Failed to delete the Service Binding Usage',
         content: e.message,
       });
-      throw e;
     }
   }
 
