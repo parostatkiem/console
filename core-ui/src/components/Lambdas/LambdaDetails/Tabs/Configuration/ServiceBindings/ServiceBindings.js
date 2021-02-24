@@ -4,11 +4,7 @@ import LuigiClient from '@luigi-project/client';
 import { GenericList, useNotification, useDelete } from 'react-shared';
 import { Link } from 'fundamental-react';
 
-import { useDeleteServiceBindingUsage } from 'components/Lambdas/gql/hooks/mutations';
-
 import CreateServiceBindingModal from './CreateServiceBindingModal';
-
-import { retrieveVariablesFromBindingUsage } from 'components/Lambdas/helpers/lambdaVariables';
 import { SERVICE_BINDINGS_PANEL, ERRORS } from 'components/Lambdas/constants';
 
 import './ServiceBindings.scss';

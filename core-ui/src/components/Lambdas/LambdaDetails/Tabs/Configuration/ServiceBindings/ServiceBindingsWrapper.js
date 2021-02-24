@@ -7,7 +7,7 @@ import { CONFIG } from 'components/Lambdas/config.js';
 
 export default function ServiceBindingsWrapper({
   lambda,
-  setBindingUsages = () => void 0,
+  setBindingUsages = () => void 0, // might be needed for other Lambda subcomponents
 }) {
   const isBindingUsageForThisFunction = bindingUsage =>
     bindingUsage.spec.usedBy.kind === CONFIG.functionUsageKind &&

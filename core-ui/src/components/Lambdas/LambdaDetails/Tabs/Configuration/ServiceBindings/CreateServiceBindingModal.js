@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import { Button, Alert } from 'fundamental-react';
 import { Spinner, Tooltip, useGetList } from 'react-shared';

@@ -1,11 +1,4 @@
-import { useMutation } from '@apollo/react-hooks';
 import { useNotification, usePost } from 'react-shared';
-
-import {
-  CREATE_SERVICE_BINDING,
-  CREATE_SERVICE_BINDING_USAGE,
-} from 'components/Lambdas/gql/mutations';
-import extractGraphQlErrors from 'shared/graphqlErrorExtractor';
 
 import {
   formatMessage,
@@ -14,18 +7,12 @@ import {
 import { GQL_MUTATIONS } from 'components/Lambdas/constants';
 import { CONFIG } from 'components/Lambdas/config';
 
-export const useCreateServiceBindingUsage = ({ lambda }) => {
+export const useCreateServiceBindingUsage = () => {
   const postRequest = usePost();
   const notificationManager = useNotification();
-  const [createServiceBindingMutation] = useMutation(CREATE_SERVICE_BINDING);
-  const [createServiceBindingUsageMutation] = useMutation(
-    CREATE_SERVICE_BINDING_USAGE,
-  );
 
   function handleError(serviceInstanceName, error) {
     console.error(error);
-    const errorToDisplay = extractGraphQlErrors(error);
-
     const message = formatMessage(
       GQL_MUTATIONS.CREATE_BINDING_USAGE.ERROR_MESSAGE,
       { serviceInstanceName },
@@ -37,47 +24,6 @@ export const useCreateServiceBindingUsage = ({ lambda }) => {
     });
   }
 
-  function prepareServiceBindingUsageParameters({
-    serviceBindingName,
-    serviceBindingUsageParameters = undefined,
-  }) {
-    return {
-      serviceBindingRef: {
-        name: serviceBindingName,
-      },
-      usedBy: {
-        name: lambda.name,
-        kind: CONFIG.functionUsageKind,
-      },
-      parameters: serviceBindingUsageParameters,
-    };
-  }
-
-  //   let createdResource = null;
-  //   try {
-  //     createdResource = await createServiceBindingUsage(
-  //       formatDeployment(deployment),
-  //     );
-  //   } catch (e) {
-  //     console.log(e);
-  //     onError('Cannot create deployment', e.message);
-  //     return;
-  //   }
-  //   // const createdResourceUID = createdResource?.metadata?.uid;
-
-  //   // try {
-  //   //   if (deployment.createService && createdResourceUID) {
-  //   //     await createResource(formatService(deployment, createdResourceUID));
-  //   //   }
-  //   //   onCompleted(deployment.name, 'Deployment created');
-  //   //   LuigiClient.linkManager()
-  //   //     .fromContext('namespaces')
-  //   //     .navigate('/deployments');
-  //   // } catch (e) {
-  //   //   onError('Deployment created, could not create service', e.message, true);
-  //   // }
-  // };
-
   async function createServiceBinding(name, namespace, instanceRefName) {
     return await postRequest(
       `/apis/servicecatalog.k8s.io/v1beta1/namespaces/${namespace}/servicebindings/${name}`,
@@ -87,7 +33,6 @@ export const useCreateServiceBindingUsage = ({ lambda }) => {
         metadata: {
           name,
           namespace,
-          // labels: deployment.labels,
         },
         spec: {
           instanceRef: {
@@ -112,8 +57,6 @@ export const useCreateServiceBindingUsage = ({ lambda }) => {
         kind: 'ServiceBindingUsage',
         metadata: {
           name,
-          namespace,
-          // labels: deployment.labels,
         },
         spec: {
           serviceBindingRef: {
@@ -160,9 +103,7 @@ export const useCreateServiceBindingUsage = ({ lambda }) => {
 
     const message = formatMessage(
       GQL_MUTATIONS.CREATE_BINDING_USAGE.SUCCESS_MESSAGE,
-      {
-        serviceInstanceName,
-      },
+      { serviceInstanceName },
     );
 
     notificationManager.notifySuccess({
