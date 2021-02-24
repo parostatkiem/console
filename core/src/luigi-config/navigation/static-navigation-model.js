@@ -165,7 +165,7 @@ export function getStaticChildrenNodesForNamespace() {
       label: 'Functions',
       keepSelectedForChildren: true,
       viewUrl:
-        config.coreModuleUrl +
+        config.coreUIModuleUrl +
         '/namespaces/:namespaceId/functions?' +
         toSearchParamsString({
           resourceApiPath: '/apis/serverless.kyma-project.io/v1alpha1',
@@ -180,7 +180,7 @@ export function getStaticChildrenNodesForNamespace() {
             {
               pathSegment: ':functionName',
               viewUrl:
-                config.coreModuleUrl +
+                config.coreUIModuleUrl +
                 '/namespaces/:namespaceId/functions/:functionName?' +
                 toSearchParamsString({
                   resourceApiPath: '/apis/serverless.kyma-project.io/v1alpha1',
@@ -318,7 +318,7 @@ export function getStaticChildrenNodesForNamespace() {
       navigationContext: 'role-bindings',
       label: 'Role Bindings',
       viewUrl:
-        config.coreModuleUrl +
+        config.coreUIModuleUrl +
         '/namespaces/:namespaceId/rolebindings?' +
         toSearchParamsString({
           resourceApiPath: '/apis/rbac.authorization.k8s.io/v1',
@@ -333,7 +333,7 @@ export function getStaticChildrenNodesForNamespace() {
             {
               pathSegment: ':roleBindingName',
               viewUrl:
-                config.coreModuleUrl +
+                config.coreUIModuleUrl +
                 '/namespaces/:namespaceId/roles/:roleBindingName?' +
                 toSearchParamsString({
                   resourceApiPath: '/apis/rbac.authorization.k8s.io/v1',
@@ -524,7 +524,7 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver) {
         collapsible: true
       },
       viewUrl:
-        config.coreModuleUrl +
+        config.coreUIModuleUrl +
         '/clusterrolebindings?' +
         toSearchParamsString({
           resourceApiPath: '/apis/rbac.authorization.k8s.io/v1',
@@ -540,7 +540,7 @@ export function getStaticRootNodes(namespaceChildrenNodesResolver) {
             {
               pathSegment: ':clusterRoleBindingName',
               viewUrl:
-                config.coreModuleUrl +
+                config.coreUIModuleUrl +
                 '/clusterrolebindings/:clusterRoleBindingName?' +
                 toSearchParamsString({
                   resourceApiPath: '/apis/rbac.authorization.k8s.io/v1',

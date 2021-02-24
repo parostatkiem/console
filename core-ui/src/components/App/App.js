@@ -8,6 +8,7 @@ import {
   getComponentForList,
   getComponentForDetails,
 } from 'shared/getComponents';
+import { withTitle } from 'react-shared';
 
 export default function App() {
   return (
