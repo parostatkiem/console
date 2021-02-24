@@ -1,15 +1,16 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import ServiceBindings from './ServiceBindings';
 import { useServiceBindingUsagesQuery } from 'components/Lambdas/gql/hooks/queries';
 import { Spinner, useGetList } from 'react-shared';
+import { CONFIG } from 'components/Lambdas/config.js';
 
 export default function ServiceBindingsWrapper({
   lambda,
   setBindingUsages = () => void 0,
 }) {
   const isBindingUsageForThisFunction = bindingUsage =>
-    bindingUsage.spec.usedBy.kind === 'serverless-function' && //TODO use constant for this
+    bindingUsage.spec.usedBy.kind === CONFIG.functionUsageKind &&
     bindingUsage.spec.usedBy.name === lambda.metadata.name;
 
   const bindingsRequest = useGetList()(

@@ -107,8 +107,6 @@ export default function CreateServiceBindingForm({
       existingCredentials: existingCredentials || undefined,
     };
 
-    // refetchServiceInstances(); //TODO what the fuck
-
     await createServiceBindingUsageSet(parameters);
   }
 

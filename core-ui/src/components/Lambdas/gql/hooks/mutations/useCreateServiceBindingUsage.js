@@ -23,14 +23,12 @@ export const useCreateServiceBindingUsage = ({ lambda }) => {
   );
 
   function handleError(serviceInstanceName, error) {
+    console.error(error);
     const errorToDisplay = extractGraphQlErrors(error);
 
     const message = formatMessage(
       GQL_MUTATIONS.CREATE_BINDING_USAGE.ERROR_MESSAGE,
-      {
-        serviceInstanceName,
-        error: errorToDisplay,
-      },
+      { serviceInstanceName },
     );
 
     notificationManager.notifyError({
@@ -136,78 +134,40 @@ export const useCreateServiceBindingUsage = ({ lambda }) => {
     serviceInstanceName,
     lambdaName,
     serviceBindingUsageParameters,
-    createCredentials = true,
     existingCredentials = undefined,
   }) {
-    let serviceBindingName = existingCredentials || randomNameGenerator();
+    try {
+      let serviceBindingName = existingCredentials || randomNameGenerator();
 
-    if (!existingCredentials)
-      await createServiceBinding(
-        serviceBindingName,
+      if (!existingCredentials)
+        await createServiceBinding(
+          serviceBindingName,
+          namespace,
+          serviceInstanceName,
+        );
+
+      await createServiceBindingUsage(
+        randomNameGenerator(),
         namespace,
-        serviceInstanceName,
+        serviceBindingName,
+        lambdaName,
+        serviceBindingUsageParameters,
       );
+    } catch (err) {
+      handleError(serviceInstanceName, err);
+      return;
+    }
 
-    const createdBindingUsage = await createServiceBindingUsage(
-      randomNameGenerator(),
-      namespace,
-      serviceBindingName,
-      lambdaName,
-      serviceBindingUsageParameters,
+    const message = formatMessage(
+      GQL_MUTATIONS.CREATE_BINDING_USAGE.SUCCESS_MESSAGE,
+      {
+        serviceInstanceName,
+      },
     );
 
-    // const createdResourceUID = createdResource?.metadata?.uid;
-
-    // try {
-    //   let response = null;
-    //   if (createCredentials) {
-    //     response = await createServiceBindingMutation({
-    //       variables: {
-    //         serviceInstanceName,
-    //         namespace: lambda.namespace,
-    //       },
-    //     });
-
-    //     if (response.error) {
-    //       handleError(serviceInstanceName, response.error);
-    //       return;
-    //     }
-    //   }
-
-    //   if (response && response.data) {
-    //     serviceBindingName = response.data.createServiceBinding.name;
-    //   }
-
-    //   const serviceBindingUsageInput = prepareServiceBindingUsageParameters({
-    //     serviceBindingName,
-    //     serviceBindingUsageParameters,
-    //   });
-
-    //   response = await createServiceBindingUsageMutation({
-    //     variables: {
-    //       createServiceBindingUsageInput: serviceBindingUsageInput,
-    //       namespace: lambda.namespace,
-    //     },
-    //   });
-
-    //   if (response.error) {
-    //     handleError(serviceInstanceName, response.error);
-    //     return;
-    //   }
-
-    //   const message = formatMessage(
-    //     GQL_MUTATIONS.CREATE_BINDING_USAGE.SUCCESS_MESSAGE,
-    //     {
-    //       serviceInstanceName,
-    //     },
-    //   );
-
-    //   notificationManager.notifySuccess({
-    //     content: message,
-    //   });
-    // } catch (err) {
-    //   handleError(serviceInstanceName, err);
-    // }
+    notificationManager.notifySuccess({
+      content: message,
+    });
   }
 
   return createServiceBindingUsageSet;
