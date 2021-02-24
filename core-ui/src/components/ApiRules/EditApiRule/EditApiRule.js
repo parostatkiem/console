@@ -49,7 +49,7 @@ export default function EditApiRule({ apiName }) {
     { name: apiName, path: `/details/${apiName}` },
     { name: '' },
   ];
-
+  console.log('apirule', data);
   return (
     <ApiRuleForm
       apiRule={data}

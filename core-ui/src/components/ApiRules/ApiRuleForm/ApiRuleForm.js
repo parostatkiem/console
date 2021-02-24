@@ -14,6 +14,7 @@ import {
   InlineHelp,
   Button,
 } from 'fundamental-react';
+import { supportedMethodsList } from '../accessStrategyTypes';
 
 import './ApiRuleForm.scss';
 import ApiRuleFormHeader from './ApiRuleFormHeader/ApiRuleFormHeader';
@@ -31,7 +32,7 @@ const DOMAIN = getApiUrl('domain');
 
 const EMPTY_ACCESS_STRATEGY = {
   path: '',
-  methods: [],
+  methods: supportedMethodsList,
   accessStrategies: [
     {
       handler: 'allow',
@@ -43,6 +44,7 @@ const EMPTY_ACCESS_STRATEGY = {
 ApiRuleForm.propTypes = {
   apiRule: PropTypes.object.isRequired,
   mutation: PropTypes.func.isRequired,
+  mutationType: PropTypes.string,
   saveButtonText: PropTypes.string.isRequired,
   headerTitle: PropTypes.string.isRequired,
   breadcrumbItems: PropTypes.arrayOf(
@@ -56,6 +58,7 @@ ApiRuleForm.propTypes = {
 export default function ApiRuleForm({
   apiRule,
   mutation,
+  mutationType,
   saveButtonText,
   headerTitle,
   breadcrumbItems,
@@ -136,7 +139,7 @@ export default function ApiRuleForm({
       metadata: {
         name: formValues.name.current.value,
         namespace: namespace,
-        generation: apiRule.metadata.generation,
+        generation: apiRule?.metadata?.generation || 1,
       },
       spec: {
         service: {
@@ -161,15 +164,17 @@ export default function ApiRuleForm({
         ...variables.spec,
       },
     };
-    const diff = createPatch(apiRule, newApiRule);
+    const mutationData =
+      mutationType === 'create' ? newApiRule : createPatch(apiRule, newApiRule);
 
     await mutation(
       formatMessage(API_RULE_URL, {
         name: formValues.name.current.value,
         namespace: namespace,
       }),
-      diff,
+      mutationData,
     );
+
     LuigiClient.uxManager().closeCurrentModal();
   }
 
