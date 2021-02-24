@@ -20,13 +20,14 @@ const ERRORS = {
 const saveText = REPOSITORY_CONFIG_PANEL.SAVE_BUTTON.TEXT;
 const editText = REPOSITORY_CONFIG_PANEL.EDIT_BUTTON.TEXT;
 
-export default function RepositoryConfig({ lambda }) {
+export default function RepositoryConfig({ lambda, lambdaUrl }) {
   const [isEditMode, setIsEditMode] = useState(false);
   const [isValid, setIsValid] = useState(true);
   const [errors, setErrors] = useState([]);
   const [editStatus, setEditStatus] = useState('');
   const updateLambda = useUpdateLambda({
     lambda,
+    lambdaUrl,
     type: UPDATE_TYPE.REPOSITORY_CONFIG,
   });
 
@@ -59,8 +60,8 @@ export default function RepositoryConfig({ lambda }) {
       setIsValid(false);
     } else {
       if (
-        referenceRef?.current?.value === lambda.reference &&
-        baseDirRef?.current?.value === lambda.baseDir
+        referenceRef?.current?.value === lambda.spec.reference &&
+        baseDirRef?.current?.value === lambda.spec.baseDir
       ) {
         setEditStatus(REPOSITORY_CONFIG_PANEL.ERRORS.NO_CHANGES);
         setIsValid(false);
@@ -102,8 +103,11 @@ export default function RepositoryConfig({ lambda }) {
     }
 
     updateLambda({
-      reference,
-      baseDir,
+      spec: {
+        ...lambda.spec,
+        reference: reference,
+        baseDir: baseDir,
+      },
     });
     setEditStatus(REPOSITORY_CONFIG_PANEL.ERRORS.NO_CHANGES);
   }
@@ -194,7 +198,7 @@ export default function RepositoryConfig({ lambda }) {
                   REPOSITORY_CONFIG_PANEL.INPUTS.REFERENCE.PLACEHOLDER
                 }
                 validate={validateReference}
-                firstValue={lambda.reference}
+                firstValue={lambda.spec.reference}
               />
             </Panel.Body>
           </Panel>
@@ -219,7 +223,7 @@ export default function RepositoryConfig({ lambda }) {
                   REPOSITORY_CONFIG_PANEL.INPUTS.BASE_DIR.PLACEHOLDER
                 }
                 validate={validateBaseDir}
-                firstValue={lambda.baseDir}
+                firstValue={lambda.spec.baseDir}
               />
             </Panel.Body>
           </Panel>

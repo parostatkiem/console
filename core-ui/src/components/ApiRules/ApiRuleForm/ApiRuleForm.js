@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { v4 as uuid } from 'uuid';
+import { createPatch } from 'rfc6902';
 import LuigiClient from '@luigi-project/client';
 import classNames from 'classnames';
 import { K8sNameInput, InputWithSuffix } from 'react-shared';
@@ -22,7 +23,7 @@ import AccessStrategyForm from './AccessStrategyForm/AccessStrategyForm';
 import { EXCLUDED_SERVICES_LABELS } from 'components/ApiRules/constants';
 import { hasValidMethods } from 'components/ApiRules/accessStrategyTypes';
 import { useGet } from 'react-shared';
-import { SERVICES_URL } from '../constants';
+import { SERVICES_URL, API_RULE_URL } from '../constants';
 import { formatMessage } from 'components/Lambdas/helpers/misc';
 
 export const DEFAULT_GATEWAY = 'kyma-gateway.kyma-system.svc.cluster.local';
@@ -123,7 +124,7 @@ export default function ApiRuleForm({
     e.target.classList.toggle('is-invalid', !isValid);
   }
 
-  function save() {
+  async function save() {
     if (!formRef.current.checkValidity()) {
       return;
     }
@@ -132,10 +133,12 @@ export default function ApiRuleForm({
     );
 
     const variables = {
-      name: formValues.name.current.value,
-      namespace,
-      generation: apiRule.generation,
-      params: {
+      metadata: {
+        name: formValues.name.current.value,
+        namespace: namespace,
+        generation: apiRule.metadata.generation,
+      },
+      spec: {
         service: {
           host: formValues.hostname.current.value + '.' + DOMAIN,
           name: serviceName,
@@ -145,7 +148,29 @@ export default function ApiRuleForm({
         rules: rules.map(({ renderKey, ...actualRule }) => actualRule),
       },
     };
-    mutation({ variables });
+
+    const newApiRule = {
+      ...apiRule,
+      ...variables,
+      metadata: {
+        ...apiRule.metadata,
+        ...variables.metadata,
+      },
+      spec: {
+        ...apiRule.spec,
+        ...variables.spec,
+      },
+    };
+    const diff = createPatch(apiRule, newApiRule);
+
+    await mutation(
+      formatMessage(API_RULE_URL, {
+        name: formValues.name.current.value,
+        namespace: namespace,
+      }),
+      diff,
+    );
+    LuigiClient.uxManager().closeCurrentModal();
   }
 
   function addAccessStrategy() {

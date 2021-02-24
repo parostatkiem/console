@@ -20,7 +20,7 @@ export default function CodeTab({ lambda, lambdaUrl, bindingUsages }) {
   return (
     <>
       {isGitSourceType(lambda?.spec?.type) ? (
-        <RepositoryConfig lambda={lambda} />
+        <RepositoryConfig lambda={lambda} lambdaUrl={lambdaUrl} />
       ) : (
         <CodeAndDependencies lambda={lambda} lambdaUrl={lambdaUrl} />
       )}

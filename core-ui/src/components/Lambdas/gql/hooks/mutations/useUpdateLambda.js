@@ -1,12 +1,10 @@
-import { useMutation } from '@apollo/react-hooks';
 import { useNotification, useUpdate } from 'react-shared';
 
 import { createPatch } from 'rfc6902';
 
-import { UPDATE_LAMBDA } from 'components/Lambdas/gql/mutations';
 import extractGraphQlErrors from 'shared/graphqlErrorExtractor';
 
-import { formatMessage, omitTypenames } from 'components/Lambdas/helpers/misc';
+import { formatMessage } from 'components/Lambdas/helpers/misc';
 import { GQL_MUTATIONS } from 'components/Lambdas/constants';
 
 export const UPDATE_TYPE = {
@@ -23,7 +21,7 @@ export const useUpdateLambda = ({
   type = UPDATE_TYPE.GENERAL_CONFIGURATION,
 }) => {
   const notificationManager = useNotification();
-  const updateLambdaMutation = useUpdate(lambdaUrl);
+  const updateLambdaMutation = useUpdate();
 
   function handleError(error) {
     const errorToDisplay = extractGraphQlErrors(error);
