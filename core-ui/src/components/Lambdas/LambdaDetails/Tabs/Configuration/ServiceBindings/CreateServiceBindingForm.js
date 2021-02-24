@@ -24,9 +24,9 @@ export default function CreateServiceBindingForm({
   setValidity = () => void 0,
   isOpen = false,
 }) {
-  const createServiceBindingUsage = useCreateServiceBindingUsage({ lambda });
+  const createServiceBindingUsageSet = useCreateServiceBindingUsage({ lambda });
 
-  const [serviceInstanceName, setServiceInstanceName] = useState('');
+  const [selectedServiceInstance, setSelectedServiceInstance] = useState('');
   const [envPrefix, setEnvPrefix] = useState('');
 
   const [createCredentials, setCreateCredentials] = useState(true);
@@ -44,23 +44,23 @@ export default function CreateServiceBindingForm({
   }, [isOpen, refetchServiceInstances]);
 
   useEffect(() => {
-    if (!serviceInstanceName) {
+    if (!selectedServiceInstance) {
       setEnvPrefix('');
       setCreateCredentials(true);
     }
 
     const instance = serviceInstances.find(
-      service => service.metadata.name === serviceInstanceName,
+      service => service.metadata.name === selectedServiceInstance,
     );
 
     // TODO: dunno what's going on
     // if (instance) {
     //   setSecrets(instance.serviceBindings.items);
     // }
-  }, [serviceInstanceName, serviceInstances]);
+  }, [selectedServiceInstance, serviceInstances]);
 
   useEffect(() => {
-    if (!serviceInstanceName) {
+    if (!selectedServiceInstance) {
       setPopupModalMessage(
         SERVICE_BINDINGS_PANEL.CREATE_MODAL.CONFIRM_BUTTON.POPUP_MESSAGES
           .NO_SERVICE_INSTANCE_SELECTED,
@@ -80,7 +80,7 @@ export default function CreateServiceBindingForm({
 
     setValidity(true);
   }, [
-    serviceInstanceName,
+    selectedServiceInstance,
     createCredentials,
     existingCredentials,
     setValidity,
@@ -89,12 +89,14 @@ export default function CreateServiceBindingForm({
 
   useEffect(() => {
     setExistingCredentials('');
-  }, [serviceInstanceName, createCredentials]);
+  }, [selectedServiceInstance, createCredentials]);
 
   async function handleFormSubmit(e) {
     e.preventDefault();
     const parameters = {
-      serviceInstanceName: serviceInstanceName,
+      lambdaName: lambda.metadata.name,
+      namespace: lambda.metadata.namespace,
+      serviceInstanceName: selectedServiceInstance,
       serviceBindingUsageParameters: envPrefix
         ? {
             envPrefix: {
@@ -106,8 +108,9 @@ export default function CreateServiceBindingForm({
       existingCredentials: existingCredentials || undefined,
     };
 
-    refetchServiceInstances();
-    await createServiceBindingUsage(parameters);
+    // refetchServiceInstances(); //TODO what the fuck
+
+    await createServiceBindingUsageSet(parameters);
   }
 
   const serviceInstancesNames = serviceInstances.map(({ metadata }) => (
@@ -133,8 +136,8 @@ export default function CreateServiceBindingForm({
         <FormLabel htmlFor="serviceInstanceName">Service Instance</FormLabel>
         <select
           id="serviceInstanceName"
-          value={serviceInstanceName}
-          onChange={e => setServiceInstanceName(e.target.value)}
+          value={selectedServiceInstance}
+          onChange={e => setSelectedServiceInstance(e.target.value)}
           required
         >
           <option value=""></option>
@@ -153,7 +156,7 @@ export default function CreateServiceBindingForm({
         />
       </FormItem>
 
-      {serviceInstanceName && (
+      {selectedServiceInstance && (
         <>
           <FormItem key="createCredentials">
             <Checkbox

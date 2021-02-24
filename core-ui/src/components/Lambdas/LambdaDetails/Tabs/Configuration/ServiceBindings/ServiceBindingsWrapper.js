@@ -42,7 +42,9 @@ export default function ServiceBindingsWrapper({
     return {
       serviceBindingUsage: usage,
       serviceBinding: binding,
-      secret: secrets.find(s => s.metadata.name === binding.spec.secretName),
+      secret: binding
+        ? secrets.find(s => s.metadata.name === binding.spec.secretName)
+        : undefined,
     };
   };
 

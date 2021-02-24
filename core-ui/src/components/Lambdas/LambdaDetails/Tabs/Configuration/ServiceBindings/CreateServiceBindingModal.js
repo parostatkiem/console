@@ -15,7 +15,7 @@ export default function CreateServiceBindingModal({
   const [popupModalMessage, setPopupModalMessage] = useState('');
 
   const serviceInstancesAlreadyUsed = serviceBindingsCombined.map(
-    ({ serviceBinding }) => serviceBinding.spec.instanceRef.name,
+    ({ serviceBinding }) => serviceBinding?.spec.instanceRef.name,
   );
 
   const isNotAlreadyUsed = serviceInstance =>
