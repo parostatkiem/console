@@ -25,12 +25,15 @@ export default function ServiceBindings({
     ({ serviceBindingUsage }) => serviceBindingUsage,
   );
 
-  const renderEnvs = secret => {
+  const renderEnvs = (secret, prefix = '') => {
     if (!secret) return 'Loading...'; // the secret is being created and will appear in a moment
     return (
       <>
         {Object.keys(secret.data).map(k => (
-          <div key={k}>{k}</div>
+          <div key={k}>
+            {prefix}
+            {k}
+          </div>
         ))}
       </>
     );
@@ -57,7 +60,7 @@ export default function ServiceBindings({
       handler: handleServiceBindingUsageDelete,
     },
   ];
-  const rowRenderer = ({ secret, serviceBinding }) => [
+  const rowRenderer = ({ secret, serviceBinding, serviceBindingUsage }) => [
     <Link
       className="link"
       data-test-id="service-instance-name"
@@ -71,8 +74,7 @@ export default function ServiceBindings({
     >
       {serviceBinding.spec.instanceRef.name}
     </Link>,
-
-    renderEnvs(secret),
+    renderEnvs(secret, serviceBindingUsage.spec.parameters?.envPrefix.name),
   ];
 
   const createServiceBindingModal = (
