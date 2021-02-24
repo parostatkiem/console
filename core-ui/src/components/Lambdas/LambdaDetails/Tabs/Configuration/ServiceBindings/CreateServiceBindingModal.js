@@ -27,14 +27,15 @@ export default function CreateServiceBindingModal({
     error,
     data: serviceInstances,
     silentRefetch: refetchServiceInstances,
-  } = useGetList(isNotAlreadyUsed)(
+  } = useGetList()(
     `/apis/servicecatalog.k8s.io/v1beta1/namespaces/${lambda.metadata.namespace}/serviceinstances`,
     {
       pollingInterval: 3000,
     },
   );
 
-  const hasAnyInstances = !!serviceInstances?.length;
+  const instancesNotBound = serviceInstances?.filter(isNotAlreadyUsed) || [];
+  const hasAnyInstances = !!instancesNotBound.length;
 
   let fallbackContent = null;
   if (error) {
@@ -77,7 +78,7 @@ export default function CreateServiceBindingModal({
         <CreateServiceBindingForm
           {...props}
           lambda={lambda}
-          serviceInstances={serviceInstances}
+          availableServiceInstances={instancesNotBound}
           setPopupModalMessage={setPopupModalMessage}
           serviceBindings={serviceBindingsCombined.map(
             ({ serviceBinding }) => serviceBinding,

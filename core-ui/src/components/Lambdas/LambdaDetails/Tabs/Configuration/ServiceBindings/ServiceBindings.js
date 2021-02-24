@@ -26,6 +26,7 @@ export default function ServiceBindings({
   );
 
   const renderEnvs = secret => {
+    if (!secret) return 'Loading...'; // the secret is being created and will appear in a moment
     return (
       <>
         {Object.keys(secret.data).map(k => (
@@ -70,6 +71,7 @@ export default function ServiceBindings({
     >
       {serviceBinding.spec.instanceRef.name}
     </Link>,
+
     renderEnvs(secret),
   ];
 
