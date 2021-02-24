@@ -110,7 +110,6 @@ export default function ApiRules({
       name: 'Edit',
       disabledHandler: apiRule => !!apiRule.ownerSubscription, // TODO what is this ownerSubscription?
       handler: apiRule => {
-        console.log('apiRule', apiRule);
         return editApiRuleModal(apiRule, inSubView, redirectPath, redirectCtx);
       },
     },

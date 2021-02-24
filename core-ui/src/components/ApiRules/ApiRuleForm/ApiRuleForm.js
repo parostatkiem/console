@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { v4 as uuid } from 'uuid';
-import { useQuery } from '@apollo/react-hooks';
 import LuigiClient from '@luigi-project/client';
 import classNames from 'classnames';
 import { K8sNameInput, InputWithSuffix } from 'react-shared';
@@ -17,12 +16,14 @@ import {
 
 import './ApiRuleForm.scss';
 import ApiRuleFormHeader from './ApiRuleFormHeader/ApiRuleFormHeader';
-import { GET_SERVICES } from '../../../gql/queries';
 import { getApiUrl } from '@kyma-project/common';
 import ServicesDropdown from './ServicesDropdown/ServicesDropdown';
 import AccessStrategyForm from './AccessStrategyForm/AccessStrategyForm';
 import { EXCLUDED_SERVICES_LABELS } from 'components/ApiRules/constants';
 import { hasValidMethods } from 'components/ApiRules/accessStrategyTypes';
+import { useGet } from 'react-shared';
+import { SERVICES_URL } from '../constants';
+import { formatMessage } from 'components/Lambdas/helpers/misc';
 
 export const DEFAULT_GATEWAY = 'kyma-gateway.kyma-system.svc.cluster.local';
 const DOMAIN = getApiUrl('domain');
@@ -74,12 +75,23 @@ export default function ApiRuleForm({
     apiRule.spec.service.port = port;
   }
 
-  const servicesQueryResult = useQuery(GET_SERVICES, {
-    variables: {
-      namespace,
-      excludedLabels: EXCLUDED_SERVICES_LABELS,
-    },
-  });
+  const { data, error, loading = true } = useGet(
+    formatMessage(SERVICES_URL, {
+      namespace: namespace,
+    }),
+    { pollingInterval: 3000 },
+  );
+
+  const services =
+    data?.items.filter(service => {
+      let show = true;
+      EXCLUDED_SERVICES_LABELS.forEach(excludedLabel => {
+        if (Object.keys(service?.metadata?.labels).includes([excludedLabel])) {
+          show = false;
+        }
+      });
+      return show;
+    }) || [];
 
   React.useEffect(() => setMethodsValid(rules.every(hasValidMethods)), [rules]);
 
@@ -214,7 +226,9 @@ export default function ApiRuleForm({
                       _ref={formValues.service}
                       defaultValue={apiRule.spec.service}
                       serviceName={serviceName}
-                      {...servicesQueryResult}
+                      data={services}
+                      error={error}
+                      loading={loading}
                     />
                   </LayoutGrid>
                 </FormGroup>

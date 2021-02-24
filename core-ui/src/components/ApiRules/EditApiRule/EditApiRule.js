@@ -26,15 +26,13 @@ export default function EditApiRule({ apiName }) {
   const {
     data,
     error,
-    loading,
+    loading = true,
   } = useGet(
     `/apis/gateway.kyma-project.io/v1alpha1/namespaces/${
       LuigiClient.getEventData().environmentId
     }/apirules/${apiName}`,
     { pollingInterval: 3000000 },
   );
-
-  console.log('Edit apiRules', data);
 
   if (loading) {
     return <Spinner />;

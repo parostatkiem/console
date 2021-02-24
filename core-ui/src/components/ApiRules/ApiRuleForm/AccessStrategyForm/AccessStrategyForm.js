@@ -29,7 +29,6 @@ export default function AccessStrategyForm({
   canDelete,
   handleFormChanged,
 }) {
-  console.log('strategy', strategy);
   const selectedType = strategy.accessStrategies[0].handler;
 
   const deleteButtonWrapper = canDelete

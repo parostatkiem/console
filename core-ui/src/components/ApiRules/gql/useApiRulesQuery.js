@@ -3,7 +3,7 @@ import { API_RULES_URL } from '../constants';
 import { formatMessage } from 'components/Lambdas/helpers/misc';
 
 export const useApiRulesQuery = ({ namespace, serviceName = undefined }) => {
-  const { data, error, loading, silentRefetch } = useGet(
+  const { data, error, loading = true, silentRefetch } = useGet(
     formatMessage(API_RULES_URL, {
       namespace: namespace,
     }),
