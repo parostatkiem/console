@@ -15,21 +15,21 @@ export default function ServiceBindingsWrapper({
   const { loading = true, error, data: serviceBindings } = useGetList()(
     `/apis/servicecatalog.k8s.io/v1beta1/namespaces/${lambda?.metadata.namespace}/servicebindings`,
     {
-      pollingInterval: 3000,
+      pollingInterval: 3100,
     },
   );
 
   const { /*loading = true, error,*/ data: bindingUsages } = useGetList()(
     `/apis/servicecatalog.kyma-project.io/v1alpha1/namespaces/${lambda?.metadata.namespace}/servicebindingusages`,
     {
-      pollingInterval: 3000,
+      pollingInterval: 2900,
     },
   );
 
   const { /*loading = true, error,*/ data: secrets } = useGetList()(
     `/api/v1/namespaces/${lambda?.metadata.namespace}/secrets`,
     {
-      pollingInterval: 3000,
+      pollingInterval: 3300,
     },
   );
 

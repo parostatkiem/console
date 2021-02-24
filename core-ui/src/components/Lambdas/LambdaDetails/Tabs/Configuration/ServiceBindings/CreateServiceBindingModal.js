@@ -22,9 +22,12 @@ export default function CreateServiceBindingModal({
   const isNotAlreadyUsed = serviceInstance =>
     !serviceInstancesAlreadyUsed.includes(serviceInstance.metadata.name);
 
-  const { loading = true, error, data: serviceInstances } = useGetList(
-    isNotAlreadyUsed,
-  )(
+  const {
+    loading = true,
+    error,
+    data: serviceInstances,
+    silentRefetch: refetchServiceInstances,
+  } = useGetList(isNotAlreadyUsed)(
     `/apis/servicecatalog.k8s.io/v1beta1/namespaces/${lambda.metadata.namespace}/serviceinstances`,
     {
       pollingInterval: 3000,
@@ -79,7 +82,7 @@ export default function CreateServiceBindingModal({
           serviceBindings={serviceBindingsCombined.map(
             ({ serviceBinding }) => serviceBinding,
           )}
-          // refetchServiceInstances={refetchServiceInstances}
+          refetchServiceInstances={refetchServiceInstances}
         />
       )}
     </div>
