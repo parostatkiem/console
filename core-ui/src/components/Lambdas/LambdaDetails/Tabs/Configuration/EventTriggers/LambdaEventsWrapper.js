@@ -7,7 +7,8 @@ import BebEventSubscription from 'shared/components/EventSubscriptions/BebEventS
 import LambdaEventTriggers from './EventTriggersWrapper';
 
 export default function LambdaEventsWrapper({ lambda }) {
-  const { bebEnabled } = useMicrofrontendContext();
+  // const { bebEnabled } = useMicrofrontendContext();
+  const bebEnabled = false; // for now
 
   if (bebEnabled) {
     return (
