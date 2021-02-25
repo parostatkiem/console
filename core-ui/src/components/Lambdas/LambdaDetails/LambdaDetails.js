@@ -69,7 +69,7 @@ export default function LambdaDetails({
             id="lambda-configuration"
             title={LAMBDA_DETAILS.TABS.CONFIGURATION.TITLE}
           >
-            {/* {apiRules} */}
+            {apiRules}
             {/* {eventTriggers} */}
             {serviceBindings}
           </Tab>

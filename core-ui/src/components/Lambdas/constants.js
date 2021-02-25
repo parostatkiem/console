@@ -283,6 +283,7 @@ export const LOGS_AND_METRICS = {
     },
   },
 };
+export const SERVICE_URL = `/api/v1/namespaces/{namespace}/services/{name}`;
 
 export const GQL_QUERIES = {
   LAMBDA: {

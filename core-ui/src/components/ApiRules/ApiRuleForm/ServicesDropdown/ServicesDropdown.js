@@ -19,14 +19,17 @@ const ServicesDropdown = ({
   if (error) {
     return "Couldn't load services list " + error.message;
   }
+  if (!loading && !data) {
+    return "Couldn't load services list " + error.message;
+  }
 
   const defaultService = defaultValue
     ? `${defaultValue.name}:${defaultValue.port}`
     : null;
 
   const services = serviceName
-    ? data.services.filter(s => s.name === serviceName)
-    : data.services;
+    ? data.filter(s => s.metadata.name === serviceName)
+    : data;
 
   return (
     <FormItem>
@@ -40,13 +43,13 @@ const ServicesDropdown = ({
       >
         {services.length ? (
           services.map(service =>
-            service.ports.map(port => (
+            service.spec.ports.map(port => (
               <option
                 aria-label="option"
-                key={service.name + port.port}
-                value={`${service.name}:${port.port}`}
+                key={service.metadata.name + port.port}
+                value={`${service.metadata.name}:${port.port}`}
               >
-                {service.name} (port: {port.port})
+                {service.metadata.name} (port: {port.port})
               </option>
             )),
           )
@@ -61,7 +64,7 @@ const ServicesDropdown = ({
 ServicesDropdown.propTypes = {
   _ref: CustomPropTypes.ref,
   loading: PropTypes.bool.isRequired,
-  data: PropTypes.object.isRequired,
+  data: PropTypes.array.isRequired,
   error: PropTypes.object,
   defaultValue: PropTypes.object,
   serviceName: PropTypes.string,

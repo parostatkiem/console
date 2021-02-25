@@ -56,7 +56,7 @@ describe('ApiRuleForm', () => {
     expect(typeSelects).toHaveLength(apiRule().spec.rules.length);
     typeSelects.forEach((typeSelect, idx) => {
       expect(typeSelect).toHaveValue(
-        apiRule().spec.rules[idx].accessStrategies[0].name,
+        apiRule().spec.rules[idx].accessStrategies[0].handler,
       );
     });
   });
@@ -98,7 +98,7 @@ describe('ApiRuleForm', () => {
             {
               methods: [],
               path: '/path',
-              accessStrategies: [{ name: 'allow', config: {} }],
+              accessStrategies: [{ handler: 'allow', config: {} }],
             },
           ],
         },

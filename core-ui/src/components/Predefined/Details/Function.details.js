@@ -7,8 +7,6 @@ import { LAMBDA_DETAILS } from 'components/Lambdas/constants';
 import { LambdaStatusBadge } from 'components/Lambdas/LambdaStatusBadge/LambdaStatusBadge';
 
 export const FunctionsDetails = DefaultRenderer => ({ ...otherParams }) => {
-  console.log('otherParams', otherParams);
-
   const customColumns = [
     {
       header: 'Status',

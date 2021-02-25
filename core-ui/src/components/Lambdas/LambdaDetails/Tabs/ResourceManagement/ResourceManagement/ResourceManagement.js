@@ -12,8 +12,6 @@ import {
   UPDATE_TYPE,
 } from 'components/Lambdas/gql/hooks/mutations/useUpdateLambda';
 import {
-  SERVERLESS_FUNCTION_RESOURCES_PRESET_LABEL,
-  SERVERLESS_BUILD_RESOURCES_PRESET_LABEL,
   BUTTONS,
   RESOURCES_MANAGEMENT_PANEL,
 } from 'components/Lambdas/constants';

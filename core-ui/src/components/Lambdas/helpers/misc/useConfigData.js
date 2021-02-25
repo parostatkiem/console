@@ -1,12 +1,6 @@
 import { useEffect } from 'react';
-import { useConfigMapQuery } from 'components/Lambdas/gql/hooks';
 import { useGet } from 'react-shared';
-import {
-  WEBHOOK_DEFAULTS_CM_NAME,
-  KYMA_SYSTEM_NAMESPACE,
-  WEBHOOK_ENVS,
-  updateConfig,
-} from 'components/Lambdas/config';
+import { WEBHOOK_ENVS, updateConfig } from 'components/Lambdas/config';
 
 import { updateResourcesValidationSchema } from 'components/Lambdas/LambdaDetails/Tabs/ResourceManagement/ResourceManagement/shared';
 

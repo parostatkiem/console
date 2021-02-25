@@ -1,30 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNotification } from 'react-shared';
-import { useQuery } from '@apollo/react-hooks';
-
-import { GET_SERVICE } from 'components/Lambdas/gql/queries';
+import { useGet } from 'react-shared';
 
 import { formatMessage } from 'components/Lambdas/helpers/misc';
-import { GQL_QUERIES } from 'components/Lambdas/constants';
+import { GQL_QUERIES, SERVICE_URL } from 'components/Lambdas/constants';
 import extractGraphQlErrors from 'shared/graphqlErrorExtractor';
 
 export const useServiceQuery = ({ name, namespace }) => {
-  const [service, setService] = useState(undefined);
   const notificationManager = useNotification();
 
-  const { data, error, loading } = useQuery(GET_SERVICE, {
-    variables: {
-      name,
-      namespace,
-    },
-    fetchPolicy: 'network-only',
-  });
-
-  useEffect(() => {
-    if (data && data.service) {
-      setService(data.service);
-    }
-  }, [data]);
+  const { data, error, loading } = useGet(
+    formatMessage(SERVICE_URL, {
+      namespace: namespace,
+      name: name,
+    }),
+    { pollingInterval: 3000000 },
+  );
+  const service = data;
 
   useEffect(() => {
     if (error) {
