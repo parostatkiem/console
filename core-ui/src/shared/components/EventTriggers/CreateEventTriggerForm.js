@@ -88,8 +88,8 @@ export default function CreateEventTriggerForm({
       />,
       <span>{event.eventType || '*'}</span>,
       <span>{event.version || '*'}</span>,
-      <span>{event.source || '*'}</span>,
-      <span>{event.description || '-'}</span>,
+      <span>{event.spec.sourceId || '*'}</span>,
+      <span>{event.spec.displayName || '-'}</span>,
     ];
     return isLambda
       ? baseCells

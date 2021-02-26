@@ -33,7 +33,7 @@ export default function EventTriggersWrapper({ lambda }) {
   //   subscriberRef,
   //   ownerRef,
   // });
-  const activationsUrl = `/apis/applicationconnector.kyma-project.io/v1alpha1/namespaces/${lambda.metadata.namespace}/eventactivations/`;
+  const activationsUrl = `/apis/applicationconnector.kyma-project.io/v1alpha1/namespaces/${lambda.metadata.namespace}/eventactivations`;
   const {
     data: events = [],
     error: activationsError,
