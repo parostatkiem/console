@@ -2,7 +2,9 @@
   "name": "logging",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {},
+  "dependencies": {
+    "lodash": "^4.17.21"
+  },
   "scripts": {
     "start": "PORT=8005 react-scripts start",
     "start:kyma": ". ../scripts/load-cluster-config.sh && BROWSER=none HOST=console-dev.kyma.local PORT=8005 react-scripts start",
