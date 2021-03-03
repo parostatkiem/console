@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import LuigiClient from '@luigi-project/client';
-import { useQuery } from '@apollo/react-hooks';
 
 import { instancesTabUtils } from '@kyma-project/react-components';
 import {
@@ -13,7 +12,6 @@ import {
 } from 'react-shared';
 import { Identifier } from 'fundamental-react';
 
-import { getAllServiceClasses } from './queries';
 import { serviceClassConstants } from 'helpers/constants';
 import { determineDisplayedItems } from 'helpers/search';
 
@@ -73,30 +71,27 @@ export default function ServiceClassList() {
     },
   );
 
-  if (serviceClassesRequest.error || clusterServiceClassesRequest.error) {
+  if (serviceClassesRequest.error || clusterServiceClassesRequest.error)
     return (
       <EmptyList>{serviceClassConstants.errorServiceClassesList}</EmptyList>
     );
-  }
 
   if (
     serviceClassesRequest.loading ||
     clusterServiceClassesRequest.loading ||
     !serviceClassesRequest.data ||
     !clusterServiceClassesRequest.data
-  ) {
+  )
     return (
       <EmptyList>
         <Spinner />
       </EmptyList>
     );
-  }
 
   const allServiceClasses = [
     ...serviceClassesRequest.data,
     ...clusterServiceClassesRequest.data,
   ];
-  console.log('all classes', allServiceClasses);
 
   const [filteredServices, filteredAddons] = determineDisplayedItems(
     allServiceClasses,
