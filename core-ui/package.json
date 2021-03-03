@@ -9,6 +9,7 @@
     "asyncapi-converter": "^0.4.2",
     "bytes-iec": "^3.1.0",
     "dompurify": "^2.0.8",
+    "lodash": "^4.17.21",
     "markdown-it": "^10.0.0",
     "openapi-sampler": "^1.0.0-beta.15",
     "react-ace": "^8.0.0",
