@@ -14,11 +14,13 @@ export const getDocumentsTypes = (items, docsSortedByType) => {
 };
 
 export const getResourceDisplayName = resource => {
-  if (!resource) {
-    return null;
-  }
+  if (!resource) return null;
 
-  return resource.displayName || resource.externalName || resource.name;
+  return (
+    resource.spec.externalMetadata?.displayName ||
+    resource.spec.externalName ||
+    resource.metadata.name
+  );
 };
 
 export const getDescription = resource => {

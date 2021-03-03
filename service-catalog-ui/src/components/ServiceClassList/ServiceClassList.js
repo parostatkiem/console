@@ -59,16 +59,6 @@ const status = (data, id) => {
 export default function ServiceClassList() {
   const [searchQuery, setSearchQuery] = useState('');
   const { namespaceId } = useMicrofrontendContext();
-  // const {
-  //   data: queryData,
-  //   loading: queryLoading,
-  //   error: queryError,
-  // } = useQuery(getAllServiceClasses, {
-  //   variables: {
-  //     namespace: LuigiClient.getContext().namespaceId,
-  //   },
-  //   fetchPolicy: 'no-cache',
-  // });
 
   const serviceClassesRequest = useGetList()(
     `/apis/servicecatalog.k8s.io/v1beta1/namespaces/${namespaceId}/serviceclasses`,
@@ -101,71 +91,70 @@ export default function ServiceClassList() {
       </EmptyList>
     );
   }
-  console.log('all classes', [
+
+  const allServiceClasses = [
     ...serviceClassesRequest.data,
     ...clusterServiceClassesRequest.data,
-  ]);
+  ];
+  console.log('all classes', allServiceClasses);
 
   const [filteredServices, filteredAddons] = determineDisplayedItems(
-    [...serviceClassesRequest.data, ...clusterServiceClassesRequest.data],
+    allServiceClasses,
     searchQuery,
   );
 
-  console.log(filteredServices, filteredAddons);
-  return 'xd';
+  return (
+    <>
+      <ServiceClassToolbar
+        searchQuery={searchQuery}
+        searchFn={setSearchQuery}
+        serviceClassesExists={allServiceClasses.length > 0}
+      />
 
-  // return (
-  //   <>
-  //     <ServiceClassToolbar
-  //       searchQuery={searchQuery}
-  //       searchFn={setSearchQuery}
-  //       serviceClassesExists={serviceClasses.length > 0}
-  //     />
-
-  //     <Tabs
-  //       defaultActiveTabIndex={determineSelectedTab()}
-  //       callback={handleTabChange}
-  //       className="header-styles"
-  //     >
-  //       <Tab
-  //         status={status(filteredServices.length, 'services-status')}
-  //         title={
-  //           <Tooltip content={serviceClassConstants.servicesTooltipDescription}>
-  //             {serviceClassConstants.services}
-  //           </Tooltip>
-  //         }
-  //       >
-  //         <>
-  //           <ServiceClassDescription>
-  //             {serviceClassConstants.servicesDescription}
-  //           </ServiceClassDescription>
-  //           <ServiceClassListWrapper>
-  //             <CardsWrapper data-e2e-id="cards">
-  //               <Cards data-e2e-id="cards" items={filteredServices} />
-  //             </CardsWrapper>
-  //           </ServiceClassListWrapper>
-  //         </>
-  //       </Tab>
-  //       <Tab
-  //         status={status(filteredAddons.length, 'addons-status')}
-  //         title={
-  //           <Tooltip content={serviceClassConstants.addonsTooltipDescription}>
-  //             {serviceClassConstants.addons}
-  //           </Tooltip>
-  //         }
-  //       >
-  //         <>
-  //           <ServiceClassDescription>
-  //             {serviceClassConstants.addonsDescription}
-  //           </ServiceClassDescription>
-  //           <ServiceClassListWrapper>
-  //             <CardsWrapper data-e2e-id="cards">
-  //               <Cards data-e2e-id="cards" items={filteredAddons} />
-  //             </CardsWrapper>
-  //           </ServiceClassListWrapper>
-  //         </>
-  //       </Tab>
-  //     </Tabs>
-  //   </>
-  // );
+      <Tabs
+        defaultActiveTabIndex={determineSelectedTab()}
+        callback={handleTabChange}
+        className="header-styles"
+      >
+        <Tab
+          status={status(filteredServices.length, 'services-status')}
+          title={
+            <Tooltip content={serviceClassConstants.servicesTooltipDescription}>
+              {serviceClassConstants.services}
+            </Tooltip>
+          }
+        >
+          <>
+            <ServiceClassDescription>
+              {serviceClassConstants.servicesDescription}
+            </ServiceClassDescription>
+            <ServiceClassListWrapper>
+              <CardsWrapper data-e2e-id="cards">
+                <Cards data-e2e-id="cards" items={filteredServices} />
+              </CardsWrapper>
+            </ServiceClassListWrapper>
+          </>
+        </Tab>
+        <Tab
+          status={status(filteredAddons.length, 'addons-status')}
+          title={
+            <Tooltip content={serviceClassConstants.addonsTooltipDescription}>
+              {serviceClassConstants.addons}
+            </Tooltip>
+          }
+        >
+          <>
+            <ServiceClassDescription>
+              {serviceClassConstants.addonsDescription}
+            </ServiceClassDescription>
+            <ServiceClassListWrapper>
+              <CardsWrapper data-e2e-id="cards">
+                <Cards data-e2e-id="cards" items={filteredAddons} />
+              </CardsWrapper>
+            </ServiceClassListWrapper>
+          </>
+        </Tab>
+      </Tabs>
+    </>
+  );
 }

@@ -69,9 +69,9 @@ export const determineDisplayedItems = (serviceClasses, searchQuery) => {
     const searchRegexp = new RegExp(searchQuery, 'i');
 
     return (
-      searchRegexp.test(item.spec.displayName) ||
+      searchRegexp.test(item.spec.externalMetadata?.displayName) ||
       searchRegexp.test(item.spec.description) ||
-      searchRegexp.test(item.spec.providerDisplayName)
+      searchRegexp.test(item.spec.externalMetadata?.providerDisplayName)
     );
   });
 

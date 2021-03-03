@@ -28,18 +28,21 @@ const Cards = ({ items }) => {
       .navigate(path);
   };
 
-  return items.map(item => (
-    <Card
-      key={item.name}
-      onClick={() => goToDetails(item)}
-      title={getResourceDisplayName(item)}
-      company={item.providerDisplayName}
-      description={item.description}
-      imageUrl={item.imageUrl}
-      labels={item.labels}
-      numberOfInstances={item.instances.length}
-    />
-  ));
+  return items.map(item => {
+    const externalMetadata = item.spec.externalMetadata || {};
+    return (
+      <Card
+        key={item.metadata.uid}
+        onClick={() => goToDetails(item)}
+        title={getResourceDisplayName(item)}
+        company={externalMetadata.providerDisplayName}
+        description={item.spec.description}
+        imageUrl={externalMetadata.imageUrl}
+        labels={externalMetadata.labels}
+        // numberOfInstances={item.instances.length}
+      />
+    );
+  });
 };
 
 Cards.propTypes = {
