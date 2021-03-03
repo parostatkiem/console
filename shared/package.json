@@ -21,7 +21,8 @@
   },
   "peerDependencies": {
     "react": "^16.8.6",
-    "fundamental-react": "0.8.0-rc.12"
+    "fundamental-react": "0.8.0-rc.12",
+    "lodash": "^4.17.21"
   },
   "jest": {
     "setupFilesAfterEnv": [
