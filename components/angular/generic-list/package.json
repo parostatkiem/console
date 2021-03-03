@@ -12,6 +12,7 @@
   "dependencies": {
     "@angular/router": "^7.2.1",
     "fundamental-ngx": "^0.7.0",
+    "lodash": "^4.17.21",
     "ng-click-outside": "^4.0.0"
   },
   "peerDependencies": {
