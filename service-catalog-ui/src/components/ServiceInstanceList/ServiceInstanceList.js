@@ -100,24 +100,11 @@ export default function ServiceInstancesList() {
     });
   };
 
-  const handleLabelChange = (labelId, checked) => {
-    if (checked) {
-      setActiveLabelFilters([...activeLabelFilters, labelId]);
-    } else {
-      setActiveLabelFilters(
-        [...activeLabelFilters].filter(label => label !== labelId),
-      );
-    }
-  };
-
   return (
     <ThemeWrapper>
       <ServiceInstanceToolbar
         searchQuery={searchQuery}
         searchFn={setSearchQuery}
-        onLabelChange={handleLabelChange}
-        activeLabelFilters={[]}
-        availableLabels={[]}
         serviceInstancesExists={serviceInstances.length > 0}
       />
 
