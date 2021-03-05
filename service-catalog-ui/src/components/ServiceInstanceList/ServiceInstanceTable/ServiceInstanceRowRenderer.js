@@ -2,7 +2,7 @@ import React from 'react';
 import LuigiClient from '@luigi-project/client';
 
 import { Icon } from 'fundamental-react';
-import { Modal } from 'react-shared';
+import { Modal, useMicrofrontendContext, useGetList } from 'react-shared';
 import {
   LinkButton,
   Link,
@@ -12,7 +12,6 @@ import {
   TextOverflowWrapper,
 } from './styled';
 
-import { getResourceDisplayName } from 'helpers';
 import { DOCUMENTATION_PER_PLAN_LABEL } from 'helpers/constants';
 import { ServiceInstanceStatus } from './../../../shared/ServiceInstanceStatus.js';
 
@@ -20,12 +19,6 @@ const goToServiceInstanceDetails = name => {
   LuigiClient.linkManager()
     .fromContext('namespaces')
     .navigate(`cmf-instances/details/${name}`);
-};
-
-const goToServiceClassDetailsWithPlan = (serviceClass, plan) => {
-  LuigiClient.linkManager()
-    .fromContext('namespaces')
-    .navigate(`cmf-service-catalog/details/${serviceClass}/plan/${plan}`);
 };
 
 const ServiceInstanceName = ({ instance }) => (
@@ -56,10 +49,13 @@ const ServiceClassName = ({ instance }) => {
   return (
     <TextOverflowWrapper>
       <ServiceClassButton
-        onClick={() =>
-          LuigiClient.linkManager()
-            .fromContext('namespaces')
-            .navigate(`cmf-service-catalog/details/${classRef}`)
+        onClick={
+          classRef
+            ? () =>
+                LuigiClient.linkManager()
+                  .fromContext('namespaces')
+                  .navigate(`cmf-service-catalog/details/${classRef}`)
+            : null
         }
         title={className}
       >
@@ -70,22 +66,20 @@ const ServiceClassName = ({ instance }) => {
 };
 
 const Plan = ({ instance }) => {
-  const plan = instance.clusterServicePlan || instance.servicePlan;
-  if (!plan) {
-    return '-';
-  }
-  const instanceClass = instance.clusterServiceClass || instance.serviceClass;
-  const serviceClassDocsPerPlan =
-    instance.serviceClass &&
-    instance.serviceClass.labels &&
-    instance.serviceClass.labels[DOCUMENTATION_PER_PLAN_LABEL] === 'true';
-  const planDisplayName = getResourceDisplayName(plan);
+  const planDisplayName =
+    instance.spec.servicePlanExternalName ||
+    instance.spec.clusterServicePlanExternalName;
+
+  const planRef =
+    instance.spec.servicePlanRef?.name ||
+    instance.spec.clusterServicePlanRef?.name;
+
+  if (!planDisplayName) return '-';
 
   if (
-    instance.planSpec &&
-    instance.planSpec !== null &&
-    typeof instance.planSpec === 'object' &&
-    Object.keys(instance.planSpec).length
+    instance.spec.parameters &&
+    typeof instance.spec.parameters === 'object' &&
+    Object.keys(instance.spec.parameters).length
   ) {
     return (
       <TextOverflowWrapper>
@@ -99,7 +93,7 @@ const Plan = ({ instance }) => {
           confirmText="Close"
         >
           <JSONCode data-e2e-id="service-plan-content">
-            {JSON.stringify(instance.planSpec, null, 2)}
+            {JSON.stringify(instance.spec.parameters, null, 2)}
           </JSONCode>
         </Modal>
       </TextOverflowWrapper>
@@ -107,23 +101,33 @@ const Plan = ({ instance }) => {
   }
   return (
     <TextOverflowWrapper>
-      {serviceClassDocsPerPlan ? (
-        <ServicePlanButton
-          data-e2e-id="service-plan"
-          onClick={() =>
-            goToServiceClassDetailsWithPlan(instanceClass.name, plan.name)
-          }
-        >
-          {planDisplayName}
-        </ServicePlanButton>
-      ) : (
-        <span data-e2e-id="service-plan">{planDisplayName}</span>
-      )}
+      <span data-e2e-id="service-plan">{planDisplayName}</span>
     </TextOverflowWrapper>
   );
 };
 
 const BindingUsagesCount = ({ instance }) => {
+  const { namespaceId } = useMicrofrontendContext();
+
+  const { data: bindingUsages } = useGetList()(
+    `/apis/servicecatalog.kyma-project.io/v1alpha1/namespaces/${namespaceId}/servicebindingusages`,
+    {
+      pollingInterval: 2900,
+    },
+  );
+
+  if (!bindingUsages)
+    return (
+      <div
+        className="fd-loading-spinner fd-loading-spinner--small"
+        aria-hidden="false"
+        aria-label="Loading"
+      ></div>
+    );
+
+  console.log(bindingUsages);
+  // I think this is not the way we should go
+
   const capitalize = str =>
     str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
