@@ -22,21 +22,6 @@ const goToServiceInstanceDetails = name => {
     .navigate(`cmf-instances/details/${name}`);
 };
 
-const goToServiceClassDetails = serviceClass => {
-  if (
-    serviceClass.labels &&
-    serviceClass.labels[DOCUMENTATION_PER_PLAN_LABEL] === 'true'
-  ) {
-    LuigiClient.linkManager()
-      .fromContext('namespaces')
-      .navigate(`cmf-service-catalog/details/${serviceClass.name}/plans`);
-  } else {
-    LuigiClient.linkManager()
-      .fromContext('namespaces')
-      .navigate(`cmf-service-catalog/details/${serviceClass.name}`);
-  }
-};
-
 const goToServiceClassDetailsWithPlan = (serviceClass, plan) => {
   LuigiClient.linkManager()
     .fromContext('namespaces')
@@ -47,30 +32,38 @@ const ServiceInstanceName = ({ instance }) => (
   <TextOverflowWrapper>
     <LinkButton data-e2e-id="instance-name">
       <Link
-        onClick={() => goToServiceInstanceDetails(instance.name)}
+        onClick={() => goToServiceInstanceDetails(instance.metadata.name)}
         data-e2e-id={`instance-name-${instance.name}`}
-        title={instance.name}
+        title={instance.metadata.name}
       >
-        {instance.name}
+        {instance.metadata.name}
       </Link>
     </LinkButton>
   </TextOverflowWrapper>
 );
 
 const ServiceClassName = ({ instance }) => {
-  const instanceClass = instance.clusterServiceClass || instance.serviceClass;
-  if (!instanceClass || !instanceClass.name) {
-    return '-';
-  }
+  const className =
+    instance.spec.serviceClassExternalName ||
+    instance.spec.clusterServiceClassExternalName;
 
-  const classTitle = getResourceDisplayName(instanceClass);
+  const classRef =
+    instance.spec.serviceClassRef?.name ||
+    instance.spec.clusterServiceClassRef?.name;
+
+  if (!className) return '-';
+
   return (
     <TextOverflowWrapper>
       <ServiceClassButton
-        onClick={() => goToServiceClassDetails(instanceClass)}
-        title={classTitle}
+        onClick={() =>
+          LuigiClient.linkManager()
+            .fromContext('namespaces')
+            .navigate(`cmf-service-catalog/details/${classRef}`)
+        }
+        title={className}
       >
-        {classTitle}
+        {className}
       </ServiceClassButton>
     </TextOverflowWrapper>
   );

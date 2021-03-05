@@ -110,97 +110,93 @@ export default function ServiceInstancesList() {
     }
   };
 
-  return 'xd';
+  console.log(serviceInstances);
 
-  // return (
-  //   <ThemeWrapper>
-  //     <ServiceInstanceToolbar
-  //       searchQuery={searchQuery}
-  //       searchFn={setSearchQuery}
-  //       onLabelChange={handleLabelChange}
-  //       activeLabelFilters={activeLabelFilters}
-  //       availableLabels={determineAvailableLabels(
-  //         serviceInstances,
-  //         determineSelectedTab(),
-  //         searchQuery,
-  //       )}
-  //       serviceInstancesExists={serviceInstances.length > 0}
-  //     />
+  return (
+    <ThemeWrapper>
+      <ServiceInstanceToolbar
+        searchQuery={searchQuery}
+        searchFn={setSearchQuery}
+        onLabelChange={handleLabelChange}
+        activeLabelFilters={[]}
+        availableLabels={[]}
+        serviceInstancesExists={serviceInstances.length > 0}
+      />
 
-  //     <NotificationMessage
-  //       type="error"
-  //       title="Error"
-  //       message={null} //TODO
-  //     />
+      <NotificationMessage
+        type="error"
+        title="Error"
+        message={null} //TODO
+      />
 
-  //     <Tabs
-  //       defaultActiveTabIndex={determineSelectedTab()}
-  //       callback={handleTabChange}
-  //       className="header-styles"
-  //     >
-  //       <Tab
-  //         status={status(
-  //           determineDisplayedInstances(
-  //             serviceInstances,
-  //             serviceInstanceConstants.servicesIndex,
-  //             searchQuery,
-  //             activeLabelFilters,
-  //           ).length,
-  //           'services-status',
-  //         )}
-  //         title={
-  //           <Tooltip
-  //             content={serviceInstanceConstants.servicesTooltipDescription}
-  //           >
-  //             {serviceInstanceConstants.services}
-  //           </Tooltip>
-  //         }
-  //       >
-  //         <ServiceInstancesWrapper data-e2e-id="instances-wrapper">
-  //           <ServiceInstanceTable
-  //             data={determineDisplayedInstances(
-  //               serviceInstances,
-  //               serviceInstanceConstants.servicesIndex,
-  //               searchQuery,
-  //               activeLabelFilters,
-  //             )}
-  //             deleteServiceInstance={handleDelete}
-  //             type="services"
-  //           />
-  //         </ServiceInstancesWrapper>
-  //       </Tab>
-  //       <Tab
-  //         status={status(
-  //           determineDisplayedInstances(
-  //             serviceInstances,
-  //             serviceInstanceConstants.addonsIndex,
-  //             searchQuery,
-  //             activeLabelFilters,
-  //           ).length,
-  //           'addons-status',
-  //         )}
-  //         title={
-  //           <Tooltip
-  //             content={serviceInstanceConstants.addonsTooltipDescription}
-  //           >
-  //             {serviceInstanceConstants.addons}
-  //           </Tooltip>
-  //         }
-  //       >
-  //         <ServiceInstancesWrapper data-e2e-id="instances-wrapper">
-  //           <ServiceInstanceTable
-  //             data={determineDisplayedInstances(
-  //               serviceInstances,
-  //               serviceInstanceConstants.addonsIndex,
-  //               searchQuery,
-  //               activeLabelFilters,
-  //             )}
-  //             deleteServiceInstance={handleDelete}
-  //             type="addons"
-  //           />
-  //         </ServiceInstancesWrapper>
-  //       </Tab>
-  //     </Tabs>
-  //   </ThemeWrapper>
-  // );
+      <Tabs
+        defaultActiveTabIndex={determineSelectedTab()}
+        callback={handleTabChange}
+        className="header-styles"
+      >
+        <Tab
+          status={status(
+            determineDisplayedInstances(
+              serviceInstances,
+              serviceInstanceConstants.servicesIndex,
+              searchQuery,
+              activeLabelFilters,
+            ).length,
+            'services-status',
+          )}
+          title={
+            <Tooltip
+              content={serviceInstanceConstants.servicesTooltipDescription}
+            >
+              {serviceInstanceConstants.services}
+            </Tooltip>
+          }
+        >
+          <ServiceInstancesWrapper data-e2e-id="instances-wrapper">
+            <ServiceInstanceTable
+              data={determineDisplayedInstances(
+                serviceInstances,
+                serviceInstanceConstants.servicesIndex,
+                searchQuery,
+                activeLabelFilters,
+              )}
+              deleteServiceInstance={handleDelete}
+              type="services"
+            />
+          </ServiceInstancesWrapper>
+        </Tab>
+        <Tab
+          status={status(
+            determineDisplayedInstances(
+              serviceInstances,
+              serviceInstanceConstants.addonsIndex,
+              searchQuery,
+              activeLabelFilters,
+            ).length,
+            'addons-status',
+          )}
+          title={
+            <Tooltip
+              content={serviceInstanceConstants.addonsTooltipDescription}
+            >
+              {serviceInstanceConstants.addons}
+            </Tooltip>
+          }
+        >
+          <ServiceInstancesWrapper data-e2e-id="instances-wrapper">
+            <ServiceInstanceTable
+              data={determineDisplayedInstances(
+                serviceInstances,
+                serviceInstanceConstants.addonsIndex,
+                searchQuery,
+                activeLabelFilters,
+              )}
+              deleteServiceInstance={handleDelete}
+              type="addons"
+            />
+          </ServiceInstancesWrapper>
+        </Tab>
+      </Tabs>
+    </ThemeWrapper>
+  );
 }
