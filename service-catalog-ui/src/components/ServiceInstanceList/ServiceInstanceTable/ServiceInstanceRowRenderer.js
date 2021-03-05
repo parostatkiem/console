@@ -106,64 +106,11 @@ const Plan = ({ instance }) => {
   );
 };
 
-const BindingUsagesCount = ({ instance }) => {
-  const { namespaceId } = useMicrofrontendContext();
-
-  const { data: bindingUsages } = useGetList()(
-    `/apis/servicecatalog.kyma-project.io/v1alpha1/namespaces/${namespaceId}/servicebindingusages`,
-    {
-      pollingInterval: 2900,
-    },
-  );
-
-  if (!bindingUsages)
-    return (
-      <div
-        className="fd-loading-spinner fd-loading-spinner--small"
-        aria-hidden="false"
-        aria-label="Loading"
-      ></div>
-    );
-
-  console.log(bindingUsages);
-  // I think this is not the way we should go
-
-  const capitalize = str =>
-    str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-
-  const displayBindingsUsages = (bindings = []) => {
-    if (!bindings) return null;
-
-    switch (bindings.length) {
-      case 0:
-        return '-';
-      case 1:
-        return `${bindings[0].usedBy.name} (${capitalize(
-          bindings[0].usedBy.kind,
-        )})`;
-      default:
-        return `Multiple (${bindings.length})`;
-    }
-  };
-
-  return (
-    <TextOverflowWrapper>
-      {displayBindingsUsages(instance.serviceBindingUsages)}
-    </TextOverflowWrapper>
-  );
-};
-
-export default function renderRow(
-  instance,
-  serviceCatalogAddonsBackendModuleExists,
-) {
+export default function renderRow(instance) {
   return [
     <ServiceInstanceName instance={instance} />,
     <ServiceClassName instance={instance} />,
     <Plan instance={instance} />,
-    ...(serviceCatalogAddonsBackendModuleExists
-      ? [<BindingUsagesCount instance={instance} />]
-      : []),
     <ServiceInstanceStatus instance={instance} />,
   ];
 }

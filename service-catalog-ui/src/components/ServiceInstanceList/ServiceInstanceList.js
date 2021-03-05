@@ -110,8 +110,6 @@ export default function ServiceInstancesList() {
     }
   };
 
-  console.log(serviceInstances);
-
   return (
     <ThemeWrapper>
       <ServiceInstanceToolbar
