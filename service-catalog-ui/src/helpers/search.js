@@ -10,14 +10,9 @@ export function determineDisplayedInstances(
   serviceInstances,
   tabIndex,
   searchQuery,
-  activeLabels,
 ) {
   const searched = serviceInstances.filter(instance =>
-    new RegExp(searchQuery, 'i').test(instance.name),
-  );
-
-  const filteredByLabels = searched.filter(instance =>
-    activeLabels.every(activeLabel => instance.labels.includes(activeLabel)),
+    new RegExp(searchQuery, 'i').test(instance.metadata.name),
   );
 
   const filterFunction =
@@ -25,43 +20,7 @@ export function determineDisplayedInstances(
       ? isAddonInstance
       : isServiceInstance;
 
-  const filteredByTab = filteredByLabels.filter(filterFunction);
-
-  return filteredByTab;
-}
-
-export function determineAvailableLabels(
-  serviceInstances,
-  tabName,
-  searchQuery,
-) {
-  const displayedInstances = determineDisplayedInstances(
-    serviceInstances,
-    tabName,
-    searchQuery,
-    [],
-  );
-
-  const allLabels = serviceInstances.reduce(
-    (labelsCombined, instance) => [...labelsCombined, ...instance.labels],
-    [],
-  );
-
-  const labelsWithOccurrences = allLabels.reduce(
-    (labelsWithOccurrences, label) => ({
-      ...labelsWithOccurrences,
-      [label]: 0,
-    }),
-    {},
-  );
-
-  displayedInstances.forEach(instance => {
-    instance.labels.forEach(label => {
-      ++labelsWithOccurrences[label];
-    });
-  });
-
-  return labelsWithOccurrences;
+  return searched.filter(filterFunction);
 }
 
 export const determineDisplayedItems = (serviceClasses, searchQuery) => {

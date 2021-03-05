@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import LuigiClient from '@luigi-project/client';
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/react-hooks';
 import {
   instancesTabUtils,
   NotificationMessage,
@@ -16,19 +16,13 @@ import {
 } from 'react-shared';
 import { Identifier } from 'fundamental-react';
 
-import { getAllServiceInstances } from 'helpers/instancesGQL/queries';
 import { deleteServiceInstance } from 'helpers/instancesGQL/mutations';
-import { SERVICE_INSTANCE_EVENT_SUBSCRIPTION } from 'helpers/instancesGQL/subscriptions';
 import { serviceInstanceConstants } from 'helpers/constants';
 
-import {
-  determineAvailableLabels,
-  determineDisplayedInstances,
-} from 'helpers/search';
+import { determineDisplayedInstances } from 'helpers/search';
 
 import ServiceInstanceTable from './ServiceInstanceTable/ServiceInstanceTable.component';
 import ServiceInstanceToolbar from './ServiceInstanceToolbar/ServiceInstanceToolbar.component';
-import { handleInstanceEventOnList } from 'helpers/instancesGQL/events';
 
 import {
   EmptyList,
@@ -66,8 +60,6 @@ const status = (data, id) => {
 
 export default function ServiceInstancesList() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeLabelFilters, setActiveLabelFilters] = useState([]);
-
   const { namespaceId } = useMicrofrontendContext();
 
   const [deleteServiceInstanceMutation] = useMutation(deleteServiceInstance);
@@ -84,6 +76,7 @@ export default function ServiceInstancesList() {
         <Spinner />
       </EmptyList>
     );
+
   if (error || !serviceInstances)
     return (
       <EmptyList>
@@ -125,7 +118,6 @@ export default function ServiceInstancesList() {
               serviceInstances,
               serviceInstanceConstants.servicesIndex,
               searchQuery,
-              activeLabelFilters,
             ).length,
             'services-status',
           )}
@@ -143,7 +135,6 @@ export default function ServiceInstancesList() {
                 serviceInstances,
                 serviceInstanceConstants.servicesIndex,
                 searchQuery,
-                activeLabelFilters,
               )}
               deleteServiceInstance={handleDelete}
               type="services"
@@ -156,7 +147,6 @@ export default function ServiceInstancesList() {
               serviceInstances,
               serviceInstanceConstants.addonsIndex,
               searchQuery,
-              activeLabelFilters,
             ).length,
             'addons-status',
           )}
@@ -174,7 +164,6 @@ export default function ServiceInstancesList() {
                 serviceInstances,
                 serviceInstanceConstants.addonsIndex,
                 searchQuery,
-                activeLabelFilters,
               )}
               deleteServiceInstance={handleDelete}
               type="addons"

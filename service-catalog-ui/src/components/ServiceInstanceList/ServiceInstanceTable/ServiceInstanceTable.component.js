@@ -55,6 +55,7 @@ export class ServiceInstanceTable extends Component {
         rowRenderer={rowRenderer}
         notFoundMessage="No Service Instances found"
         hasExternalMargin={false}
+        textSearchProperties={['metadata.name']}
       />
     );
   }
