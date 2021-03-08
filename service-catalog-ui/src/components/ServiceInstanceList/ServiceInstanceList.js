@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import LuigiClient from '@luigi-project/client';
-import { useMutation } from '@apollo/react-hooks';
 import {
   instancesTabUtils,
   NotificationMessage,
@@ -18,9 +17,7 @@ import {
 } from 'react-shared';
 import { Identifier } from 'fundamental-react';
 
-import { deleteServiceInstance } from 'helpers/instancesGQL/mutations';
 import { serviceInstanceConstants } from 'helpers/constants';
-
 import { determineDisplayedInstances } from 'helpers/search';
 
 import ServiceInstanceTable from './ServiceInstanceTable/ServiceInstanceTable.component';
@@ -86,8 +83,6 @@ export default function ServiceInstancesList() {
         An error occurred while loading Service Instances List
       </EmptyList>
     );
-
-  console.log(serviceInstances);
 
   const handleDelete = async instanceName => {
     try {
