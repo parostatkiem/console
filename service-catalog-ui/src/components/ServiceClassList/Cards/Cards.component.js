@@ -7,7 +7,11 @@ import Card from './Card.component';
 
 import { getResourceDisplayName, isStringValueEqualToTrue } from 'helpers';
 
-const Cards = ({ items }) => {
+const filterInstancesForClass = serviceClass => instance =>
+  instance.spec.clusterServiceClassRef?.name === serviceClass.metadata.name ||
+  instance.spec.serviceClassRef?.name === serviceClass.metadata.name;
+
+const Cards = ({ items, serviceInstances }) => {
   const goToDetails = item => {
     const documentationPerPlan =
       item.labels &&
@@ -30,6 +34,10 @@ const Cards = ({ items }) => {
 
   return items.map(item => {
     const externalMetadata = item.spec.externalMetadata || {};
+    const instancesOfThisClass = serviceInstances
+      ? serviceInstances.filter(filterInstancesForClass(item))
+      : [];
+
     return (
       <Card
         key={item.metadata.uid}
@@ -39,7 +47,7 @@ const Cards = ({ items }) => {
         description={item.spec.description}
         imageUrl={externalMetadata.imageUrl}
         labels={externalMetadata.labels}
-        // numberOfInstances={item.instances.length}
+        numberOfInstances={instancesOfThisClass.length}
       />
     );
   });

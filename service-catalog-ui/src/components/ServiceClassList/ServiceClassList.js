@@ -71,6 +71,13 @@ export default function ServiceClassList() {
     },
   );
 
+  const serviceInstancesRequest = useGetList()(
+    `/apis/servicecatalog.k8s.io/v1beta1/namespaces/${namespaceId}/serviceinstances`,
+    {
+      pollingInterval: 3300,
+    },
+  );
+
   if (serviceClassesRequest.error || clusterServiceClassesRequest.error)
     return (
       <EmptyList>{serviceClassConstants.errorServiceClassesList}</EmptyList>
@@ -125,7 +132,11 @@ export default function ServiceClassList() {
             </ServiceClassDescription>
             <ServiceClassListWrapper>
               <CardsWrapper data-e2e-id="cards">
-                <Cards data-e2e-id="cards" items={filteredServices} />
+                <Cards
+                  data-e2e-id="cards"
+                  items={filteredServices}
+                  serviceInstances={serviceInstancesRequest.data}
+                />
               </CardsWrapper>
             </ServiceClassListWrapper>
           </>
@@ -144,7 +155,11 @@ export default function ServiceClassList() {
             </ServiceClassDescription>
             <ServiceClassListWrapper>
               <CardsWrapper data-e2e-id="cards">
-                <Cards data-e2e-id="cards" items={filteredAddons} />
+                <Cards
+                  data-e2e-id="cards"
+                  items={filteredAddons}
+                  serviceInstances={serviceInstancesRequest.data}
+                />
               </CardsWrapper>
             </ServiceClassListWrapper>
           </>
