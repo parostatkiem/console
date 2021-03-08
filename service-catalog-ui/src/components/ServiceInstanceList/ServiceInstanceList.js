@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import LuigiClient from '@luigi-project/client';
 import { useMutation } from '@apollo/react-hooks';
 import {
@@ -13,6 +13,8 @@ import {
   Tooltip,
   useGetList,
   useMicrofrontendContext,
+  useDelete,
+  useNotification,
 } from 'react-shared';
 import { Identifier } from 'fundamental-react';
 
@@ -61,8 +63,9 @@ const status = (data, id) => {
 export default function ServiceInstancesList() {
   const [searchQuery, setSearchQuery] = useState('');
   const { namespaceId } = useMicrofrontendContext();
+  const sendDeleteRequest = useDelete();
+  const notificationManager = useNotification();
 
-  const [deleteServiceInstanceMutation] = useMutation(deleteServiceInstance);
   const { loading, error, data: serviceInstances } = useGetList()(
     `/apis/servicecatalog.k8s.io/v1beta1/namespaces/${namespaceId}/serviceinstances`,
     {
@@ -84,13 +87,22 @@ export default function ServiceInstancesList() {
       </EmptyList>
     );
 
-  const handleDelete = instanceName => {
-    deleteServiceInstanceMutation({
-      variables: {
-        namespace: LuigiClient.getContext().namespaceId,
-        name: instanceName,
-      },
-    });
+  console.log(serviceInstances);
+
+  const handleDelete = async instanceName => {
+    try {
+      await sendDeleteRequest(
+        `/apis/servicecatalog.k8s.io/v1beta1/namespaces/${namespaceId}/serviceinstances/${instanceName}`,
+      );
+      notificationManager.notifySuccess({
+        content: 'Succesfully deleted ' + instanceName,
+      });
+    } catch (e) {
+      notificationManager.notifyError({
+        title: 'Failed to delete the Service Instance',
+        content: e.message,
+      });
+    }
   };
 
   return (

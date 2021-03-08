@@ -25,8 +25,11 @@ export class ServiceInstanceTable extends Component {
         name: 'Delete Instance',
         icon: 'delete',
         handler: entry =>
-          handleDelete('Service Instance', entry.id, entry.name, () =>
-            deleteServiceInstance(entry.name),
+          handleDelete(
+            'Service Instance',
+            entry.metadata.uid,
+            entry.metadata.name,
+            () => deleteServiceInstance(entry.metadata.name),
           ),
       },
     ];
