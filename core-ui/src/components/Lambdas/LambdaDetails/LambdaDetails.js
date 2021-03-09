@@ -62,7 +62,7 @@ export default function LambdaDetails({ lambda, backendModules = [] }) {
             title={LAMBDA_DETAILS.TABS.CONFIGURATION.TITLE}
           >
             {apiRules}
-            {/* {eventTriggers} */}
+            {eventTriggers}
             {serviceBindings}
           </Tab>
         )}
