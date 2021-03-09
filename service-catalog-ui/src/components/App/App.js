@@ -6,7 +6,6 @@ import ServiceClassDetails from '../ServiceClassDetails/ServiceClassDetails';
 import ServiceClassPlansList from '../ServiceClassPlansList/ServiceClassPlansList';
 import ServiceInstancesList from '../ServiceInstanceList/ServiceInstanceList';
 import ServiceInstancesDetails from '../ServiceInstanceDetails/ServiceInstanceDetails';
-import ServiceBrokers from '../ServiceBrokers/ServiceBrokers';
 import { NotificationProvider, withTitle } from 'react-shared';
 
 import {
@@ -51,11 +50,6 @@ const App = () => (
         exact
         path="/instances/details/:name"
         render={withTitle(INSTANCES_TITLE, ServiceInstancesDetails)}
-      />
-
-      <Route
-        path="/brokers"
-        render={withTitle(SERVICE_BROKERS_TITLE, ServiceBrokers)}
       />
     </Switch>
   </NotificationProvider>
