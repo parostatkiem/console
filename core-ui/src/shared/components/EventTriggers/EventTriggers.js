@@ -51,7 +51,6 @@ function EventTriggerSource({ source }) {
 
 export default function EventTriggers({
   eventTriggers = [],
-  availableEvents = [],
   isLambda = false,
   servicePorts = [],
   serverDataError,
@@ -90,8 +89,6 @@ export default function EventTriggers({
       isLambda={isLambda}
       servicePorts={servicePorts}
       onSubmit={onTriggersAdd}
-      queryError={serverDataError}
-      availableEvents={availableEvents}
     />
   );
 
@@ -121,7 +118,6 @@ export default function EventTriggers({
 
 EventTriggers.propTypes = {
   eventTriggers: PropTypes.array.isRequired,
-  availableEvents: PropTypes.array.isRequired,
   serverDataError: PropTypes.any,
   serverDataLoading: PropTypes.bool,
   onTriggerDelete: PropTypes.func.isRequired,

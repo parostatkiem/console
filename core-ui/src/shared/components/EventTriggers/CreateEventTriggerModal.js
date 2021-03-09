@@ -12,39 +12,18 @@ export default function CreateEventTriggerModal({
   isLambda = false,
   servicePorts,
   onSubmit,
-  queryError,
-  availableEvents = [],
 }) {
-  const availableEventsExist = availableEvents.length;
   const isServiceWithNoPorts = !isLambda && !servicePorts.length;
 
   const button = (
-    <Button
-      glyph="add"
-      option="light"
-      disabled={Boolean(
-        queryError || !availableEventsExist || isServiceWithNoPorts,
-      )}
-    >
+    <Button glyph="add" option="light" disabled={Boolean(isServiceWithNoPorts)}>
       {EVENT_TRIGGERS_PANEL.ADD_MODAL.OPEN_BUTTON.TEXT}
     </Button>
   );
 
   let modalOpeningComponent = button;
-  if (!queryError && !availableEventsExist) {
-    modalOpeningComponent = (
-      <Tooltip
-        content={
-          EVENT_TRIGGERS_PANEL.ADD_MODAL.OPEN_BUTTON.NOT_ENTRIES_POPUP_MESSAGE
-        }
-        tippyProps={{
-          distance: 16,
-        }}
-      >
-        {button}
-      </Tooltip>
-    );
-  } else if (isServiceWithNoPorts) {
+
+  if (isServiceWithNoPorts) {
     modalOpeningComponent = (
       <Tooltip
         content={
@@ -72,7 +51,6 @@ export default function CreateEventTriggerModal({
           isLambda={isLambda}
           servicePorts={servicePorts}
           onSubmit={onSubmit}
-          availableEvents={availableEvents}
         />
       )}
     />

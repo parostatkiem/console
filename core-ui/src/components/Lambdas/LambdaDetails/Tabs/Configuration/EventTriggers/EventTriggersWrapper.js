@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import { useGetList, Spinner } from 'react-shared';
 import EventTriggers from 'shared/components/EventTriggers/EventTriggers';
 import {
   useEventActivationsQuery,
@@ -10,7 +10,6 @@ import {
   SERVERLESS_API_VERSION,
   SERVERLESS_RESOURCE_KIND,
 } from '../../../../constants';
-
 import {
   useDeleteEventTrigger,
   useCreateManyEventTriggers,
@@ -21,56 +20,48 @@ import {
 } from 'components/Lambdas/helpers/eventTriggers';
 
 export default function EventTriggersWrapper({ lambda }) {
-  const subscriberRef = createSubscriberRef(lambda);
+  // const subscriberRef = createSubscriberRef(lambda);
+  // const ownerRef = {
+  //   apiVersion: SERVERLESS_API_VERSION,
+  //   kind: SERVERLESS_RESOURCE_KIND,
+  //   name: lambda.name,
+  //   UID: lambda.UID,
+  // };
+  // const deleteEventTrigger = useDeleteEventTrigger(lambda);
+  // const createManyEventTriggers = useCreateManyEventTriggers({
+  //   ...lambda,
+  //   subscriberRef,
+  //   ownerRef,
+  // });
 
-  const ownerRef = {
-    apiVersion: SERVERLESS_API_VERSION,
-    kind: SERVERLESS_RESOURCE_KIND,
-    name: lambda.name,
-    UID: lambda.UID,
-  };
+  const eventsUrl = `/apis/eventing.knative.dev/v1alpha1/namespaces/${lambda.metadata.namespace}/triggers`;
+  const filterByOwnerRef = ({ metadata }) =>
+    metadata.ownerReferences?.find(
+      ref => ref.kind === 'Function' && ref.name === lambda.metadata.name,
+    );
 
-  const deleteEventTrigger = useDeleteEventTrigger(lambda);
-  const createManyEventTriggers = useCreateManyEventTriggers({
-    ...lambda,
-    subscriberRef,
-    ownerRef,
+  const {
+    data: eventTriggers = [],
+    error: triggersError,
+    loading: triggersLoading,
+  } = useGetList(filterByOwnerRef)(eventsUrl, {
+    pollingInterval: 3000,
   });
+  if (!eventTriggers) return <Spinner />;
+  // console.log(events, eventTriggers);
 
-  const [
-    events = [],
-    activationsError,
-    activationsLoading,
-  ] = useEventActivationsQuery({
-    namespace: lambda.namespace,
-  });
-  const [
-    eventTriggers = [],
-    triggersError,
-    triggersLoading,
-  ] = useEventTriggersQuery({
-    namespace: lambda.namespace,
-    serviceName: lambda.name,
-  });
-
-  const { availableEvents, usedEvents } = serializeEvents({
-    events,
-    eventTriggers,
-  });
-
+  // return null;
   return (
     <EventTriggers
       isLambda={true}
-      onTriggerDelete={deleteEventTrigger}
-      onTriggersAdd={createManyEventTriggers}
-      eventTriggers={usedEvents || []}
-      availableEvents={availableEvents || []}
-      serverDataError={activationsError || triggersError || false}
-      serverDataLoading={activationsLoading || triggersLoading || false}
+      // onTriggerDelete={deleteEventTrigger}
+      // onTriggersAdd={createManyEventTriggers}
+      eventTriggers={eventTriggers || []}
+      serverDataError={triggersError || false}
+      serverDataLoading={triggersLoading || false}
     />
   );
 }
-
 EventTriggersWrapper.propTypes = {
   lambda: PropTypes.object.isRequired,
 };
