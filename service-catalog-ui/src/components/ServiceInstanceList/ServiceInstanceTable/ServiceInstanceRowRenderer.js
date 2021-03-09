@@ -2,7 +2,7 @@ import React from 'react';
 import LuigiClient from '@luigi-project/client';
 
 import { Icon } from 'fundamental-react';
-import { Modal, useMicrofrontendContext, useGetList } from 'react-shared';
+import { Modal } from 'react-shared';
 import {
   LinkButton,
   Link,
@@ -12,7 +12,6 @@ import {
   TextOverflowWrapper,
 } from './styled';
 
-import { DOCUMENTATION_PER_PLAN_LABEL } from 'helpers/constants';
 import { ServiceInstanceStatus } from './../../../shared/ServiceInstanceStatus.js';
 
 const goToServiceInstanceDetails = name => {
@@ -69,10 +68,6 @@ const Plan = ({ instance }) => {
   const planDisplayName =
     instance.spec.servicePlanExternalName ||
     instance.spec.clusterServicePlanExternalName;
-
-  const planRef =
-    instance.spec.servicePlanRef?.name ||
-    instance.spec.clusterServicePlanRef?.name;
 
   if (!planDisplayName) return '-';
 
