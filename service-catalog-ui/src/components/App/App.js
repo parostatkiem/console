@@ -8,11 +8,7 @@ import ServiceInstancesList from '../ServiceInstanceList/ServiceInstanceList';
 import ServiceInstancesDetails from '../ServiceInstanceDetails/ServiceInstanceDetails';
 import { NotificationProvider, withTitle } from 'react-shared';
 
-import {
-  CATALOG_TITLE,
-  INSTANCES_TITLE,
-  SERVICE_BROKERS_TITLE,
-} from '../../shared/constants';
+import { CATALOG_TITLE, INSTANCES_TITLE } from '../../shared/constants';
 
 const App = () => (
   <NotificationProvider>
