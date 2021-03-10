@@ -1,27 +1,13 @@
 .create-event-trigger-form {
-  .fd-panel__head {
-    display: none;
+  display: grid;
+  grid-template-columns: 1fr 2px 1.5fr;
+  grid-gap: 1.5em;
+
+  &--divider {
+    background-color: var(--fd-color-neutral-3);
   }
 
-  .fd-panel__actions {
-    margin-left: 0;
-    margin-right: 0;
-    width: 100%;
-  }
-
-  .generic-list__search,
-  .generic-list-search,
-  .fd-popover__control,
-  .fd-combobox-control {
-    width: 100%;
-  }
-
-  .fd-combobox-control > input {
-    width: 100%;
-    margin-right: 0;
-  } 
-
-  .fd-input {
-    border-width: 1px !important;
+  @media screen and (max-width: 768px) {
+    display: block;
   }
 }
