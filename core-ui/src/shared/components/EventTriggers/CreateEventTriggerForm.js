@@ -11,8 +11,10 @@ import {
   FormLegend,
 } from 'fundamental-react';
 import { SchemaComponent } from './Schema/Schema';
-import { StringInput } from 'react-shared';
+import { InputWithPrefix } from 'react-shared';
 import './CreateEventTriggerForm.scss';
+
+const EVENT_TYPE_PREFIX = 'sap.kyma.custom.';
 
 export default function CreateEventTriggerForm({
   formElementRef,
@@ -47,6 +49,7 @@ export default function CreateEventTriggerForm({
     if (!inputFields.every(i => i.current?.value)) return; //cannot calculate value
 
     const newValue = inputFields.map(f => f.current.value).join('.');
+    console.log(eventTypeFinalInput);
     eventTypeFinalInput.current.value = newValue;
   }
 
@@ -124,7 +127,8 @@ export default function CreateEventTriggerForm({
           >
             eventType field value
           </FormLabel>
-          <FormInput
+          <InputWithPrefix
+            prefix={EVENT_TYPE_PREFIX}
             ref={eventTypeFinalInput}
             onChange={handleEventTypeManualChange}
             required
