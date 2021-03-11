@@ -4,7 +4,7 @@ import LuigiClient from '@luigi-project/client';
 
 import { GenericList } from 'react-shared';
 
-import { SchemaComponent } from './Schema/Schema';
+// import { SchemaComponent } from './Schema/Schema';
 
 import { EVENT_TRIGGERS_PANEL, ERRORS } from '../../constants';
 
@@ -75,7 +75,7 @@ export default function EventTriggers({
       <>
         <td></td>
         <td colSpan="6">
-          <SchemaComponent schema={eventTrigger.schema} />
+          {/* <SchemaComponent schema={eventTrigger.schema} /> */}
         </td>
         <td></td>
       </>

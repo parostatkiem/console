@@ -1,9 +1,8 @@
 import React from 'react';
 
 import { Button } from 'fundamental-react';
-import { Tooltip } from 'react-shared';
+import { Tooltip, ModalWithForm } from 'react-shared';
 
-import { ModalWithForm } from 'react-shared';
 import CreateEventTriggerForm from './CreateEventTriggerForm';
 
 import { EVENT_TRIGGERS_PANEL } from '../../constants';

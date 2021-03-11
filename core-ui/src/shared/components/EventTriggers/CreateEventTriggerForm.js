@@ -11,7 +11,7 @@ import {
   FormLegend,
   Icon,
 } from 'fundamental-react';
-import { SchemaComponent } from './Schema/Schema';
+// import { SchemaComponent } from './Schema/Schema';
 import { InputWithPrefix } from 'react-shared';
 import './CreateEventTriggerForm.scss';
 
