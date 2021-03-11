@@ -21,7 +21,7 @@ export const EVENT_TRIGGERS_PANEL = {
     },
   },
   ADD_MODAL: {
-    TITLE: 'Add Event Trigger',
+    TITLE: 'Add Event Subscription',
     OPEN_BUTTON: {
       TEXT: 'Add Event Trigger',
       NOT_ENTRIES_POPUP_MESSAGE:

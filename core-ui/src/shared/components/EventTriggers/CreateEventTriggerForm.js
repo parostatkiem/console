@@ -9,6 +9,7 @@ import {
   FormGroup,
   FormFieldset,
   FormLegend,
+  Icon,
 } from 'fundamental-react';
 import { SchemaComponent } from './Schema/Schema';
 import { InputWithPrefix } from 'react-shared';
@@ -67,7 +68,15 @@ export default function CreateEventTriggerForm({
       className="create-event-trigger-form"
     >
       <FormFieldset>
-        <h2 className="fd-has-type-3">Calculate eventType field value</h2>
+        <h2 className="fd-has-type-4">
+          <Icon size="m" className="icon" glyph="process" />
+          Calculate
+          <span className="fd-has-font-style-italic fd-has-margin">
+            {' '}
+            eventType{' '}
+          </span>
+          field value
+        </h2>
 
         <FormItem>
           <FormLabel
@@ -118,7 +127,15 @@ export default function CreateEventTriggerForm({
       </FormFieldset>
       <div className="create-event-trigger-form--divider"></div>
       <FormFieldset>
-        <h2 className="fd-has-type-3">Enter eventType field value manually</h2>
+        <h2 className="fd-has-type-4">
+          <Icon size="m" className="icon" glyph="edit" />
+          Enter
+          <span className="fd-has-font-style-italic fd-has-margin">
+            {' '}
+            eventType{' '}
+          </span>
+          field value manually
+        </h2>
         <FormItem>
           <FormLabel
             htmlFor="final_value"
@@ -132,7 +149,7 @@ export default function CreateEventTriggerForm({
             ref={eventTypeFinalInput}
             onChange={handleEventTypeManualChange}
             required
-            placeholder="The eventType value used to create the subscriptions"
+            placeholder="The eventType value used to create the subscription"
             id="final_value"
           />
         </FormItem>
