@@ -5,7 +5,7 @@ import { GenericList } from 'react-shared';
 import { EVENT_TRIGGERS_PANEL, ERRORS } from '../../constants';
 import CreateEventSubscriptionModal from './CreateEventSubscriptionModal';
 
-const textSearchProperties = ['eventType', 'version', 'source', 'description']; //TODO
+const textSearchProperties = ['metadata.name', 'spec.protocol']; //TODO add filtering by eventType
 
 export default function EventSubscriptions({
   subscriptions = [],
