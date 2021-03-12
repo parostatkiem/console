@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useGetList, Spinner, usePost, useNotification } from 'react-shared';
-import EventTriggers from 'shared/components/EventTriggers/EventTriggers';
+import EventSubscriptions from 'shared/components/EventSubscriptions/EventSubscriptions';
 import {
   useEventActivationsQuery,
   useEventTriggersQuery,
@@ -94,11 +94,11 @@ export default function EventTriggersWrapper({ lambda }) {
 
   // return null;
   return (
-    <EventTriggers
+    <EventSubscriptions
       isLambda={true}
       // onTriggerDelete={deleteEventTrigger}
-      onTriggersAdd={handleSubscriptionAdded}
-      eventTriggers={subscriptions || []}
+      onSubscriptionAdd={handleSubscriptionAdded}
+      subscriptions={subscriptions || []}
       serverDataError={error || false}
       serverDataLoading={loading || false}
     />

@@ -1,31 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import LuigiClient from '@luigi-project/client';
 
 import { GenericList } from 'react-shared';
-
-// import { SchemaComponent } from './Schema/Schema';
-
 import { EVENT_TRIGGERS_PANEL, ERRORS } from '../../constants';
+import CreateEventSubscriptionModal from './CreateEventSubscriptionModal';
 
-import CreateEventTriggerModal from './CreateEventTriggerModal';
+const textSearchProperties = ['eventType', 'version', 'source', 'description']; //TODO
 
-const textSearchProperties = ['eventType', 'version', 'source', 'description'];
-
-export default function EventTriggers({
-  eventTriggers = [],
+export default function EventSubscriptions({
+  subscriptions = [],
   isLambda = false,
-  servicePorts = [],
   serverDataError,
   serverDataLoading,
-  onTriggersAdd,
-  onTriggerDelete,
+  onSubscriptionAdd,
+  onSubscriptionDelete,
   notFoundMessage = EVENT_TRIGGERS_PANEL.LIST.ERRORS.RESOURCES_NOT_FOUND,
 }) {
   const actions = [
     {
       name: 'Delete',
-      handler: onTriggerDelete,
+      handler: onSubscriptionDelete,
     },
   ];
 
@@ -36,11 +30,10 @@ export default function EventTriggers({
     subscription.spec.protocol || '-',
   ];
 
-  const createEventTrigger = (
-    <CreateEventTriggerModal
+  const createModal = (
+    <CreateEventSubscriptionModal
       isLambda={isLambda}
-      servicePorts={servicePorts}
-      onSubmit={onTriggersAdd}
+      onSubmit={onSubscriptionAdd}
     />
   );
 
@@ -51,9 +44,9 @@ export default function EventTriggers({
         showSearchField={true}
         textSearchProperties={textSearchProperties}
         showSearchSuggestion={false}
-        extraHeaderContent={createEventTrigger}
+        extraHeaderContent={createModal}
         actions={actions}
-        entries={eventTriggers}
+        entries={subscriptions}
         headerRenderer={headerRenderer}
         rowRenderer={rowRenderer}
         serverDataError={serverDataError}
@@ -68,10 +61,10 @@ export default function EventTriggers({
   );
 }
 
-EventTriggers.propTypes = {
-  eventTriggers: PropTypes.array.isRequired,
+EventSubscriptions.propTypes = {
+  subscriptions: PropTypes.array.isRequired,
   serverDataError: PropTypes.any,
   serverDataLoading: PropTypes.bool,
-  onTriggerDelete: PropTypes.func.isRequired,
-  onTriggersAdd: PropTypes.func.isRequired,
+  onSubscriptionAdd: PropTypes.func.isRequired,
+  onSubscriptionDelete: PropTypes.func.isRequired,
 };

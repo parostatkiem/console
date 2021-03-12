@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { useMicrofrontendContext } from 'react-shared';
-import EventTriggers from 'shared/components/EventTriggers/EventTriggers';
+import EventSubscriptions from 'shared/components/EventSubscriptions/EventSubscriptions';
 import {
   useEventActivationsQuery,
   useEventTriggersQuery,
@@ -86,7 +86,7 @@ export default function ServiceEventTriggersWrapper({ service }) {
     service.json.spec.ports && service.json.spec.ports.map(port => port.port);
 
   return (
-    <EventTriggers
+    <EventSubscriptions
       servicePorts={servicePorts}
       onTriggerDelete={deleteEventTrigger}
       onTriggersAdd={createManyEventTriggers}

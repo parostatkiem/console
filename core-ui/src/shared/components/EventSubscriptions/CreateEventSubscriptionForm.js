@@ -1,27 +1,21 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 
-import Checkbox from 'components/Lambdas/Checkbox/Checkbox';
-// import { ComboboxInput, Menu, FormInput } from 'fundamental-react';
 import {
   FormItem,
   FormLabel,
   FormInput,
-  FormGroup,
   FormFieldset,
-  FormLegend,
   Icon,
 } from 'fundamental-react';
 // import { SchemaComponent } from './Schema/Schema';
 import { InputWithPrefix } from 'react-shared';
-import './CreateEventTriggerForm.scss';
+import './CreateEventSubscriptionForm.scss';
 
 const EVENT_TYPE_PREFIX = 'sap.kyma.custom.';
 
-export default function CreateEventTriggerForm({
+export default function CreateEventSubscriptionForm({
   formElementRef,
-  isLambda = false,
-  setCustomValid = () => void 0,
-  onSubmit,
+  onSubmit = _ => void 0,
   onChange,
 }) {
   // useEffect(() => {
@@ -65,7 +59,7 @@ export default function CreateEventTriggerForm({
       ref={formElementRef}
       onSubmit={handleSubmit}
       onChange={onChange}
-      className="create-event-trigger-form"
+      className="create-event-subscription-form"
     >
       <FormFieldset>
         <h2 className="fd-has-type-4">
@@ -125,7 +119,7 @@ export default function CreateEventTriggerForm({
           />
         </FormItem>
       </FormFieldset>
-      <div className="create-event-trigger-form--divider"></div>
+      <div className="create-event-subscription-form--divider"></div>
       <FormFieldset>
         <h2 className="fd-has-type-4">
           <Icon size="m" className="icon" glyph="edit" />

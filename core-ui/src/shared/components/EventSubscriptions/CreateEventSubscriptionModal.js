@@ -3,11 +3,11 @@ import React from 'react';
 import { Button } from 'fundamental-react';
 import { Tooltip, ModalWithForm } from 'react-shared';
 
-import CreateEventTriggerForm from './CreateEventTriggerForm';
+import CreateEventSubscriptionForm from './CreateEventSubscriptionForm';
 
 import { EVENT_TRIGGERS_PANEL } from '../../constants';
 
-export default function CreateEventTriggerModal({
+export default function CreateEventSubscriptionModal({
   isLambda = false,
   servicePorts,
   onSubmit,
@@ -45,7 +45,7 @@ export default function CreateEventTriggerModal({
       id="add-event-trigger-modal"
       className="fd-modal--xl-size"
       renderForm={props => (
-        <CreateEventTriggerForm
+        <CreateEventSubscriptionForm
           {...props}
           isLambda={isLambda}
           servicePorts={servicePorts}
