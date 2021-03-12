@@ -12,6 +12,7 @@ import {
   SERVERLESS_API_VERSION,
   SERVERLESS_RESOURCE_KIND,
 } from '../../../../constants';
+import { randomNamesGenerator } from '@kyma-project/common';
 
 export default function EventSubscriptionsWrapper({ lambda }) {
   const notificationManager = useNotification();
@@ -45,7 +46,7 @@ export default function EventSubscriptionsWrapper({ lambda }) {
 
   async function handleSubscriptionAdded(eventType) {
     try {
-      const name = lambda.metadata.name + '.' + eventType; //TODO
+      const name = `${lambda.metadata.name}-${randomNamesGenerator()}`;
       const sink = `http://${lambda.metadata.name}.${lambda.metadata.namespace}.svc.cluster.local`;
 
       await postRequest(`${subscriptionsUrl}/${name}`, {
