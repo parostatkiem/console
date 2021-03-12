@@ -1,5 +1,4 @@
-import React, { useState, useRef } from 'react';
-
+import React, { useRef } from 'react';
 import {
   FormItem,
   FormLabel,
@@ -7,7 +6,6 @@ import {
   FormFieldset,
   Icon,
 } from 'fundamental-react';
-// import { SchemaComponent } from './Schema/Schema';
 import { InputWithPrefix } from 'react-shared';
 import './CreateEventSubscriptionForm.scss';
 
@@ -18,16 +16,6 @@ export default function CreateEventSubscriptionForm({
   onSubmit = _ => void 0,
   onChange,
 }) {
-  // useEffect(() => {
-  //   // setCustomValid(false);
-  // }, [setCustomValid]);
-
-  // useEffect(() => {
-  //   // setCustomValid(!!events.filter(e => e.isChecked).length);
-  // }, [events, setCustomValid]);
-
-  const [calculatedEventType, setCalculatedEventType] = useState(null);
-
   const eventAppInput = useRef(),
     eventTypeInput = useRef(),
     eventVersionInput = useRef();
@@ -37,12 +25,11 @@ export default function CreateEventSubscriptionForm({
   const eventTypeFinalInput = useRef();
 
   async function handleSubmit() {
-    // console.log(eventTypeFinalInput);
     onSubmit(eventTypeFinalInput.current.value);
   }
 
   async function calculateEventType() {
-    if (!inputFields.every(i => i.current?.value)) return; //cannot calculate value
+    if (!inputFields.every(i => i.current?.value)) return; //cannot calculate value; TODO: inform user that all three fields must be valid to generate eventType
 
     const newValue = inputFields.map(f => f.current.value).join('.');
     eventTypeFinalInput.current.value = newValue;
