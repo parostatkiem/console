@@ -3,10 +3,10 @@ import { useMicrofrontendContext } from 'react-shared';
 
 // import { createLambdaRef } from './helpers';
 
-import LambdaEventTriggers from './EventTriggersWrapper';
+import LambdaEventSubscriptions from './EventSubscriptionsWrapper';
 
-export default function LambdaEventsWrapper({ lambda }) {
+export default function LambdaSubscriptionsWrapper({ lambda }) {
   const { bebEnabled } = useMicrofrontendContext();
 
-  return <LambdaEventTriggers lambda={lambda} />;
+  return <LambdaEventSubscriptions lambda={lambda} />;
 }

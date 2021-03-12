@@ -1,7 +1,7 @@
 import {
   SERVERLESS_API_VERSION,
   SERVERLESS_RESOURCE_KIND,
-} from './../../../../constants';
+} from '../../../../constants';
 
 import { createOwnerRef } from 'shared/components/EventSubscriptions/helpers';
 

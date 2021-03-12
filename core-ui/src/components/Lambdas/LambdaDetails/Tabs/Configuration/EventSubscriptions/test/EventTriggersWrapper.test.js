@@ -13,7 +13,7 @@ import {
 } from 'components/Lambdas/gql/hooks/queries/testMocks';
 import { ERRORS, EVENT_TRIGGERS_PANEL } from 'shared/constants';
 
-import EventTriggersWrapper from '../EventTriggersWrapper';
+import EventTriggersWrapper from '../EventSubscriptionsWrapper';
 
 jest.mock('@luigi-project/client', () => {
   return {

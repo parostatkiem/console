@@ -19,7 +19,7 @@ import {
   createSubscriberRef,
 } from 'components/Lambdas/helpers/eventTriggers';
 
-export default function EventTriggersWrapper({ lambda }) {
+export default function EventSubscriptionsWrapper({ lambda }) {
   const notificationManager = useNotification();
   const postRequest = usePost();
 
@@ -90,9 +90,7 @@ export default function EventTriggersWrapper({ lambda }) {
   });
 
   if (!subscriptions) return <Spinner />;
-  // console.log(events, eventTriggers);
 
-  // return null;
   return (
     <EventSubscriptions
       isLambda={true}
@@ -104,6 +102,11 @@ export default function EventTriggersWrapper({ lambda }) {
     />
   );
 }
-EventTriggersWrapper.propTypes = {
-  lambda: PropTypes.object.isRequired,
+EventSubscriptionsWrapper.propTypes = {
+  lambda: PropTypes.shape({
+    metadata: PropTypes.shape({
+      name: PropTypes.string,
+      namespace: PropTypes.serverDataError,
+    }),
+  }).isRequired,
 };
