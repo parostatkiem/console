@@ -9,21 +9,9 @@ import {
 } from 'react-shared';
 import EventSubscriptions from 'shared/components/EventSubscriptions/EventSubscriptions';
 import {
-  useEventActivationsQuery,
-  useEventTriggersQuery,
-} from 'components/Lambdas/gql/hooks/queries';
-import {
   SERVERLESS_API_VERSION,
   SERVERLESS_RESOURCE_KIND,
 } from '../../../../constants';
-import {
-  useDeleteEventTrigger,
-  useCreateManyEventTriggers,
-} from 'components/Lambdas/gql/hooks/mutations';
-import {
-  serializeEvents,
-  createSubscriberRef,
-} from 'components/Lambdas/helpers/eventTriggers';
 
 export default function EventSubscriptionsWrapper({ lambda }) {
   const notificationManager = useNotification();
@@ -38,6 +26,22 @@ export default function EventSubscriptionsWrapper({ lambda }) {
     name: lambda.metadata.name,
     uid: lambda.metadata.uid,
   };
+
+  const filterByOwnerRef = ({ metadata }) =>
+    metadata.ownerReferences?.find(
+      ref =>
+        ref.kind === SERVERLESS_RESOURCE_KIND &&
+        ref.name === lambda.metadata.name,
+    );
+
+  const {
+    data: subscriptions = [],
+    error,
+    loading,
+    silentRefetch,
+  } = useGetList(filterByOwnerRef)(subscriptionsUrl, {
+    pollingInterval: 3000,
+  });
 
   async function handleSubscriptionAdded(eventType) {
     try {
@@ -70,6 +74,7 @@ export default function EventSubscriptionsWrapper({ lambda }) {
           },
         },
       });
+      silentRefetch();
 
       notificationManager.notifySuccess({
         content: 'Subscription created succesfully',
@@ -98,19 +103,6 @@ export default function EventSubscriptionsWrapper({ lambda }) {
       });
     }
   }
-
-  const filterByOwnerRef = ({ metadata }) =>
-    metadata.ownerReferences?.find(
-      ref =>
-        ref.kind === SERVERLESS_RESOURCE_KIND &&
-        ref.name === lambda.metadata.name,
-    );
-
-  const { data: subscriptions = [], error, loading } = useGetList(
-    filterByOwnerRef,
-  )(subscriptionsUrl, {
-    pollingInterval: 3000,
-  });
 
   if (!subscriptions) return <Spinner />;
 
