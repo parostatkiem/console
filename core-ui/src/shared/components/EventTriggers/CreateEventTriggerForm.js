@@ -43,14 +43,14 @@ export default function CreateEventTriggerForm({
   const eventTypeFinalInput = useRef();
 
   async function handleSubmit() {
-    // await onSubmit(events.filter(e => e.isChecked));
+    // console.log(eventTypeFinalInput);
+    onSubmit(eventTypeFinalInput.current.value);
   }
 
   async function calculateEventType() {
     if (!inputFields.every(i => i.current?.value)) return; //cannot calculate value
 
     const newValue = inputFields.map(f => f.current.value).join('.');
-    console.log(eventTypeFinalInput);
     eventTypeFinalInput.current.value = newValue;
   }
 
@@ -146,7 +146,7 @@ export default function CreateEventTriggerForm({
           </FormLabel>
           <InputWithPrefix
             prefix={EVENT_TYPE_PREFIX}
-            ref={eventTypeFinalInput}
+            _ref={eventTypeFinalInput}
             onChange={handleEventTypeManualChange}
             required
             placeholder="The eventType value used to create the subscription"
