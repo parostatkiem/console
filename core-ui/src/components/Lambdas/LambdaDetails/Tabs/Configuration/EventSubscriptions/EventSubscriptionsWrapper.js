@@ -13,6 +13,7 @@ import {
   SERVERLESS_RESOURCE_KIND,
 } from '../../../../constants';
 import { randomNamesGenerator } from '@kyma-project/common';
+import { createSubscriptionInput } from './createSubscriptionInput';
 
 export default function EventSubscriptionsWrapper({ lambda }) {
   const notificationManager = useNotification();
@@ -45,36 +46,18 @@ export default function EventSubscriptionsWrapper({ lambda }) {
   });
 
   async function handleSubscriptionAdded(eventType) {
-    try {
-      const name = `${lambda.metadata.name}-${randomNamesGenerator()}`;
-      const sink = `http://${lambda.metadata.name}.${lambda.metadata.namespace}.svc.cluster.local`;
+    const name = `${lambda.metadata.name}-${randomNamesGenerator()}`;
+    const sink = `http://${lambda.metadata.name}.${lambda.metadata.namespace}.svc.cluster.local`;
+    const subscriptionInput = createSubscriptionInput(
+      name,
+      lambda,
+      ownerRef,
+      sink,
+      eventType,
+    );
 
-      await postRequest(`${subscriptionsUrl}/${name}`, {
-        apiVersion: 'eventing.kyma-project.io/v1alpha1',
-        kind: 'Subscription',
-        metadata: {
-          name,
-          namespace: lambda.metadata.namespace,
-          ownerReferences: [ownerRef],
-        },
-        spec: {
-          protocol: '',
-          protocolsettings: {},
-          sink,
-          filter: {
-            filters: [
-              {
-                eventSource: { property: 'source', type: 'exact', value: '' },
-                eventType: {
-                  property: 'type',
-                  type: 'exact',
-                  value: eventType,
-                },
-              },
-            ],
-          },
-        },
-      });
+    try {
+      await postRequest(`${subscriptionsUrl}/${name}`, subscriptionInput);
       silentRefetch();
 
       notificationManager.notifySuccess({

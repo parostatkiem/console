@@ -23,7 +23,7 @@ function buildNode(name, node, spec, config, groups) {
     order,
     requiredPermissions,
     settings,
-    context
+    context,
   } = node;
   let n = {
     label,
@@ -32,9 +32,9 @@ function buildNode(name, node, spec, config, groups) {
     hideFromNav: showInNavigation !== undefined ? !showInNavigation : false,
     order,
     context: {
-      settings: settings ? { ...settings, ...(context || {}) } : {}
+      settings: settings ? { ...settings, ...(context || {}) } : {},
     },
-    requiredPermissions
+    requiredPermissions,
   };
 
   n.context.requiredBackendModules = node.requiredBackendModules;
@@ -45,7 +45,7 @@ function buildNode(name, node, spec, config, groups) {
     delete n.pathSegment;
     n.externalLink = {
       url: node.externalLink,
-      sameWindow: false
+      sameWindow: false,
     };
   }
 
@@ -76,7 +76,7 @@ function buildNodeWithChildren(name, specNode, spec, config, groups) {
 function getDirectChildren(name, parentNodeSegments, spec, config, groups) {
   // process only direct children
   return spec.navigationNodes
-    .filter(function(node) {
+    .filter(function (node) {
       var currentNodeSegments = node.navigationPath.split('/');
       var isDirectChild =
         parentNodeSegments.length === currentNodeSegments.length - 1 &&
@@ -127,7 +127,7 @@ export default function convertToNavigationTree(
             preloadUrl:
               node.localPreloadUrl ||
               spec.preloadUrl ||
-              `https://${name}.${config.domain}/preload`
+              `https://${name}.${config.domain}/preload`,
           };
         }
 
@@ -135,7 +135,7 @@ export default function convertToNavigationTree(
       }
       return node;
     })
-    .map(n => {
+    .map((n) => {
       const showExperimentalViews =
         localStorage.getItem('console.showExperimentalViews') === 'true';
       return hideByNodeCategory(n, showExperimentalViews);
