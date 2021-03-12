@@ -4,7 +4,7 @@ import { TabGroup, Tab } from 'fundamental-react';
 import CodeTab from './Tabs/Code/CodeTab';
 import ResourceManagementTab from './Tabs/ResourceManagement/ResourceManagementTab';
 
-import LambdaSubscriptionsWrapper from './Tabs/Configuration/EventSubscriptions/LambdaSubscriptionsWrapper';
+import EventSubscriptionsWrapper from './Tabs/Configuration/EventSubscriptions/EventSubscriptionsWrapper';
 import ServiceBindingsWrapper from './Tabs/Configuration/ServiceBindings/ServiceBindingsWrapper';
 import ApiRules from './Tabs/Configuration/ApiRules/ApiRules';
 
@@ -30,7 +30,7 @@ export default function LambdaDetails({ lambda, backendModules = [] }) {
     BACKEND_MODULES.APPLICATION,
     BACKEND_MODULES.EVENTING,
   ]) ? (
-    <LambdaSubscriptionsWrapper lambda={lambda} />
+    <EventSubscriptionsWrapper lambda={lambda} />
   ) : null;
 
   const serviceBindings = backendModulesExist(backendModules, [
