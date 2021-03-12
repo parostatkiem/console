@@ -23,53 +23,47 @@ export default function EventTriggersWrapper({ lambda }) {
   const notificationManager = useNotification();
   const postRequest = usePost();
 
+  const subscriptionsUrl = `/apis/eventing.kyma-project.io/v1alpha1/namespaces/${lambda.metadata.namespace}/subscriptions`;
+
   const ownerRef = {
     apiVersion: SERVERLESS_API_VERSION,
     kind: SERVERLESS_RESOURCE_KIND,
     name: lambda.metadata.name,
     uid: lambda.metadata.uid,
   };
-  // const deleteEventTrigger = useDeleteEventTrigger(lambda);
-  // const createManyEventTriggers = useCreateManyEventTriggers({
-  //   ...lambda,
-  //   subscriberRef,
-  //   ownerRef,
-  // });
-  console.log(lambda);
+
   async function handleSubscriptionAdded(eventType) {
     try {
       const name = lambda.metadata.name + '.' + eventType; //TODO
       const sink = `http://${lambda.metadata.name}.${lambda.metadata.namespace}.svc.cluster.local`;
 
-      await postRequest(
-        `/apis/eventing.kyma-project.io/v1alpha1/namespaces/${lambda.metadata.namespace}/subscriptions/${name}`,
-        {
-          apiVersion: 'eventing.kyma-project.io/v1alpha1',
-          kind: 'Subscription',
-          metadata: {
-            name,
-            namespace: lambda.metadata.namespace,
-            ownerReferences: [ownerRef],
-          },
-          spec: {
-            protocol: '',
-            protocolsettings: {},
-            sink,
-            filter: {
-              filters: [
-                {
-                  eventSource: { property: 'source', type: 'exact', value: '' },
-                  eventType: {
-                    property: 'type',
-                    type: 'exact',
-                    value: eventType,
-                  },
+      await postRequest(`${subscriptionsUrl}/${name}`, {
+        apiVersion: 'eventing.kyma-project.io/v1alpha1',
+        kind: 'Subscription',
+        metadata: {
+          name,
+          namespace: lambda.metadata.namespace,
+          ownerReferences: [ownerRef],
+        },
+        spec: {
+          protocol: '',
+          protocolsettings: {},
+          sink,
+          filter: {
+            filters: [
+              {
+                eventSource: { property: 'source', type: 'exact', value: '' },
+                eventType: {
+                  property: 'type',
+                  type: 'exact',
+                  value: eventType,
                 },
-              ],
-            },
+              },
+            ],
           },
         },
-      );
+      });
+
       notificationManager.notifySuccess({
         content: 'Subscription created succesfully',
       });
@@ -82,20 +76,20 @@ export default function EventTriggersWrapper({ lambda }) {
     }
   }
 
-  const eventsUrl = `/apis/eventing.knative.dev/v1alpha1/namespaces/${lambda.metadata.namespace}/triggers`;
   const filterByOwnerRef = ({ metadata }) =>
     metadata.ownerReferences?.find(
-      ref => ref.kind === 'Function' && ref.name === lambda.metadata.name,
+      ref =>
+        ref.kind === SERVERLESS_RESOURCE_KIND &&
+        ref.name === lambda.metadata.name,
     );
 
-  const {
-    data: eventTriggers = [],
-    error: triggersError,
-    loading: triggersLoading,
-  } = useGetList(filterByOwnerRef)(eventsUrl, {
+  const { data: subscriptions = [], error, loading } = useGetList(
+    filterByOwnerRef,
+  )(subscriptionsUrl, {
     pollingInterval: 3000,
   });
-  if (!eventTriggers) return <Spinner />;
+
+  if (!subscriptions) return <Spinner />;
   // console.log(events, eventTriggers);
 
   // return null;
@@ -104,9 +98,9 @@ export default function EventTriggersWrapper({ lambda }) {
       isLambda={true}
       // onTriggerDelete={deleteEventTrigger}
       onTriggersAdd={handleSubscriptionAdded}
-      eventTriggers={eventTriggers || []}
-      serverDataError={triggersError || false}
-      serverDataLoading={triggersLoading || false}
+      eventTriggers={subscriptions || []}
+      serverDataError={error || false}
+      serverDataLoading={loading || false}
     />
   );
 }

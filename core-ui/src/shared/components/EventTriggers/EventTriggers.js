@@ -10,44 +10,7 @@ import { EVENT_TRIGGERS_PANEL, ERRORS } from '../../constants';
 
 import CreateEventTriggerModal from './CreateEventTriggerModal';
 
-function headerRenderer(isLambda) {
-  const baseHeaders = ['', 'Event', 'Version', 'Application', 'Description'];
-  if (isLambda) {
-    return () => baseHeaders;
-  } else {
-    return () => [...baseHeaders, 'Target port', 'Target path'];
-  }
-}
-
 const textSearchProperties = ['eventType', 'version', 'source', 'description'];
-
-function createRowCells(eventTrigger, isLambda) {
-  const baseCells = [
-    <span>{eventTrigger.eventType || '*'}</span>,
-    <span>{eventTrigger.version || '*'}</span>,
-    <EventTriggerSource source={eventTrigger.source} />,
-    <span>{eventTrigger.description || '-'}</span>,
-  ];
-  const { port, path } = eventTrigger.spec;
-  return isLambda ? baseCells : [...baseCells, port, path];
-}
-
-function EventTriggerSource({ source }) {
-  if (!source) {
-    return <span>*</span>;
-  }
-
-  return (
-    <span
-      className="link"
-      onClick={() =>
-        LuigiClient.linkManager().navigate(`/home/cmf-apps/details/${source}`)
-      }
-    >
-      {source}
-    </span>
-  );
-}
 
 export default function EventTriggers({
   eventTriggers = [],
@@ -59,30 +22,19 @@ export default function EventTriggers({
   onTriggerDelete,
   notFoundMessage = EVENT_TRIGGERS_PANEL.LIST.ERRORS.RESOURCES_NOT_FOUND,
 }) {
-  function showCollapseControl(schema) {
-    return !!(schema && schema.properties && !schema.anyOf);
-  }
-
   const actions = [
     {
       name: 'Delete',
       handler: onTriggerDelete,
     },
   ];
-  const rowRenderer = eventTrigger => ({
-    cells: createRowCells(eventTrigger, isLambda),
-    collapseContent: (
-      <>
-        <td></td>
-        <td colSpan="6">
-          {/* <SchemaComponent schema={eventTrigger.schema} /> */}
-        </td>
-        <td></td>
-      </>
-    ),
-    showCollapseControl: showCollapseControl(eventTrigger.schema),
-    withCollapseControl: true,
-  });
+
+  const headerRenderer = _ => ['Event Type', 'Name', 'Protocol'];
+  const rowRenderer = subscription => [
+    subscription.spec.filter.filters[0]?.eventType.value,
+    subscription.metadata.name,
+    subscription.spec.protocol || '-',
+  ];
 
   const createEventTrigger = (
     <CreateEventTriggerModal
@@ -102,7 +54,7 @@ export default function EventTriggers({
         extraHeaderContent={createEventTrigger}
         actions={actions}
         entries={eventTriggers}
-        headerRenderer={headerRenderer(isLambda)}
+        headerRenderer={headerRenderer}
         rowRenderer={rowRenderer}
         serverDataError={serverDataError}
         serverDataLoading={serverDataLoading}
