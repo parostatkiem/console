@@ -1,6 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useGetList, Spinner, usePost, useNotification } from 'react-shared';
+import {
+  useGetList,
+  Spinner,
+  usePost,
+  useNotification,
+  useDelete,
+} from 'react-shared';
 import EventSubscriptions from 'shared/components/EventSubscriptions/EventSubscriptions';
 import {
   useEventActivationsQuery,
@@ -22,6 +28,7 @@ import {
 export default function EventSubscriptionsWrapper({ lambda }) {
   const notificationManager = useNotification();
   const postRequest = usePost();
+  const deleteRequest = useDelete();
 
   const subscriptionsUrl = `/apis/eventing.kyma-project.io/v1alpha1/namespaces/${lambda.metadata.namespace}/subscriptions`;
 
@@ -76,6 +83,22 @@ export default function EventSubscriptionsWrapper({ lambda }) {
     }
   }
 
+  async function handleSubscriptionDelete(s) {
+    try {
+      await deleteRequest(`${subscriptionsUrl}/${s.metadata.name}`); //TODO use selfLink which is not there; why?
+
+      notificationManager.notifySuccess({
+        content: 'Subscription removed succesfully',
+      });
+    } catch (err) {
+      console.error(err);
+      notificationManager.notifyError({
+        content: err.message,
+        autoClose: false,
+      });
+    }
+  }
+
   const filterByOwnerRef = ({ metadata }) =>
     metadata.ownerReferences?.find(
       ref =>
@@ -94,7 +117,7 @@ export default function EventSubscriptionsWrapper({ lambda }) {
   return (
     <EventSubscriptions
       isLambda={true}
-      // onTriggerDelete={deleteEventTrigger}
+      onSubscriptionDelete={handleSubscriptionDelete}
       onSubscriptionAdd={handleSubscriptionAdded}
       subscriptions={subscriptions || []}
       serverDataError={error || false}
@@ -106,7 +129,7 @@ EventSubscriptionsWrapper.propTypes = {
   lambda: PropTypes.shape({
     metadata: PropTypes.shape({
       name: PropTypes.string,
-      namespace: PropTypes.serverDataError,
+      namespace: PropTypes.string,
     }),
   }).isRequired,
 };
