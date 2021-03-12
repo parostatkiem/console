@@ -99,7 +99,6 @@ export default function convertToNavigationTree(
   spec,
   config,
   navigation,
-  consoleViewGroupName,
   segmentPrefix,
   groups
 ) {
@@ -123,22 +122,13 @@ export default function convertToNavigationTree(
         node.navigationContext = spec.appName ? spec.appName : name;
         node.viewGroup = node.navigationContext;
 
-        node.navigationContext = spec.appName ? spec.appName : name;
-        if (
-          node.viewUrl &&
-          node.viewUrl.indexOf(window.location.origin + '/') === 0
-        ) {
-          node.viewGroup = consoleViewGroupName;
-        } else {
-          node.viewGroup = node.navigationContext;
-          if (spec.preloadUrl) {
-            navigation.viewGroupSettings[node.viewGroup] = {
-              preloadUrl:
-                node.localPreloadUrl ||
-                spec.preloadUrl ||
-                `https://${name}.${config.domain}/preload`
-            };
-          }
+        if (spec.preloadUrl) {
+          navigation.viewGroupSettings[node.viewGroup] = {
+            preloadUrl:
+              node.localPreloadUrl ||
+              spec.preloadUrl ||
+              `https://${name}.${config.domain}/preload`
+          };
         }
 
         node.keepSelectedForChildren = true;
